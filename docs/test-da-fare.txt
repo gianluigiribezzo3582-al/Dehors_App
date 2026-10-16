@@ -260,3 +260,122 @@ COSE ANCORA DA FORNIRE
 - Profili Instagram e Facebook.
 - File vettoriale ufficiale del logo (facoltativo).
 - Conferma o modifica dei premi e dei punti necessari, e foto/sfondi.
+
+
+=====================================================================
+DEPLOY UFFICIALE SUL PLAY STORE (ANDROID)
+=====================================================================
+
+Le regole di Google cambiano spesso: prima di ogni passaggio controlla
+la guida aggiornata su https://support.google.com/googleplay/android-developer
+
+A. PREREQUISITI TECNICI (li preparo io quando me lo chiedi)
+-----------------------------------------------------------
+[ ] A.1  Attivare Firebase (database condiviso): senza, ogni telefono ha
+         dati propri e l'app non è utilizzabile davvero. Vedi README,
+         sezione "Attivare il database vero (Firebase)".
+[ ] A.2  Togliere i dati e gli account demo dalla versione pubblicata.
+[ ] A.3  Rimuovere i permessi non necessari che la build aggiunge
+         (SYSTEM_ALERT_WINDOW, lettura/scrittura memoria): Google può
+         chiederne conto in revisione.
+[ ] A.4  Creare la chiave di firma ufficiale (upload key) e conservarla
+         in un posto sicuro con la password: se si perde, aggiornare
+         l'app diventa complicato. MAI metterla su GitHub.
+[ ] A.5  Compilare il pacchetto per lo Store in formato .aab (non .apk),
+         firmato con la chiave ufficiale.
+[ ] A.6  A ogni aggiornamento aumentare il numero di versione
+         (versionCode/version in app.json), altrimenti il Play Store
+         rifiuta il caricamento.
+[ ] A.7  Decidere l'ID definitivo dell'app (ora "it.dehors.app"): dopo la
+         prima pubblicazione NON si può più cambiare.
+
+B. ACCOUNT SVILUPPATORE GOOGLE PLAY
+-----------------------------------
+[ ] B.1  Registrati su https://play.google.com/console (quota una tantum
+         di 25 USD).
+[ ] B.2  Scegli il tipo di account:
+         - "Organizzazione" (consigliato per il bar, intestato a
+           G.E.S. Drink&Food srls): serve il numero D-U-N-S dell'azienda
+           (gratuito, si richiede a Dun & Bradstreet, può richiedere
+           qualche settimana) e un sito/email aziendale.
+         - "Personale": più rapido, ma per i nuovi account personali
+           Google richiede un test chiuso con almeno 12 tester per 14
+           giorni consecutivi prima di poter pubblicare.
+[ ] B.3  Completa la verifica dell'identità richiesta da Google.
+
+C. DOCUMENTI E MATERIALI DA PREPARARE
+-------------------------------------
+[ ] C.1  Informativa privacy (OBBLIGATORIA: l'app raccoglie nome, email,
+         telefono): pagina web pubblica con titolare del trattamento
+         (G.E.S. Drink&Food srls, P.IVA, contatti), dati raccolti, scopo
+         (programma fedeltà), conservazione, diritti GDPR, come
+         cancellare l'account. Va linkata nella scheda Store.
+[ ] C.2  Pagina web per la richiesta di cancellazione account (Google la
+         richiede anche se nell'app c'è già "Elimina account"): basta una
+         pagina che spieghi come farlo e un'email a cui scrivere.
+[ ] C.3  Regolamento del programma fedeltà (punti, premi, scadenze,
+         modifiche): consigliato, da linkare in app e nella scheda.
+[ ] C.4  Icona alta risoluzione 512x512 PNG (ce l'ho, la genero io).
+[ ] C.5  Immagine in evidenza 1024x500 (feature graphic).
+[ ] C.6  Almeno 2 screenshot dal telefono (meglio 4-8: Home, Menù,
+         Tessera, Premi, Info), in tema chiaro.
+[ ] C.7  Testi: nome app (max 30 caratteri, es. "Dehors Cafè-Bistrot"),
+         descrizione breve (max 80), descrizione completa (max 4000).
+[ ] C.8  Email di contatto pubblica per gli utenti
+         (es. ges.drinkfood@gmail.com) e sito web se c'è.
+
+D. CONFIGURAZIONE NELLA PLAY CONSOLE
+------------------------------------
+[ ] D.1  Crea app: nome, lingua predefinita Italiano, tipo "App",
+         gratuita.
+[ ] D.2  Attiva "Play App Signing" (Google custodisce la chiave di firma
+         finale; tu usi la upload key del punto A.4).
+[ ] D.3  Scheda dello Store: testi, icona, grafica, screenshot,
+         categoria "Cibi e bevande", contatti.
+[ ] D.4  Norme dell'app > Privacy: inserisci l'URL dell'informativa.
+[ ] D.5  Sicurezza dei dati (Data safety): dichiara che raccogli nome,
+         email, telefono (facoltativo), ID utente e cronologia punti;
+         scopo "Funzionalità dell'app" e "Gestione account"; dati cifrati
+         in transito; l'utente può chiederne la cancellazione; nessuna
+         condivisione con terzi a fini pubblicitari. La fotocamera è
+         usata solo dallo staff per leggere i QR, le immagini non vengono
+         salvate né inviate.
+[ ] D.6  Cancellazione account: indica l'URL della pagina del punto C.2.
+[ ] D.7  Accesso all'app: l'app ha un login, quindi fornisci a Google un
+         account di prova (cliente) e, se vuoi far vedere l'area staff,
+         un account staff, con le istruzioni.
+[ ] D.8  Annunci: "No, l'app non contiene annunci".
+[ ] D.9  Classificazione dei contenuti: compila il questionario (nota:
+         il menù contiene alcolici; probabile classificazione PEGI 12/16
+         per riferimenti ad alcol).
+[ ] D.10 Pubblico di destinazione: maggiorenni (18+), anche per la
+         presenza di alcolici; l'app non è rivolta ai minori.
+[ ] D.11 Dichiarazioni varie: app non di notizie, non governativa, non
+         finanziaria, nessuna funzione sanitaria.
+
+E. TEST E PUBBLICAZIONE
+-----------------------
+[ ] E.1  Test interno: carica il primo .aab nel canale "Test interno",
+         aggiungi le email dei colleghi come tester, installate dal link
+         di invito e rifate tutti i test di questo file (con Firebase).
+[ ] E.2  Test chiuso (obbligatorio per account personali nuovi: almeno
+         12 tester per 14 giorni consecutivi; utile comunque).
+[ ] E.3  Produzione: crea la release, scrivi le note di versione,
+         scegli i paesi (Italia), invia per la revisione.
+[ ] E.4  La revisione di Google richiede di solito da qualche giorno a
+         una settimana; per il primo invio può volerci di più.
+[ ] E.5  Dopo la pubblicazione: controlla la sezione "Android vitals"
+         (crash e blocchi) e le recensioni.
+
+F. DOPO LA PUBBLICAZIONE
+------------------------
+[ ] F.1  Per ogni aggiornamento: nuovo numero di versione, nuovo .aab,
+         nuova release (prima in test interno, poi produzione).
+[ ] F.2  Modifiche solo a menù/testi/premi richiedono comunque un
+         aggiornamento dell'app, a meno di spostarli nel database
+         (possiamo farlo in seguito per aggiornarli senza Store).
+[ ] F.3  Google chiede periodicamente di aggiornare la versione Android
+         di destinazione (target API): va fatto entro le scadenze o
+         l'app smette di essere visibile ai nuovi utenti.
+[ ] F.4  iOS (App Store) è un percorso separato: account Apple Developer
+         (99 USD/anno) e revisione Apple.
