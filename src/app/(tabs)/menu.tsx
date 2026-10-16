@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ScrollView, SectionList, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -48,11 +48,10 @@ export default function MenuScreen() {
   const theme = useTheme();
   const [search, setSearch] = useState('');
   const [active, setActive] = useState<string | null>(null);
-  const listRef = useRef<SectionList<MenuItem>>(null);
 
   const sections = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return Menu.map((c) => ({
+    return Menu.filter((c) => q || !active || c.id === active).map((c) => ({
       key: c.id,
       title: c.title,
       icon: c.icon as IconName,
@@ -61,13 +60,7 @@ export default function MenuScreen() {
         ? c.items.filter((i) => `${i.name} ${i.description ?? ''}`.toLowerCase().includes(q))
         : c.items,
     })).filter((s) => s.data.length > 0);
-  }, [search]);
-
-  const jumpTo = (id: string) => {
-    setActive(id);
-    const index = sections.findIndex((s) => s.key === id);
-    if (index >= 0) listRef.current?.scrollToLocation({ sectionIndex: index, itemIndex: 0, viewOffset: 48 });
-  };
+  }, [search, active]);
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
@@ -85,19 +78,18 @@ export default function MenuScreen() {
           {search ? <Ionicons name="close-circle" size={18} color={theme.textSecondary} onPress={() => setSearch('')} /> : null}
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: Spacing.sm }}>
-          {sections.map((s) => (
-            <Chip key={s.key} label={s.title} active={active === s.key} onPress={() => jumpTo(s.key)} />
+          <Chip label="Tutto" active={!active} onPress={() => setActive(null)} />
+          {Menu.map((c) => (
+            <Chip key={c.id} label={c.title} active={active === c.id} onPress={() => setActive(active === c.id ? null : c.id)} />
           ))}
         </ScrollView>
       </View>
 
       <SectionList
-        ref={listRef}
         sections={sections}
         keyExtractor={(item) => item.id}
         stickySectionHeadersEnabled
         contentContainerStyle={{ paddingHorizontal: Spacing.md, paddingBottom: Spacing.xl * 2 }}
-        onScrollToIndexFailed={() => {}}
         renderSectionHeader={({ section }) => (
           <View style={[styles.sectionHeader, { backgroundColor: theme.background }]}>
             <Ionicons name={section.icon} size={18} color={theme.accent} />
