@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
+import { dialog } from '@/components/dialog';
 import { AppText, Button, Field, Screen } from '@/components/ui';
 import { useTheme } from '@/hooks/use-theme';
 import { backend, errorMessage } from '@/services/backend';
@@ -38,7 +39,7 @@ export default function LoginScreen() {
     }
     try {
       await backend.resetPassword(email);
-      Alert.alert('Email inviata', 'Controlla la posta per reimpostare la password.');
+      dialog.alert('Email inviata', 'Controlla la posta per reimpostare la password.');
     } catch (e) {
       setError(errorMessage(e));
     }

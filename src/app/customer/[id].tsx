@@ -2,8 +2,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Haptics from 'expo-haptics';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, View } from 'react-native';
 
+import { dialog } from '@/components/dialog';
 import { TransactionRow } from '@/components/transaction-row';
 import { AppText, Button, Card, Chip, Divider, Field, Loading, SectionHeader, Screen } from '@/components/ui';
 import { Loyalty, pointsForAmount, tierFor } from '@/config/loyalty';
@@ -78,7 +79,7 @@ export default function CustomerScreen() {
       return true;
     } catch (e) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => {});
-      Alert.alert('Operazione non riuscita', errorMessage(e));
+      dialog.alert('Operazione non riuscita', errorMessage(e));
       return false;
     } finally {
       setBusy(null);
@@ -87,13 +88,13 @@ export default function CustomerScreen() {
 
   const addFromAmount = async () => {
     const euro = parseEuro(amount);
-    if (earnPoints <= 0) return Alert.alert('Importo troppo basso', 'Inserisci l\'importo speso in euro.');
+    if (earnPoints <= 0) return dialog.alert('Importo troppo basso', 'Inserisci l\'importo speso in euro.');
     const ok = await apply('earn', { delta: earnPoints, kind: 'earn', amountEur: euro }, `+${earnPoints} punti aggiunti`);
     if (ok) setAmount('');
   };
 
   const applyManual = async (points = manualPoints) => {
-    if (points <= 0) return Alert.alert('Inserisci un numero di punti.');
+    if (points <= 0) return dialog.alert('Inserisci un numero di punti.');
     const delta = sign * points;
     const ok = await apply(
       'manual',
@@ -106,19 +107,16 @@ export default function CustomerScreen() {
     }
   };
 
-  const redeem = (reward: Reward) =>
-    Alert.alert(
-      `Riscattare «${reward.title}»?`,
-      `Verranno scalati ${reward.cost} punti. Saldo dopo: ${customer.points - reward.cost} punti.`,
-      [
-        { text: 'Annulla', style: 'cancel' },
-        {
-          text: 'Riscatta',
-          onPress: () =>
-            apply(`r-${reward.id}`, { delta: -reward.cost, kind: 'redeem', rewardId: reward.id }, `Premio «${reward.title}» riscattato`),
-        },
-      ],
-    );
+  const redeem = async (reward: Reward) => {
+    const ok = await dialog.confirm({
+      title: `Riscattare «${reward.title}»?`,
+      message: `Verranno scalati ${reward.cost} punti. Saldo dopo: ${customer.points - reward.cost} punti.`,
+      confirmText: 'Riscatta',
+    });
+    if (ok) {
+      await apply(`r-${reward.id}`, { delta: -reward.cost, kind: 'redeem', rewardId: reward.id }, `Premio «${reward.title}» riscattato`);
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>

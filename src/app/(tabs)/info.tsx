@@ -1,7 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
+
+import { dialog } from '@/components/dialog';
 
 import { Logo } from '@/components/logo';
 import { AppText, Button, Card, Divider, ListRow, SectionHeader, Screen } from '@/components/ui';
@@ -25,15 +27,10 @@ export default function InfoScreen() {
   const { uid, profile, isStaff } = useAuth();
   const status = openStatus();
 
-  const logout = () =>
-    Alert.alert('Vuoi uscire?', undefined, [
-      { text: 'Annulla', style: 'cancel' },
-      {
-        text: 'Esci',
-        style: 'destructive',
-        onPress: () => backend.signOut().catch((e) => Alert.alert(errorMessage(e))),
-      },
-    ]);
+  const logout = async () => {
+    if (!(await dialog.confirm({ title: 'Vuoi uscire?', confirmText: 'Esci', destructive: true }))) return;
+    backend.signOut().catch((e) => dialog.alert(errorMessage(e)));
+  };
 
   return (
     <Screen>

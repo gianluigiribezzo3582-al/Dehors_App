@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert } from 'react-native';
 
+import { dialog } from '@/components/dialog';
 import { AppText, Button, Field, Loading, Screen } from '@/components/ui';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme } from '@/hooks/use-theme';
@@ -22,38 +22,33 @@ function ProfileForm({ profile }: { profile: UserProfile }) {
   const [saving, setSaving] = useState(false);
 
   const save = async () => {
-    if (name.trim().length < 2) return Alert.alert('Inserisci il tuo nome.');
+    if (name.trim().length < 2) return dialog.alert('Inserisci il tuo nome.');
     setSaving(true);
     try {
       await backend.updateOwnProfile(profile.id, { name, phone });
       router.back();
     } catch (e) {
-      Alert.alert(errorMessage(e));
+      dialog.alert(errorMessage(e));
     } finally {
       setSaving(false);
     }
   };
 
-  const remove = () =>
-    Alert.alert(
-      'Eliminare l\'account?',
-      'La tessera e tutti i punti accumulati verranno cancellati definitivamente.',
-      [
-        { text: 'Annulla', style: 'cancel' },
-        {
-          text: 'Elimina',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await backend.deleteAccount();
-              router.dismissAll();
-            } catch (e) {
-              Alert.alert(errorMessage(e));
-            }
-          },
-        },
-      ],
-    );
+  const remove = async () => {
+    const ok = await dialog.confirm({
+      title: 'Eliminare l\'account?',
+      message: 'La tessera e tutti i punti accumulati verranno cancellati definitivamente.',
+      confirmText: 'Elimina',
+      destructive: true,
+    });
+    if (!ok) return;
+    try {
+      await backend.deleteAccount();
+      router.dismissAll();
+    } catch (e) {
+      dialog.alert(errorMessage(e));
+    }
+  };
 
   return (
     <Screen edges={[]}>

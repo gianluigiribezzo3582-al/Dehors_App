@@ -1,5 +1,7 @@
 import * as Linking from 'expo-linking';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
+
+import { dialog } from '@/components/dialog';
 
 import { Venue } from '@/config/venue';
 
@@ -13,7 +15,7 @@ async function open(url: string, fallback?: string) {
         return;
       } catch {}
     }
-    Alert.alert('Impossibile aprire il collegamento');
+    dialog.alert('Impossibile aprire il collegamento');
   }
 }
 

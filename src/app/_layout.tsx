@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
+import { DialogHost } from '@/components/dialog';
 import { AuthProvider, useAuth } from '@/hooks/use-auth';
 import { Colors } from '@/theme/colors';
 
@@ -52,6 +53,7 @@ export default function RootLayout() {
       <AuthProvider>
         <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
         <RootStack />
+        <DialogHost />
       </AuthProvider>
     </ThemeProvider>
   );
