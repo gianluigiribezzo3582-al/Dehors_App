@@ -2,7 +2,6 @@ import * as Linking from 'expo-linking';
 import { Platform } from 'react-native';
 
 import { dialog } from '@/components/dialog';
-
 import { Venue } from '@/config/venue';
 
 async function open(url: string, fallback?: string) {
@@ -20,7 +19,9 @@ async function open(url: string, fallback?: string) {
 }
 
 export const callVenue = () => open(`tel:${Venue.phone}`);
+export const callMobile = () => open(`tel:${Venue.mobile}`);
 export const emailVenue = () => open(`mailto:${Venue.email}`);
+export const pecVenue = () => open(`mailto:${Venue.pec}`);
 export const whatsappVenue = () => {
   const number = Venue.whatsapp.replace(/[^0-9]/g, '');
   return open(`whatsapp://send?phone=${number}`, `https://wa.me/${number}`);

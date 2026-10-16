@@ -1,3 +1,8 @@
+import { Urbanist_400Regular } from '@expo-google-fonts/urbanist/400Regular';
+import { Urbanist_500Medium } from '@expo-google-fonts/urbanist/500Medium';
+import { Urbanist_600SemiBold } from '@expo-google-fonts/urbanist/600SemiBold';
+import { Urbanist_700Bold } from '@expo-google-fonts/urbanist/700Bold';
+import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as SystemUI from 'expo-system-ui';
@@ -12,7 +17,15 @@ import { Colors } from '@/theme/colors';
 SplashScreen.preventAutoHideAsync();
 
 function RootStack() {
-  const { ready, isStaff } = useAuth();
+  const { ready: authReady, isStaff } = useAuth();
+  const [fontsLoaded, fontError] = useFonts({
+    Urbanist_400Regular,
+    Urbanist_500Medium,
+    Urbanist_600SemiBold,
+    Urbanist_700Bold,
+  });
+  // Se il carattere non si carica si prosegue comunque con quello di sistema.
+  const ready = authReady && (fontsLoaded || fontError !== null);
   const scheme = useColorScheme();
   const theme = Colors[scheme === 'dark' ? 'dark' : 'light'];
 

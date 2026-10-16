@@ -34,13 +34,13 @@ export function AppText({
 }
 
 const textStyles = StyleSheet.create({
-  display: { fontFamily: Fonts.serif, fontSize: 34, lineHeight: 40, fontWeight: '600' },
-  title: { fontFamily: Fonts.serif, fontSize: 26, lineHeight: 32, fontWeight: '600' },
-  heading: { fontSize: 18, lineHeight: 24, fontWeight: '600' },
-  body: { fontSize: 15, lineHeight: 22 },
-  label: { fontSize: 15, lineHeight: 20, fontWeight: '600' },
-  caption: { fontSize: 13, lineHeight: 18 },
-  overline: { fontSize: 11, lineHeight: 14, fontWeight: '700', letterSpacing: 1.6, textTransform: 'uppercase' },
+  display: { fontFamily: Fonts.semibold, fontSize: 34, lineHeight: 40 },
+  title: { fontFamily: Fonts.semibold, fontSize: 26, lineHeight: 32 },
+  heading: { fontFamily: Fonts.semibold, fontSize: 18, lineHeight: 24 },
+  body: { fontFamily: Fonts.regular, fontSize: 16, lineHeight: 22 },
+  label: { fontFamily: Fonts.semibold, fontSize: 16, lineHeight: 20 },
+  caption: { fontFamily: Fonts.medium, fontSize: 13, lineHeight: 18 },
+  overline: { fontFamily: Fonts.bold, fontSize: 11, lineHeight: 14, letterSpacing: 1.6, textTransform: 'uppercase' },
 });
 
 export function Screen({
@@ -213,7 +213,7 @@ export function Chip({ label, active, onPress }: { label: string; active?: boole
         styles.chip,
         { backgroundColor: active ? theme.primary : theme.surface, borderColor: active ? theme.primary : theme.border },
       ]}>
-      <Text style={{ color: active ? theme.onPrimary : theme.text, fontWeight: '600', fontSize: 14 }}>{label}</Text>
+      <Text style={{ color: active ? theme.onPrimary : theme.text, fontFamily: Fonts.semibold, fontSize: 14 }}>{label}</Text>
     </Pressable>
   );
 }
@@ -240,13 +240,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: Spacing.sm,
   },
-  buttonText: { fontSize: 16, fontWeight: '600' },
+  buttonText: { fontSize: 16, fontFamily: Fonts.semibold },
   input: {
     minHeight: 50,
     borderRadius: Radius.sm,
     borderWidth: 1,
     paddingHorizontal: Spacing.md,
     fontSize: 16,
+    fontFamily: Fonts.regular,
   },
   sectionHeader: {
     flexDirection: 'row',

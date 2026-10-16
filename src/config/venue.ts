@@ -1,38 +1,45 @@
 /**
- * Informazioni del locale.
- * Sostituisci i valori segnaposto con i contatti ufficiali.
+ * Informazioni del locale (dal biglietto da visita).
  */
 export const Venue = {
   name: 'Dehors',
   /** Seconda riga del marchio. */
-  subtitle: 'CAFE - BISTROT',
+  subtitle: 'CAFÈ-BISTROT',
   /** Nome completo, usato per indicazioni e testi. */
-  fullName: 'Dehors CAFE - BISTROT',
-  tagline: 'Colazioni, pranzi e aperitivi',
-  /** Numero in formato internazionale, senza spazi: usato per "Chiama" e WhatsApp. */
-  phone: '+390000000000',
-  /** Numero mostrato a schermo. */
-  phoneDisplay: '+39 000 000 0000',
-  whatsapp: '+390000000000',
-  email: 'info@dehors.example',
-  instagram: 'dehors',
+  fullName: 'Dehors Cafè-Bistrot',
+  /** Numero fisso, in formato internazionale senza spazi: usato dal pulsante "Chiama". */
+  phone: '+390809753266',
+  phoneDisplay: '080 975 3266',
+  /** Cellulare (chiamate e WhatsApp). */
+  mobile: '+393883282021',
+  mobileDisplay: '388 328 2021',
+  whatsapp: '+393883282021',
+  email: 'ges.drinkfood@gmail.com',
+  pec: 'ges.drinkfood@pec.it',
+  /** Nome utente Instagram senza @ (vuoto = voce nascosta). */
+  instagram: '',
+  /** Link completo alla pagina Facebook (vuoto = voce nascosta). */
   facebook: '',
   website: '',
-  address: 'Via Esempio 1, 00000 Città',
+  address: 'Via Giuseppe Re David 197, 70125 Bari',
   /** Coordinate per "Indicazioni" (lascia null per cercare per indirizzo). */
   coordinates: null as { lat: number; lng: number } | null,
+  /** Dati societari mostrati in fondo alla pagina Info. */
+  company: {
+    name: 'G.E.S. Drink&Food srls',
+    vatNumber: '08572000720',
+  },
   /**
-   * Orari di apertura. Giorni: 0 = domenica … 6 = sabato.
-   * Ogni giorno può avere più fasce; usa [] per i giorni di chiusura.
+   * Orari di apertura (null = sezione nascosta finché non vengono inseriti).
+   * Giorni: 0 = domenica … 6 = sabato. Ogni giorno può avere più fasce; [] = chiuso.
    * Orari oltre la mezzanotte: es. { open: '18:00', close: '02:00' }.
+   * Esempio:
+   *   hours: {
+   *     0: [{ open: '08:00', close: '13:00' }, { open: '17:00', close: '23:00' }],
+   *     1: [],
+   *     2: [{ open: '07:00', close: '22:00' }],
+   *     ...
+   *   },
    */
-  hours: {
-    0: [{ open: '08:00', close: '01:00' }],
-    1: [],
-    2: [{ open: '07:00', close: '01:00' }],
-    3: [{ open: '07:00', close: '01:00' }],
-    4: [{ open: '07:00', close: '01:00' }],
-    5: [{ open: '07:00', close: '02:00' }],
-    6: [{ open: '08:00', close: '02:00' }],
-  } as Record<number, { open: string; close: string }[]>,
+  hours: null as Record<number, { open: string; close: string }[]> | null,
 };

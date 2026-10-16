@@ -15,7 +15,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useTransactions } from '@/hooks/use-transactions';
 import { backend, errorMessage } from '@/services/backend';
 import type { ApplyPointsInput, UserProfile } from '@/services/types';
-import { Palette, Radius, Spacing } from '@/theme/colors';
+import { Fonts, Palette, Radius, Spacing } from '@/theme/colors';
 import { formatEuro } from '@/utils/format';
 
 function parseEuro(text: string) {
@@ -164,7 +164,7 @@ function CustomerDesk() {
             onChangeText={setAmount}
             keyboardType="decimal-pad"
             placeholder="0,00"
-            style={{ fontSize: 24, fontWeight: '600' }}
+            style={{ fontSize: 24, fontFamily: Fonts.semibold }}
           />
           <Button
             title={earnPoints > 0 ? `Aggiungi ${earnPoints} punti · ${formatEuro(parseEuro(amount))}` : 'Aggiungi punti'}

@@ -4,20 +4,21 @@ import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import { dialog } from '@/components/dialog';
-
 import { Logo } from '@/components/logo';
-import { AppText, Button, Card, Divider, ListRow, SectionHeader, Screen } from '@/components/ui';
+import { AppText, Button, Card, Divider, ListRow, SectionHeader, Screen, type IconName } from '@/components/ui';
 import { Venue } from '@/config/venue';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme } from '@/hooks/use-theme';
 import { backend, errorMessage } from '@/services/backend';
 import { Spacing } from '@/theme/colors';
 import {
+  callMobile,
   callVenue,
   directionsToVenue,
   emailVenue,
   instagramVenue,
   openWebsite,
+  pecVenue,
   whatsappVenue,
 } from '@/utils/contacts';
 import { openStatus, weeklyHours } from '@/utils/hours';
@@ -26,64 +27,68 @@ export default function InfoScreen() {
   const theme = useTheme();
   const { uid, profile, isStaff } = useAuth();
   const status = openStatus();
+  const hours = weeklyHours();
 
   const logout = async () => {
     if (!(await dialog.confirm({ title: 'Vuoi uscire?', confirmText: 'Esci', destructive: true }))) return;
     backend.signOut().catch((e) => dialog.alert(errorMessage(e)));
   };
 
+  const contacts = [
+    { icon: 'call-outline', title: 'Telefono', subtitle: Venue.phoneDisplay, onPress: callVenue },
+    { icon: 'phone-portrait-outline', title: 'Cellulare', subtitle: Venue.mobileDisplay, onPress: callMobile },
+    { icon: 'logo-whatsapp', title: 'WhatsApp', subtitle: 'Scrivici per prenotare', onPress: whatsappVenue },
+    { icon: 'location-outline', title: 'Indicazioni', subtitle: Venue.address, onPress: directionsToVenue },
+    { icon: 'mail-outline', title: 'Email', subtitle: Venue.email, onPress: emailVenue },
+    Venue.instagram && { icon: 'logo-instagram', title: 'Instagram', subtitle: `@${Venue.instagram}`, onPress: instagramVenue },
+    Venue.facebook && { icon: 'logo-facebook', title: 'Facebook', subtitle: undefined, onPress: () => openWebsite(Venue.facebook) },
+    Venue.website && { icon: 'globe-outline', title: 'Sito web', subtitle: Venue.website, onPress: () => openWebsite(Venue.website) },
+  ].filter(Boolean) as { icon: IconName; title: string; subtitle?: string; onPress: () => void }[];
+
   return (
     <Screen>
-      <View style={{ alignItems: 'center', gap: Spacing.sm, paddingVertical: Spacing.md }}>
-        <Logo size="lg" align="center" />
-        <AppText variant="caption">{Venue.tagline}</AppText>
+      <View style={{ alignItems: 'center', gap: Spacing.sm, paddingVertical: Spacing.lg }}>
+        <Logo variant="stacked" size={52} />
       </View>
 
       <Button title={`Chiama ${Venue.phoneDisplay}`} icon="call" onPress={callVenue} />
 
       <SectionHeader title="Contatti" />
       <Card style={{ gap: 0, paddingVertical: Spacing.xs }}>
-        <ListRow icon="location-outline" title="Indicazioni" subtitle={Venue.address} onPress={directionsToVenue} />
-        <Divider />
-        <ListRow icon="logo-whatsapp" title="WhatsApp" subtitle="Scrivici per prenotare" onPress={whatsappVenue} />
-        <Divider />
-        <ListRow icon="logo-instagram" title="Instagram" subtitle={`@${Venue.instagram}`} onPress={instagramVenue} />
-        <Divider />
-        <ListRow icon="mail-outline" title="Email" subtitle={Venue.email} onPress={emailVenue} />
-        {Venue.website ? (
-          <>
-            <Divider />
-            <ListRow icon="globe-outline" title="Sito web" subtitle={Venue.website} onPress={() => openWebsite(Venue.website)} />
-          </>
-        ) : null}
-        {Venue.facebook ? (
-          <>
-            <Divider />
-            <ListRow icon="logo-facebook" title="Facebook" onPress={() => openWebsite(Venue.facebook)} />
-          </>
-        ) : null}
-      </Card>
-
-      <SectionHeader
-        title="Orari"
-        action={
-          <AppText variant="caption" color={status.open ? theme.success : theme.danger}>
-            {status.label}
-          </AppText>
-        }
-      />
-      <Card>
-        {weeklyHours().map((row) => (
-          <View key={row.day} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <AppText variant={row.today ? 'label' : 'body'} color={row.today ? theme.primary : theme.text}>
-              {row.day}
-            </AppText>
-            <AppText variant={row.today ? 'label' : 'body'} color={row.today ? theme.primary : theme.textSecondary}>
-              {row.value}
-            </AppText>
+        {contacts.map((c, i) => (
+          <View key={c.title}>
+            {i > 0 && <Divider />}
+            <ListRow icon={c.icon} title={c.title} subtitle={c.subtitle} onPress={c.onPress} />
           </View>
         ))}
       </Card>
+
+      {hours.length > 0 && (
+        <>
+          <SectionHeader
+            title="Orari"
+            action={
+              status ? (
+                <AppText variant="caption" color={status.open ? theme.success : theme.danger}>
+                  {status.label}
+                </AppText>
+              ) : null
+            }
+          />
+          <Card>
+            {hours.map((row) => (
+              <View key={row.day} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <AppText variant={row.today ? 'label' : 'body'} color={row.today ? theme.primary : theme.text}>
+                  {row.day}
+                </AppText>
+                <AppText variant={row.today ? 'label' : 'body'} color={row.today ? theme.primary : theme.textSecondary}>
+                  {row.value}
+                </AppText>
+              </View>
+            ))}
+          </Card>
+        </>
+      )}
 
       <SectionHeader title="Account" />
       <Card style={{ gap: 0, paddingVertical: Spacing.xs }}>
@@ -114,10 +119,17 @@ export default function InfoScreen() {
         )}
       </Card>
 
-      <AppText variant="caption" style={{ textAlign: 'center' }}>
-        {Venue.fullName} · v{Constants.expoConfig?.version ?? '1.0.0'}
-        {backend.mode === 'demo' ? ' · demo' : ''}
-      </AppText>
+      <View style={{ alignItems: 'center', gap: 2, marginTop: Spacing.md }}>
+        <AppText variant="caption">{Venue.company.name}</AppText>
+        <AppText variant="caption">P.IVA {Venue.company.vatNumber}</AppText>
+        <AppText variant="caption" onPress={pecVenue}>
+          PEC {Venue.pec}
+        </AppText>
+        <AppText variant="caption" style={{ marginTop: Spacing.sm }}>
+          {Venue.fullName} · v{Constants.expoConfig?.version ?? '1.0.0'}
+          {backend.mode === 'demo' ? ' · demo' : ''}
+        </AppText>
+      </View>
     </Screen>
   );
 }

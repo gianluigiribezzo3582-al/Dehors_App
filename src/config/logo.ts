@@ -1,12 +1,24 @@
 /**
- * Logo vettoriale ufficiale (SVG).
+ * Pittogramma del logo (tazza fumante, piatto e forchetta) ridisegnato in vettoriale dal biglietto da visita.
+ * Il colore è "currentColor": l'app lo colora in base al tema (verde su chiaro, crema su scuro).
  *
- * Incolla qui il contenuto del file .svg tra i backtick, al posto di `null`.
- * Le parti del logo con fill="currentColor" (o stroke="currentColor") prendono
- * automaticamente il colore del tema: verde scuro su sfondo chiaro, crema su sfondo scuro.
- * `LogoSvgDark` è facoltativo: una versione apposita per lo sfondo nero.
- *
- * Finché resta `null` l'app mostra il logo testuale «DEHORS / CAFE - BISTROT».
+ * Quando arriverà il file vettoriale ufficiale, sostituisci il contenuto di questa stringa con quello
+ * del file .svg (meglio se usa fill/stroke="currentColor" per adattarsi al tema).
  */
-export const LogoSvg: string | null = null;
-export const LogoSvgDark: string | null = null;
+export const LogoMarkSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 30 840 670" fill="none" stroke="currentColor" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M60 670 H820"/>
+  <path d="M150 352 H425 V606"/>
+  <path d="M150 352 C150 470 250 600 425 606"/>
+  <path d="M152 390 C95 372 55 410 58 458 C62 515 125 548 196 532"/>
+  <path d="M236 62 C292 110 292 160 256 206 C222 250 230 292 262 326"/>
+  <path d="M336 126 C352 168 332 202 306 236 C286 266 290 300 320 324"/>
+  <path d="M420 74 C590 76 708 200 708 355 C708 518 592 634 440 634"/>
+  <path d="M420 124 C560 126 662 230 662 355 C662 480 570 582 440 586"/>
+  <path d="M780 290 V522"/>
+  <path d="M742 148 V248 C742 272 760 290 780 290 C800 290 818 272 818 248 V148"/>
+  <path d="M768 152 V240"/>
+  <path d="M794 152 V240"/>
+</svg>`;
+
+/** Proporzioni del pittogramma (larghezza / altezza), dal viewBox. */
+export const LogoMarkRatio = 840 / 670;

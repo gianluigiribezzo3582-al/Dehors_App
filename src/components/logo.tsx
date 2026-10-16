@@ -1,41 +1,72 @@
 import { View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
-import { LogoSvg, LogoSvgDark } from '@/config/logo';
+import { LogoMarkRatio, LogoMarkSvg } from '@/config/logo';
 import { Venue } from '@/config/venue';
-import { useIsDark, useTheme } from '@/hooks/use-theme';
+import { useIsDark } from '@/hooks/use-theme';
 import { Fonts, Palette } from '@/theme/colors';
 import { AppText } from './ui';
 
-type Size = 'sm' | 'md' | 'lg';
+type Props = {
+  /**
+   * stacked: pittogramma sopra la scritta (come sul biglietto)
+   * inline: pittogramma piccolo accanto alla scritta (intestazioni)
+   * mark: solo pittogramma
+   */
+  variant?: 'stacked' | 'inline' | 'mark';
+  /** Altezza della scritta «dehors» in punti. */
+  size?: number;
+  /** Colore forzato (es. bianco sopra la tessera verde). Di default segue il tema. */
+  color?: string;
+};
 
-const HEIGHTS: Record<Size, number> = { sm: 32, md: 48, lg: 96 };
-
-/** Marchio del locale: SVG ufficiale se presente, altrimenti logotipo testuale. Si adatta al tema. */
-export function Logo({ size = 'md', align = 'left' }: { size?: Size; align?: 'left' | 'center' }) {
-  const theme = useTheme();
+export function LogoMark({ height, color }: { height: number; color?: string }) {
   const dark = useIsDark();
-  const color = dark ? Palette.cream : Palette.green;
-  const height = HEIGHTS[size];
-
-  const svg = (dark && LogoSvgDark) || LogoSvg;
-  if (svg) {
-    return <SvgXml xml={svg} height={height} width={height * 3} color={color} />;
-  }
-
-  const nameSize = height * 0.62;
   return (
-    <View style={{ alignItems: align === 'center' ? 'center' : 'flex-start' }}>
+    <SvgXml
+      xml={LogoMarkSvg}
+      height={height}
+      width={height * LogoMarkRatio}
+      color={color ?? (dark ? Palette.cream : Palette.green)}
+    />
+  );
+}
+
+/** Marchio Dehors CAFÈ-BISTROT: si adatta al tema chiaro/scuro del telefono. */
+export function Logo({ variant = 'inline', size = 34, color }: Props) {
+  const dark = useIsDark();
+  const tint = color ?? (dark ? Palette.cream : Palette.green);
+
+  const wordmark = (
+    <View style={{ alignItems: variant === 'stacked' ? 'center' : 'flex-start' }}>
       <AppText
-        style={{ fontFamily: Fonts.serif, fontSize: nameSize, lineHeight: nameSize * 1.1, letterSpacing: nameSize * 0.14, fontWeight: '600' }}
-        color={color}>
-        {Venue.name.toUpperCase()}
+        color={tint}
+        style={{ fontFamily: Fonts.medium, fontSize: size, lineHeight: size * 1.05, letterSpacing: -size * 0.01 }}>
+        {Venue.name.toLowerCase()}
       </AppText>
       <AppText
-        style={{ fontSize: Math.max(9, nameSize * 0.26), fontWeight: '700', letterSpacing: nameSize * 0.12 }}
-        color={theme.accent}>
+        color={tint}
+        style={{ fontFamily: Fonts.medium, fontSize: size * 0.27, lineHeight: size * 0.34, letterSpacing: size * 0.09 }}>
         {Venue.subtitle}
       </AppText>
+    </View>
+  );
+
+  if (variant === 'mark') return <LogoMark height={size * 1.6} color={tint} />;
+
+  if (variant === 'stacked') {
+    return (
+      <View accessibilityLabel={Venue.fullName} style={{ alignItems: 'center', gap: size * 0.3 }}>
+        <LogoMark height={size * 2.2} color={tint} />
+        {wordmark}
+      </View>
+    );
+  }
+
+  return (
+    <View accessibilityLabel={Venue.fullName} style={{ flexDirection: 'row', alignItems: 'center', gap: size * 0.3 }}>
+      <LogoMark height={size * 1.2} color={tint} />
+      {wordmark}
     </View>
   );
 }

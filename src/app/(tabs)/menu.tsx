@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText, Chip, Divider, type IconName } from '@/components/ui';
 import { Menu, type MenuItem, type MenuTag } from '@/data/menu';
 import { useTheme } from '@/hooks/use-theme';
-import { Radius, Spacing } from '@/theme/colors';
+import { Fonts, Radius, Spacing } from '@/theme/colors';
 import { formatEuro } from '@/utils/format';
 
 const TAG_LABELS: Record<MenuTag, string> = {
@@ -78,7 +78,7 @@ export default function MenuScreen() {
             onChangeText={setSearch}
             placeholder="Cerca nel menù"
             placeholderTextColor={theme.textSecondary}
-            style={{ flex: 1, color: theme.text, fontSize: 16, paddingVertical: 10 }}
+            style={{ flex: 1, color: theme.text, fontSize: 16, fontFamily: Fonts.regular, paddingVertical: 10 }}
           />
           {search ? <Ionicons name="close-circle" size={18} color={theme.textSecondary} onPress={() => setSearch('')} /> : null}
         </View>

@@ -5,6 +5,7 @@ import { Venue } from '@/config/venue';
 import { tierFor } from '@/config/loyalty';
 import { qrPayloadFor, type UserProfile } from '@/services/types';
 import { Palette, Radius, Spacing } from '@/theme/colors';
+import { LogoMark } from './logo';
 import { AppText } from './ui';
 
 /** Tessera digitale con QR da mostrare al bancone. */
@@ -13,13 +14,16 @@ export function LoyaltyCard({ profile }: { profile: UserProfile }) {
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <View>
-          <AppText variant="overline" color={Palette.cream}>
-            {Venue.name} · Fidelity
-          </AppText>
-          <AppText variant="title" color="#FFFFFF" numberOfLines={1}>
-            {profile.name}
-          </AppText>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, flex: 1 }}>
+          <LogoMark height={34} color={Palette.cream} />
+          <View style={{ flex: 1 }}>
+            <AppText variant="overline" color={Palette.cream}>
+              {Venue.name} · Fidelity
+            </AppText>
+            <AppText variant="title" color="#FFFFFF" numberOfLines={1}>
+              {profile.name}
+            </AppText>
+          </View>
         </View>
         <View style={[styles.tier, { borderColor: current.color }]}>
           <AppText variant="overline" color={current.color}>

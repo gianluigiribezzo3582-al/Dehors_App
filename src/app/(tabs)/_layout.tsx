@@ -5,6 +5,7 @@ import { Tabs } from 'expo-router/js-tabs';
 import type { IconName } from '@/components/ui';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme } from '@/hooks/use-theme';
+import { Fonts } from '@/theme/colors';
 
 function icon(name: IconName, focusedName: IconName) {
   return function TabIcon({ color, focused, size }: { color: ColorValue; focused: boolean; size: number }) {
@@ -23,7 +24,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: theme.primary,
         tabBarInactiveTintColor: theme.textSecondary,
         tabBarStyle: { backgroundColor: theme.tabBar, borderTopColor: theme.border },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+        tabBarLabelStyle: { fontSize: 11, fontFamily: Fonts.semibold },
       }}>
       <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: icon('home-outline', 'home') }} />
       <Tabs.Screen name="menu" options={{ title: 'Menù', tabBarIcon: icon('restaurant-outline', 'restaurant') }} />

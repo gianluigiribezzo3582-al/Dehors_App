@@ -1,6 +1,6 @@
-# Dehors CAFE - BISTROT – app del locale
+# Dehors Cafè-Bistrot – app del locale
 
-App Android/iOS (Expo + React Native) per **Dehors CAFE - BISTROT**:
+App Android/iOS (Expo + React Native) per **Dehors Cafè-Bistrot** (Via Giuseppe Re David 197, Bari):
 
 - **Registrazione / login** dei clienti, ciascuno con la propria **tessera digitale con QR** e codice tessera.
 - **Menù** consultabile in app, con ricerca, categorie e indicazioni (vegano, senza glutine, novità…).
@@ -65,8 +65,8 @@ Serve perché clienti e staff usino telefoni diversi con gli stessi dati.
 
 | Cosa | File |
 |------|------|
-| Nome, telefono, WhatsApp, email, Instagram, indirizzo, orari | `src/config/venue.ts` |
-| Logo ufficiale (SVG) | incolla il contenuto del file `.svg` in `src/config/logo.ts` (con `fill="currentColor"` prende il colore del tema) |
+| Nome, telefoni, WhatsApp, email/PEC, social, indirizzo, orari, dati societari | `src/config/venue.ts` |
+| Logo | pittogramma vettoriale in `src/config/logo.ts` (copia in `assets/brand/logo-mark.svg`), scritta in carattere Urbanist; icone e splash in `assets/images/` |
 | Menù | `src/data/menu.ts` |
 | Premi, costi in punti, foto/sfondi | `src/data/rewards.ts` (immagini in `assets/images/rewards/`) |
 | Punti per euro, bonus benvenuto, livelli | `src/config/loyalty.ts` |

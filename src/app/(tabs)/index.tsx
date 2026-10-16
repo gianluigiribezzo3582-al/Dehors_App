@@ -7,11 +7,10 @@ import { Logo } from '@/components/logo';
 import { RewardCard } from '@/components/reward-card';
 import { AppText, Button, Card, ProgressBar, SectionHeader, Screen, type IconName } from '@/components/ui';
 import { tierFor } from '@/config/loyalty';
-import { Venue } from '@/config/venue';
 import { Rewards } from '@/data/rewards';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme } from '@/hooks/use-theme';
-import { Palette, Radius, Spacing } from '@/theme/colors';
+import { Fonts, Palette, Radius, Spacing } from '@/theme/colors';
 import { callVenue, directionsToVenue, whatsappVenue } from '@/utils/contacts';
 import { firstName } from '@/utils/format';
 import { openStatus } from '@/utils/hours';
@@ -33,7 +32,7 @@ function QuickAction({ icon, label, onPress }: { icon: IconName; label: string; 
         { backgroundColor: theme.surface, borderColor: theme.border, opacity: pressed ? 0.7 : 1 },
       ]}>
       <Ionicons name={icon} size={22} color={theme.primary} />
-      <AppText variant="caption" color={theme.text} style={{ fontWeight: '600' }}>
+      <AppText variant="caption" color={theme.text} style={{ fontFamily: Fonts.semibold }}>
         {label}
       </AppText>
     </Pressable>
@@ -52,17 +51,18 @@ export default function HomeScreen() {
   return (
     <Screen>
       <View style={styles.header}>
-        <Logo />
-        <View style={[styles.status, { backgroundColor: theme.surface }]}>
-          <View style={[styles.dot, { backgroundColor: status.open ? theme.success : theme.danger }]} />
-          <AppText variant="caption" color={theme.text}>
-            {status.label}
-          </AppText>
-        </View>
+        <Logo size={32} />
+        {status && (
+          <View style={[styles.status, { backgroundColor: theme.surface }]}>
+            <View style={[styles.dot, { backgroundColor: status.open ? theme.success : theme.danger }]} />
+            <AppText variant="caption" color={theme.text}>
+              {status.label}
+            </AppText>
+          </View>
+        )}
       </View>
 
       <View style={{ gap: 2 }}>
-        <AppText variant="caption">{Venue.tagline}</AppText>
         <AppText variant="display">
           {greeting()}
           {profile ? `, ${firstName(profile.name)}` : ''}
