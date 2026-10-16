@@ -4,17 +4,15 @@ import { ScrollView, SectionList, StyleSheet, TextInput, View } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText, Chip, Divider, type IconName } from '@/components/ui';
-import { Menu, type MenuItem, type MenuTag } from '@/data/menu';
+import { AllergenNotice, Allergens, Menu, type MenuItem, type MenuTag } from '@/data/menu';
 import { useTheme } from '@/hooks/use-theme';
 import { Fonts, Radius, Spacing } from '@/theme/colors';
 import { formatEuro } from '@/utils/format';
 
 const TAG_LABELS: Record<MenuTag, string> = {
-  veg: 'Vegetariano',
   vegan: 'Vegano',
   gf: 'Senza glutine',
-  new: 'Novità',
-  spicy: 'Piccante',
+  week: 'Della settimana',
 };
 
 function ItemRow({ item }: { item: MenuItem }) {
@@ -22,13 +20,16 @@ function ItemRow({ item }: { item: MenuItem }) {
   return (
     <View style={styles.item}>
       <View style={{ flex: 1, gap: 2 }}>
-        <AppText variant="label">{item.name}</AppText>
+        <AppText variant="label">
+          {item.name}
+          {item.frozen ? '*' : ''}
+        </AppText>
         {item.description ? <AppText variant="caption">{item.description}</AppText> : null}
         {item.tags?.length ? (
           <View style={styles.tags}>
             {item.tags.map((t) => (
-              <View key={t} style={[styles.tag, { borderColor: t === 'new' ? theme.accent : theme.border }]}>
-                <AppText variant="caption" color={t === 'new' ? theme.accent : theme.textSecondary} style={{ fontSize: 11 }}>
+              <View key={t} style={[styles.tag, { borderColor: t === 'week' ? theme.accent : theme.border }]}>
+                <AppText variant="caption" color={t === 'week' ? theme.accent : theme.textSecondary} style={{ fontSize: 11 }}>
                   {TAG_LABELS[t]}
                 </AppText>
               </View>
@@ -37,7 +38,7 @@ function ItemRow({ item }: { item: MenuItem }) {
         ) : null}
       </View>
       <AppText variant="label" color={theme.primary}>
-        {formatEuro(item.price)}
+        {item.priceLabel ?? (item.price !== undefined ? formatEuro(item.price) : '')}
       </AppText>
     </View>
   );
@@ -55,6 +56,7 @@ export default function MenuScreen() {
       key: c.id,
       title: c.title,
       icon: c.icon as IconName,
+      note: c.note,
       data: q
         ? c.items.filter((i) => `${i.name} ${i.description ?? ''}`.toLowerCase().includes(q))
         : c.items,
@@ -105,6 +107,13 @@ export default function MenuScreen() {
           </View>
         )}
         renderItem={({ item }) => <ItemRow item={item} />}
+        renderSectionFooter={({ section }) =>
+          section.note ? (
+            <AppText variant="caption" style={{ paddingTop: Spacing.sm }}>
+              {section.note}
+            </AppText>
+          ) : null
+        }
         ItemSeparatorComponent={Divider}
         ListEmptyComponent={
           <AppText variant="body" color={theme.textSecondary} style={{ textAlign: 'center', marginTop: Spacing.xl }}>
@@ -112,9 +121,13 @@ export default function MenuScreen() {
           </AppText>
         }
         ListFooterComponent={
-          <AppText variant="caption" style={{ textAlign: 'center', marginTop: Spacing.lg }}>
-            Per allergie e intolleranze chiedi al personale.
-          </AppText>
+          <View style={[styles.allergens, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+            <AppText variant="label">Allergeni</AppText>
+            <AppText variant="body" color={theme.textSecondary}>
+              {AllergenNotice}
+            </AppText>
+            <AppText variant="caption">{Allergens.join(' · ')}</AppText>
+          </View>
         }
       />
     </SafeAreaView>
@@ -135,4 +148,5 @@ const styles = StyleSheet.create({
   item: { flexDirection: 'row', gap: Spacing.md, paddingVertical: Spacing.md, alignItems: 'flex-start' },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 4 },
   tag: { borderWidth: 1, borderRadius: Radius.pill, paddingHorizontal: 8, paddingVertical: 1 },
+  allergens: { marginTop: Spacing.xl, padding: Spacing.md, borderRadius: Radius.md, borderWidth: 1, gap: Spacing.sm },
 });

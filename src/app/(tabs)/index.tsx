@@ -2,7 +2,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { DemoBanner } from '@/components/demo-banner';
 import { Logo } from '@/components/logo';
 import { RewardCard } from '@/components/reward-card';
 import { AppText, Button, Card, ProgressBar, SectionHeader, Screen, type IconName } from '@/components/ui';
@@ -68,8 +67,6 @@ export default function HomeScreen() {
           {profile ? `, ${firstName(profile.name)}` : ''}
         </AppText>
       </View>
-
-      <DemoBanner />
 
       {profile ? (
         <Pressable onPress={() => router.push('/card')}>

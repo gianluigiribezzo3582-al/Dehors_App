@@ -37,7 +37,7 @@ export default function InfoScreen() {
   const contacts = [
     { icon: 'call-outline', title: 'Telefono', subtitle: Venue.phoneDisplay, onPress: callVenue },
     { icon: 'phone-portrait-outline', title: 'Cellulare', subtitle: Venue.mobileDisplay, onPress: callMobile },
-    { icon: 'logo-whatsapp', title: 'WhatsApp', subtitle: 'Scrivici per prenotare', onPress: whatsappVenue },
+    { icon: 'logo-whatsapp', title: 'WhatsApp', subtitle: Venue.mobileDisplay, onPress: whatsappVenue },
     { icon: 'location-outline', title: 'Indicazioni', subtitle: Venue.address, onPress: directionsToVenue },
     { icon: 'mail-outline', title: 'Email', subtitle: Venue.email, onPress: emailVenue },
     Venue.instagram && { icon: 'logo-instagram', title: 'Instagram', subtitle: `@${Venue.instagram}`, onPress: instagramVenue },
@@ -127,7 +127,6 @@ export default function InfoScreen() {
         </AppText>
         <AppText variant="caption" style={{ marginTop: Spacing.sm }}>
           {Venue.fullName} · v{Constants.expoConfig?.version ?? '1.0.0'}
-          {backend.mode === 'demo' ? ' · demo' : ''}
         </AppText>
       </View>
     </Screen>
