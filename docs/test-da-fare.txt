@@ -1,0 +1,262 @@
+DEHORS CAFÈ-BISTROT – APP ANDROID
+Elenco dei test da fare sul telefono
+=====================================
+
+Come usarlo: per ogni prova segna [x] se va bene; se qualcosa non va,
+scrivi accanto cosa succede (meglio con uno screenshot) e mandamelo.
+
+
+PRIMA DI INIZIARE
+-----------------
+- Installazione dell'APK: apri il file sul telefono. Se Android lo chiede,
+  consenti "Installa app sconosciute" per l'app da cui lo apri (Files,
+  Chrome, WhatsApp...). Se compare Play Protect, scegli "Installa comunque".
+- Finché Firebase non è configurato l'app è in MODALITÀ DEMO: i dati
+  restano solo su quel telefono. Due telefoni NON si vedono tra loro.
+- Account di prova già presenti in ogni installazione:
+    Staff:   staff@dehors.demo   /  staff123
+    Cliente: cliente@dehors.demo /  cliente123   (codice tessera DEMO2345)
+- Per lo scanner QR serve un secondo schermo che mostri una tessera
+  (un altro telefono con l'app, oppure l'anteprima web aperta sul PC).
+  In demo il cliente dell'altro telefono risulterà "Tessera non trovata":
+  è normale, conferma comunque che lo scanner legge il QR.
+
+
+1. INSTALLAZIONE E AVVIO
+------------------------
+[ ] 1.1  L'icona mostra il pittogramma (tazza, piatto, forchetta) crema su
+         verde, con il nome "Dehors" sotto.
+[ ] 1.2  Con tema chiaro la schermata di avvio è bianca con logo verde;
+         con tema scuro è nera con logo crema.
+[ ] 1.3  L'app si apre sulla Home senza errori né schermate bianche.
+[ ] 1.4  Chiudi l'app del tutto (anche dalle app recenti) e riaprila: se
+         eri collegato, risulti ancora collegato.
+[ ] 1.5  Il tasto/gesto "indietro" di Android chiude le finestre aperte e
+         torna alla schermata precedente; dalla Home esce dall'app.
+
+
+2. TEMA CHIARO / SCURO
+----------------------
+[ ] 2.1  Con il telefono in tema chiaro l'app ha sfondo bianco, testi scuri,
+         pulsanti verde scuro con testo bianco.
+[ ] 2.2  Cambia il tema del telefono in scuro CON L'APP APERTA: l'app passa
+         subito a sfondo nero, testi chiari, pulsanti verde salvia con testo
+         scuro.
+[ ] 2.3  In tema scuro controlla tutte le schede (Home, Menù, Tessera,
+         Premi, Info, e Staff se sei staff): nessun testo illeggibile,
+         nessun riquadro bianco fuori posto.
+[ ] 2.4  Nessun "lampo" bianco passando da una schermata all'altra in tema
+         scuro.
+[ ] 2.5  Le finestre di conferma (es. "Vuoi uscire?") seguono il tema.
+[ ] 2.6  Il logo nell'intestazione e nella pagina Info è verde in tema
+         chiaro e crema in tema scuro.
+
+
+3. REGISTRAZIONE
+----------------
+[ ] 3.1  Home > "Crea la tua tessera": si apre il modulo di registrazione.
+[ ] 3.2  Lascia il nome vuoto e premi Registrati: messaggio "Inserisci il
+         tuo nome".
+[ ] 3.3  Email senza "@" o senza dominio: messaggio di email non valida.
+[ ] 3.4  Password di 5 caratteri: messaggio "almeno 6 caratteri".
+[ ] 3.5  Casella privacy non spuntata: messaggio che chiede di accettare.
+[ ] 3.6  Dati validi (telefono facoltativo): vieni portato alla scheda
+         Tessera con 10 punti e il movimento "Bonus di benvenuto".
+[ ] 3.7  Esci e prova a registrarti di nuovo con la stessa email: messaggio
+         "Esiste già un account con questa email".
+[ ] 3.8  La tastiera non copre i campi né il pulsante Registrati.
+
+
+4. ACCESSO E USCITA
+-------------------
+[ ] 4.1  Info > Esci > "Annulla": resti collegato.
+[ ] 4.2  Info > Esci > "Esci": torni ospite (Home con invito a registrarti).
+[ ] 4.3  Accedi con password sbagliata: messaggio "Email o password non
+         corretti".
+[ ] 4.4  Accedi con email scritta in MAIUSCOLO o con spazi finali: funziona
+         lo stesso.
+[ ] 4.5  "Password dimenticata" con campo email vuoto: messaggio che chiede
+         di scrivere l'email. In demo, con email scritta: messaggio di
+         funzione non disponibile (con Firebase deve arrivare una mail).
+[ ] 4.6  Da "Accedi" il link "Registrati" porta alla registrazione e
+         viceversa.
+
+
+5. HOME
+-------
+[ ] 5.1  Da ospite: saluto (Buongiorno/Buon pomeriggio/Buonasera in base
+         all'ora), riquadro "Unisciti al programma fedeltà", pulsanti
+         rapidi, anteprima premi.
+[ ] 5.2  Da cliente collegato: saluto con il tuo nome, riquadro verde con i
+         punti, barra verso il prossimo premio, livello.
+[ ] 5.3  Toccando il riquadro punti si apre la Tessera.
+[ ] 5.4  Pulsante rapido "Menù" apre il menù.
+[ ] 5.5  "Premi disponibili" compare solo se hai punti sufficienti per
+         almeno un premio.
+
+
+6. TESSERA (CLIENTE)
+--------------------
+[ ] 6.1  Il QR è nitido e centrato; sotto ci sono codice tessera (8
+         caratteri) e saldo.
+[ ] 6.2  Il livello (Bronze/Silver/Gold) e la barra "Ancora X punti per..."
+         sono coerenti con i punti totali.
+[ ] 6.3  "Ultimi movimenti" mostra al massimo 5 righe; "Vedi tutti" apre lo
+         storico completo.
+[ ] 6.4  Le date dei movimenti sono in italiano e corrette.
+[ ] 6.5  Alza la luminosità al massimo: il QR resta leggibile da un altro
+         telefono.
+
+
+7. PREMI (CLIENTE)
+------------------
+[ ] 7.1  In alto: saldo attuale e "Sbloccati X/5".
+[ ] 7.2  I premi raggiungibili sono nella sezione "Puoi riscattarli ora",
+         con "Disponibile · mostra la tessera al bancone".
+[ ] 7.3  Gli altri mostrano "Ti mancano X punti" con barra di avanzamento.
+[ ] 7.4  Toccando un premio si apre il dettaglio con le istruzioni.
+[ ] 7.5  Nel dettaglio, se il premio è disponibile, "Mostra la tessera"
+         porta alla Tessera; se non lo è, il pulsante è disattivato.
+[ ] 7.6  Da ospite i premi sono visibili senza punti e c'è l'invito a
+         registrarsi.
+
+
+8. PROFILO E ACCOUNT
+--------------------
+[ ] 8.1  Info > nome utente: si apre "Il mio profilo".
+[ ] 8.2  Cambia nome e telefono, Salva: il nuovo nome compare in Home e
+         sulla tessera.
+[ ] 8.3  Nome cancellato e Salva: messaggio di errore, nessuna modifica.
+[ ] 8.4  "Elimina account" > Annulla: non succede nulla.
+[ ] 8.5  "Elimina account" > Elimina (usa un account di prova!): torni
+         ospite; riaccedendo con quelle credenziali l'accesso fallisce.
+
+
+9. AREA STAFF – SICUREZZA
+-------------------------
+[ ] 9.1  Da ospite la scheda "Staff" NON compare nella barra in basso.
+[ ] 9.2  Da cliente la scheda "Staff" NON compare.
+[ ] 9.3  Accedi come staff@dehors.demo: compare la scheda "Staff".
+[ ] 9.4  Esci dallo staff: la scheda "Staff" sparisce subito.
+[ ] 9.5  Da staff chiudi e riapri l'app: la scheda Staff c'è ancora.
+
+
+10. AREA STAFF – SCANNER
+------------------------
+[ ] 10.1 Staff > "Scansiona tessera": la prima volta Android chiede il
+         permesso fotocamera.
+[ ] 10.2 Se neghi il permesso compare la schermata "Serve la fotocamera"
+         con il pulsante "Consenti".
+[ ] 10.3 Con il permesso: inquadra il QR di una tessera; il telefono vibra
+         e si apre la scheda del cliente (in demo, se il cliente è su un
+         altro telefono: "Tessera non trovata").
+[ ] 10.4 Inquadra un QR qualsiasi (es. un sito): messaggio "QR non
+         riconosciuto".
+[ ] 10.5 Il pulsante torcia accende e spegne il flash.
+[ ] 10.6 La X chiude lo scanner.
+
+
+11. AREA STAFF – RICERCA CLIENTE
+--------------------------------
+[ ] 11.1 Codice tessera "DEMO2345": si apre "Cliente Demo".
+[ ] 11.2 Lo stesso codice scritto "demo 2345" (minuscolo, con spazio):
+         funziona lo stesso.
+[ ] 11.3 Codice inesistente: messaggio "Nessuna tessera con questo codice".
+[ ] 11.4 Ricerca per email "cli": compare Cliente Demo con i suoi punti.
+[ ] 11.5 Ricerca per email con una sola lettera: messaggio "almeno 2
+         lettere".
+
+
+12. AREA STAFF – GESTIONE PUNTI
+-------------------------------
+[ ] 12.1 Scheda cliente: in alto nome, email, livello, codice e saldo.
+[ ] 12.2 Importo "12,50": il pulsante dice "Aggiungi 12 punti · € 12,50";
+         premendolo compare il messaggio verde e il saldo sale di 12.
+[ ] 12.3 Importo "0,50": il pulsante resta disattivato.
+[ ] 12.4 Importo con il punto ("8.90") invece della virgola: 8 punti.
+[ ] 12.5 Riscatta premio disponibile: chiede conferma con il saldo dopo;
+         confermando, i punti scendono e compare il movimento "Premio: ...".
+[ ] 12.6 I premi oltre il saldo sono grigi con "mancano X" e non si
+         possono toccare.
+[ ] 12.7 Correzione manuale: "+ Aggiungi", tasto rapido "+5": +5 punti.
+[ ] 12.8 Correzione manuale: "− Togli", scrivi 3 punti e una nota, premi
+         "Togli punti": −3 punti; nello storico compare la nota.
+[ ] 12.9 Prova a togliere più punti di quelli che ha: messaggio "Saldo
+         insufficiente", saldo invariato.
+[ ] 12.10 "Ultimi movimenti" della scheda cliente mostra anche il nome
+          dello staff che ha fatto l'operazione.
+[ ] 12.11 Esci, entra come cliente@dehors.demo: saldo e movimenti
+          riflettono le operazioni fatte dallo staff.
+
+
+13. MENÙ
+--------
+[ ] 13.1 Confronta tutte le voci e i prezzi con il menù cartaceo di
+         ottobre (sezione per sezione).
+[ ] 13.2 Verifica la colonna degli espressini (Espressino/dek € 1,40,
+         freddo piccolo € 3,00, freddo con panna € 3,50): è giusta?
+[ ] 13.3 I filtri in alto: ogni categoria mostra solo la sua sezione;
+         "Tutto" mostra l'elenco completo; toccare di nuovo la categoria
+         attiva torna a "Tutto".
+[ ] 13.4 Ricerca "spritz": compaiono gli spritz della sezione Cocktail.
+[ ] 13.5 Ricerca "soia": compaiono le voci di caffetteria e frullati con
+         soia.
+[ ] 13.6 Ricerca di una parola che non c'è: "Nessun risultato".
+[ ] 13.7 La X nel campo di ricerca lo svuota.
+[ ] 13.8 In fondo a ogni sezione c'è la nota giusta (servizio al tavolo o
+         coperto, supplementi, prodotti surgelati).
+[ ] 13.9 I prodotti surgelati hanno l'asterisco.
+[ ] 13.10 In fondo al menù c'è il riquadro "Allergeni" con l'elenco.
+[ ] 13.11 Lo scorrimento è fluido anche su "Tutto".
+
+
+14. INFO E CONTATTI
+-------------------
+[ ] 14.1 Logo grande in alto, nei colori del tema.
+[ ] 14.2 "Chiama 080 975 3266" apre il compositore con quel numero.
+[ ] 14.3 "Telefono" apre il compositore con 080 975 3266.
+[ ] 14.4 "Cellulare" apre il compositore con 388 328 2021.
+[ ] 14.5 "WhatsApp" apre la chat con 388 328 2021 (o il sito WhatsApp se
+         l'app non è installata).
+[ ] 14.6 "Indicazioni" apre le mappe su Via Giuseppe Re David 197, Bari, e
+         il punto è quello giusto.
+[ ] 14.7 "Email" apre l'app di posta verso ges.drinkfood@gmail.com.
+[ ] 14.8 Toccando la PEC in fondo si apre la posta verso
+         ges.drinkfood@pec.it.
+[ ] 14.9 In fondo: G.E.S. Drink&Food srls e P.IVA 08572000720 corretti.
+[ ] 14.10 Home: i pulsanti rapidi "Chiama", "Indicazioni", "WhatsApp" fanno
+          lo stesso.
+
+
+15. CASI PARTICOLARI
+--------------------
+[ ] 15.1 Modalità aereo: l'app si apre, menù e tessera si vedono.
+[ ] 15.2 Ruota il telefono: l'app resta in verticale.
+[ ] 15.3 Caratteri di sistema ingranditi (Impostazioni > Display >
+         Dimensione carattere al massimo): nessun testo tagliato o
+         sovrapposto.
+[ ] 15.4 Telefono piccolo e telefono grande (se possibile): impaginazione
+         corretta.
+[ ] 15.5 Lascia l'app in background 10 minuti e riaprila: riprende da dove
+         eri.
+
+
+16. SOLO DOPO AVER ATTIVATO FIREBASE (due telefoni)
+---------------------------------------------------
+[ ] 16.1 Telefono A: registra un nuovo cliente.
+[ ] 16.2 Telefono B (account con ruolo staff impostato in Firebase):
+         scansiona il QR del telefono A, aggiungi punti.
+[ ] 16.3 Sul telefono A il saldo si aggiorna da solo, senza ricaricare.
+[ ] 16.4 Telefono B: riscatta un premio; sul telefono A compare il
+         movimento.
+[ ] 16.5 Un account cliente NON vede la scheda Staff nemmeno dopo aver
+         riavviato l'app.
+[ ] 16.6 "Password dimenticata" invia davvero l'email di reimpostazione.
+
+
+COSE ANCORA DA FORNIRE
+----------------------
+- Orari di apertura (la sezione orari è nascosta finché non ci sono).
+- Profili Instagram e Facebook.
+- File vettoriale ufficiale del logo (facoltativo).
+- Conferma o modifica dei premi e dei punti necessari, e foto/sfondi.
