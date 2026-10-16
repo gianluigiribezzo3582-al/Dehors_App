@@ -1,0 +1,78 @@
+rules_version = '2';
+
+// Regole di sicurezza Firestore per l'app Dehors.
+// - Ogni cliente legge solo il proprio profilo e i propri movimenti.
+// - Solo lo staff (role = 'staff' o 'admin') può cercare clienti e modificare i punti.
+// - Il ruolo si assegna a mano dalla console Firebase (campo `role` del documento utente).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isStaff() {
+      return signedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['staff', 'admin'];
+    }
+
+    // Deve coincidere con Loyalty.welcomeBonus in src/config/loyalty.ts
+    function welcomeBonus() {
+      return 10;
+    }
+
+    match /users/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || isStaff());
+      allow list: if isStaff();
+
+      // Registrazione: il cliente crea il proprio profilo con il solo bonus di benvenuto.
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.role == 'customer'
+        && request.resource.data.points == welcomeBonus()
+        && request.resource.data.totalEarned == welcomeBonus()
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 80
+        && request.resource.data.cardCode is string
+        && request.resource.data.cardCode.size() == 8;
+
+      // Il cliente può modificare solo nome e telefono.
+      allow update: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'phone'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 80;
+
+      // Lo staff può modificare solo il saldo punti (mai negativo; il totale storico non scende).
+      allow update: if isStaff()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['points', 'totalEarned'])
+        && request.resource.data.points is int
+        && request.resource.data.points >= 0
+        && request.resource.data.totalEarned >= resource.data.totalEarned;
+
+      allow delete: if signedIn() && request.auth.uid == uid;
+
+      match /transactions/{txId} {
+        allow read: if signedIn() && (request.auth.uid == uid || isStaff());
+
+        // Movimento di benvenuto creato una sola volta alla registrazione.
+        allow create: if signedIn()
+          && request.auth.uid == uid
+          && txId == 'welcome'
+          && request.resource.data.kind == 'welcome'
+          && request.resource.data.delta == welcomeBonus();
+
+        // Tutti gli altri movimenti li registra lo staff.
+        allow create: if isStaff()
+          && request.resource.data.kind in ['earn', 'redeem', 'adjust']
+          && request.resource.data.delta is int
+          && request.resource.data.staffId == request.auth.uid;
+
+        allow update, delete: if false;
+      }
+    }
+  }
+}
