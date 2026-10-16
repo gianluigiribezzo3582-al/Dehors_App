@@ -1,0 +1,46 @@
+name: APK Android
+
+# Compila un APK installabile (firmato con la chiave di debug) a ogni push
+# e quando lo avvii a mano da GitHub → Actions → "APK Android" → Run workflow.
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Dipendenze
+        run: npm ci
+
+      - name: Controlli
+        run: |
+          npm run lint
+          npm run typecheck
+
+      - name: Progetto Android (expo prebuild)
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Compilazione APK
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dehors-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
