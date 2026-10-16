@@ -5,12 +5,21 @@ import { router } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { StaffOnly } from '@/components/staff-only';
 import { AppText, Button, Loading, Screen } from '@/components/ui';
 import { useTheme } from '@/hooks/use-theme';
 import { parseQrPayload } from '@/services/types';
 import { Radius, Spacing } from '@/theme/colors';
 
 export default function ScanScreen() {
+  return (
+    <StaffOnly>
+      <Scanner />
+    </StaffOnly>
+  );
+}
+
+function Scanner() {
   const theme = useTheme();
   const [permission, requestPermission] = useCameraPermissions();
   const [torch, setTorch] = useState(false);

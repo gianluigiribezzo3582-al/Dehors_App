@@ -29,14 +29,9 @@ export default function TabsLayout() {
       <Tabs.Screen name="menu" options={{ title: 'Menù', tabBarIcon: icon('restaurant-outline', 'restaurant') }} />
       <Tabs.Screen name="card" options={{ title: 'Tessera', tabBarIcon: icon('qr-code-outline', 'qr-code') }} />
       <Tabs.Screen name="rewards" options={{ title: 'Premi', tabBarIcon: icon('gift-outline', 'gift') }} />
-      <Tabs.Screen
-        name="staff"
-        options={{
-          title: 'Staff',
-          href: isStaff ? '/staff' : null,
-          tabBarIcon: icon('scan-outline', 'scan'),
-        }}
-      />
+      <Tabs.Protected guard={isStaff}>
+        <Tabs.Screen name="staff" options={{ title: 'Staff', tabBarIcon: icon('scan-outline', 'scan') }} />
+      </Tabs.Protected>
       <Tabs.Screen
         name="info"
         options={{ title: 'Info', tabBarIcon: icon('information-circle-outline', 'information-circle') }}

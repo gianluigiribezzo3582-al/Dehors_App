@@ -1,6 +1,6 @@
-# Dehors – app del locale
+# Dehors CAFE - BISTROT – app del locale
 
-App Android/iOS (Expo + React Native) per il bar **Dehors**:
+App Android/iOS (Expo + React Native) per **Dehors CAFE - BISTROT**:
 
 - **Registrazione / login** dei clienti, ciascuno con la propria **tessera digitale con QR** e codice tessera.
 - **Menù** consultabile in app, con ricerca, categorie e indicazioni (vegano, senza glutine, novità…).
@@ -11,7 +11,16 @@ App Android/iOS (Expo + React Native) per il bar **Dehors**:
   - riscatta un premio (scala i punti),
   - corregge il saldo a mano con nota.
 - **Info & contatti**: chiama il locale con un tocco, WhatsApp, Instagram, email, indicazioni stradali, orari con stato «Aperto ora».
-- Tema chiaro (sfondo bianco) e scuro (sfondo nero) automatico, colori verde scuro / marrone.
+- Tema chiaro (sfondo bianco) e scuro (sfondo nero) che segue automaticamente l'impostazione del telefono, colori verde scuro / marrone.
+
+## Sicurezza dell'area staff
+
+L'area staff (scheda Staff, scanner, gestione punti del cliente) è protetta su tre livelli:
+
+1. **Navigazione**: le rotte staff esistono solo per gli account con ruolo `staff` o `admin` (`Stack.Protected` / `Tabs.Protected`).
+   Per tutti gli altri la scheda non compare e i link diretti riportano alla Home. All'avvio l'app aspetta di conoscere il ruolo prima di mostrare qualsiasi schermata.
+2. **Schermate**: ogni schermata staff è avvolta in `StaffOnly`, che non mostra nulla a chi non è staff.
+3. **Dati**: le regole Firestore (`firestore.rules`) permettono di cercare clienti e modificare punti solo allo staff, e impediscono a chiunque di cambiarsi il ruolo da solo. Il ruolo si assegna solo dalla console Firebase.
 
 ## Provare subito su Android
 
@@ -57,7 +66,7 @@ Serve perché clienti e staff usino telefoni diversi con gli stessi dati.
 | Cosa | File |
 |------|------|
 | Nome, telefono, WhatsApp, email, Instagram, indirizzo, orari | `src/config/venue.ts` |
-| Logo ufficiale | salva `assets/images/logo.png` e imposta `VenueLogo` in `src/config/venue.ts` |
+| Logo ufficiale (SVG) | incolla il contenuto del file `.svg` in `src/config/logo.ts` (con `fill="currentColor"` prende il colore del tema) |
 | Menù | `src/data/menu.ts` |
 | Premi, costi in punti, foto/sfondi | `src/data/rewards.ts` (immagini in `assets/images/rewards/`) |
 | Punti per euro, bonus benvenuto, livelli | `src/config/loyalty.ts` |

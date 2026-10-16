@@ -1,5 +1,6 @@
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
@@ -11,13 +12,17 @@ import { Colors } from '@/theme/colors';
 SplashScreen.preventAutoHideAsync();
 
 function RootStack() {
-  const { ready } = useAuth();
+  const { ready, isStaff } = useAuth();
   const scheme = useColorScheme();
   const theme = Colors[scheme === 'dark' ? 'dark' : 'light'];
 
   useEffect(() => {
     if (ready) SplashScreen.hideAsync();
   }, [ready]);
+
+  // Finché non conosciamo l'utente e il suo ruolo resta la schermata di avvio:
+  // così le rotte staff non vengono mai valutate (né mostrate) con dati incompleti.
+  if (!ready) return null;
 
   return (
     <Stack
@@ -34,8 +39,11 @@ function RootStack() {
       <Stack.Screen name="profile" options={{ title: 'Il mio profilo' }} />
       <Stack.Screen name="history" options={{ title: 'Movimenti punti' }} />
       <Stack.Screen name="reward/[id]" options={{ title: 'Premio', presentation: 'modal' }} />
-      <Stack.Screen name="scan" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
-      <Stack.Screen name="customer/[id]" options={{ title: 'Cliente' }} />
+      {/* Area staff: rotte inesistenti per chi non ha ruolo staff/admin. */}
+      <Stack.Protected guard={isStaff}>
+        <Stack.Screen name="scan" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
+        <Stack.Screen name="customer/[id]" options={{ title: 'Cliente' }} />
+      </Stack.Protected>
     </Stack>
   );
 }
@@ -44,6 +52,12 @@ export default function RootLayout() {
   const scheme = useColorScheme();
   const base = scheme === 'dark' ? DarkTheme : DefaultTheme;
   const colors = Colors[scheme === 'dark' ? 'dark' : 'light'];
+
+  // Sfondo della finestra nativa in tinta con il tema (evita lampi bianchi in modalità scura).
+  useEffect(() => {
+    SystemUI.setBackgroundColorAsync(colors.background).catch(() => {});
+  }, [colors.background]);
+
   return (
     <ThemeProvider
       value={{

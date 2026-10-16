@@ -32,7 +32,7 @@ export const openWebsite = (url: string) => open(url);
 export function directionsToVenue() {
   const c = Venue.coordinates;
   const q = encodeURIComponent(Venue.address);
-  const label = encodeURIComponent(Venue.name);
+  const label = encodeURIComponent(Venue.fullName);
   if (Platform.OS === 'ios') {
     return open(c ? `maps://?daddr=${c.lat},${c.lng}&q=${label}` : `maps://?daddr=${q}`);
   }

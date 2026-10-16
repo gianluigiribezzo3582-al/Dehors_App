@@ -1,24 +1,40 @@
-import { Image } from 'expo-image';
 import { View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 
-import { Venue, VenueLogo } from '@/config/venue';
-import { useTheme } from '@/hooks/use-theme';
+import { LogoSvg, LogoSvgDark } from '@/config/logo';
+import { Venue } from '@/config/venue';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
+import { Fonts, Palette } from '@/theme/colors';
 import { AppText } from './ui';
 
-/** Mostra il logo ufficiale se configurato, altrimenti il nome del locale. */
-export function Logo({ size = 'md', color }: { size?: 'sm' | 'md' | 'lg'; color?: string }) {
+type Size = 'sm' | 'md' | 'lg';
+
+const HEIGHTS: Record<Size, number> = { sm: 32, md: 48, lg: 96 };
+
+/** Marchio del locale: SVG ufficiale se presente, altrimenti logotipo testuale. Si adatta al tema. */
+export function Logo({ size = 'md', align = 'left' }: { size?: Size; align?: 'left' | 'center' }) {
   const theme = useTheme();
-  const height = { sm: 28, md: 44, lg: 88 }[size];
-  if (VenueLogo) {
-    return <Image source={VenueLogo} style={{ height, width: height * 3 }} contentFit="contain" />;
+  const dark = useIsDark();
+  const color = dark ? Palette.cream : Palette.green;
+  const height = HEIGHTS[size];
+
+  const svg = (dark && LogoSvgDark) || LogoSvg;
+  if (svg) {
+    return <SvgXml xml={svg} height={height} width={height * 3} color={color} />;
   }
+
+  const nameSize = height * 0.62;
   return (
-    <View style={{ alignItems: 'flex-start' }}>
+    <View style={{ alignItems: align === 'center' ? 'center' : 'flex-start' }}>
       <AppText
-        variant={size === 'lg' ? 'display' : 'title'}
-        color={color ?? theme.primary}
-        style={{ letterSpacing: 4, fontSize: height * 0.7, lineHeight: height }}>
+        style={{ fontFamily: Fonts.serif, fontSize: nameSize, lineHeight: nameSize * 1.1, letterSpacing: nameSize * 0.14, fontWeight: '600' }}
+        color={color}>
         {Venue.name.toUpperCase()}
+      </AppText>
+      <AppText
+        style={{ fontSize: Math.max(9, nameSize * 0.26), fontWeight: '700', letterSpacing: nameSize * 0.12 }}
+        color={theme.accent}>
+        {Venue.subtitle}
       </AppText>
     </View>
   );

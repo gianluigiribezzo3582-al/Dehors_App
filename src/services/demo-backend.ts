@@ -69,6 +69,20 @@ function seed(): DemoDb {
   };
 }
 
+function isStaffSession(state: DemoDb) {
+  const role = state.session ? state.users[state.session]?.role : undefined;
+  return role === 'staff' || role === 'admin';
+}
+
+/** Stesse regole di firestore.rules: i dati altrui e la gestione punti sono solo per lo staff. */
+function requireStaff(state: DemoDb) {
+  if (!isStaffSession(state)) throw new AppError('Operazione riservata allo staff.');
+}
+
+function canRead(state: DemoDb, uid: string) {
+  return state.session === uid || isStaffSession(state);
+}
+
 function publicProfile(user: DemoUser | undefined): UserProfile | null {
   if (!user) return null;
   const { password: _password, ...profile } = user;
@@ -186,15 +200,16 @@ export function createDemoBackend(): Backend {
     },
 
     subscribeProfile(uid, cb) {
-      return watch((state) => cb(publicProfile(state.users[uid])));
+      return watch((state) => cb(canRead(state, uid) ? publicProfile(state.users[uid]) : null));
     },
 
     subscribeTransactions(uid, cb, max = 50) {
-      return watch((state) => cb((state.transactions[uid] ?? []).slice(0, max)));
+      return watch((state) => cb(canRead(state, uid) ? (state.transactions[uid] ?? []).slice(0, max) : []));
     },
 
     async updateOwnProfile(uid, patch) {
       const state = await load();
+      if (state.session !== uid) throw new AppError('Operazione non consentita.');
       const user = state.users[uid];
       if (!user) throw new AppError('Utente non trovato.');
       if (patch.name !== undefined) user.name = patch.name.trim();
@@ -204,17 +219,20 @@ export function createDemoBackend(): Backend {
 
     async getProfile(uid) {
       const state = await load();
+      if (!canRead(state, uid)) throw new AppError('Operazione non consentita.');
       return publicProfile(state.users[uid]);
     },
 
     async findByCardCode(code) {
       const state = await load();
+      requireStaff(state);
       const normalized = normalizeCardCode(code);
       return publicProfile(Object.values(state.users).find((u) => u.cardCode === normalized));
     },
 
     async searchCustomersByEmail(prefix) {
       const state = await load();
+      requireStaff(state);
       const p = prefix.trim().toLowerCase();
       if (p.length < 2) return [];
       return Object.values(state.users)
@@ -227,6 +245,8 @@ export function createDemoBackend(): Backend {
       await delay();
       if (!Number.isInteger(delta) || delta === 0) throw new AppError('Numero di punti non valido.');
       const state = await load();
+      requireStaff(state);
+      const staffId = state.session!;
       const user = state.users[userId];
       if (!user) throw new AppError('Cliente non trovato.');
       if (user.points + delta < 0) throw new AppError(`Saldo insufficiente: il cliente ha ${user.points} punti.`);
@@ -240,8 +260,8 @@ export function createDemoBackend(): Backend {
         amountEur,
         rewardId,
         note: note?.trim() || undefined,
-        staffId: staff.id,
-        staffName: staff.name,
+        staffId,
+        staffName: state.users[staffId]?.name ?? staff.name,
         createdAt: Date.now(),
       });
       state.transactions[userId] = list;

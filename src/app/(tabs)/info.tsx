@@ -35,7 +35,7 @@ export default function InfoScreen() {
   return (
     <Screen>
       <View style={{ alignItems: 'center', gap: Spacing.sm, paddingVertical: Spacing.md }}>
-        <Logo size="lg" />
+        <Logo size="lg" align="center" />
         <AppText variant="caption">{Venue.tagline}</AppText>
       </View>
 
@@ -115,7 +115,7 @@ export default function InfoScreen() {
       </Card>
 
       <AppText variant="caption" style={{ textAlign: 'center' }}>
-        {Venue.name} · v{Constants.expoConfig?.version ?? '1.0.0'}
+        {Venue.fullName} · v{Constants.expoConfig?.version ?? '1.0.0'}
         {backend.mode === 'demo' ? ' · demo' : ''}
       </AppText>
     </Screen>

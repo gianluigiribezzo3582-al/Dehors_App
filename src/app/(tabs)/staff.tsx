@@ -1,10 +1,10 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Redirect, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { StaffOnly } from '@/components/staff-only';
 import { AppText, Button, Card, Divider, Field, ListRow, SectionHeader, Screen } from '@/components/ui';
-import { useAuth } from '@/hooks/use-auth';
 import { useTheme } from '@/hooks/use-theme';
 import { backend, errorMessage } from '@/services/backend';
 import { normalizeCardCode, type UserProfile } from '@/services/types';
@@ -12,15 +12,20 @@ import { Palette, Radius, Spacing } from '@/theme/colors';
 
 /** Banco staff: scansione QR, ricerca tessera per codice o email. */
 export default function StaffScreen() {
+  return (
+    <StaffOnly>
+      <StaffDesk />
+    </StaffOnly>
+  );
+}
+
+function StaffDesk() {
   const theme = useTheme();
-  const { isStaff, ready } = useAuth();
   const [code, setCode] = useState('');
   const [email, setEmail] = useState('');
   const [results, setResults] = useState<UserProfile[] | null>(null);
   const [busy, setBusy] = useState<'code' | 'email' | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  if (ready && !isStaff) return <Redirect href="/" />;
 
   const searchCode = async () => {
     setError(null);

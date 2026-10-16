@@ -4,7 +4,11 @@
  */
 export const Venue = {
   name: 'Dehors',
-  tagline: 'Caffetteria · Cocktail bar',
+  /** Seconda riga del marchio. */
+  subtitle: 'CAFE - BISTROT',
+  /** Nome completo, usato per indicazioni e testi. */
+  fullName: 'Dehors CAFE - BISTROT',
+  tagline: 'Colazioni, pranzi e aperitivi',
   /** Numero in formato internazionale, senza spazi: usato per "Chiama" e WhatsApp. */
   phone: '+390000000000',
   /** Numero mostrato a schermo. */
@@ -32,9 +36,3 @@ export const Venue = {
     6: [{ open: '08:00', close: '02:00' }],
   } as Record<number, { open: string; close: string }[]>,
 };
-
-/**
- * Logo ufficiale: quando lo hai, salvalo in assets/images/logo.png e sostituisci
- * `null` con `require('@/assets/images/logo.png')`.
- */
-export const VenueLogo: number | null = null;

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, View } from 'react-native';
 
 import { dialog } from '@/components/dialog';
+import { StaffOnly } from '@/components/staff-only';
 import { TransactionRow } from '@/components/transaction-row';
 import { AppText, Button, Card, Chip, Divider, Field, Loading, SectionHeader, Screen } from '@/components/ui';
 import { Loyalty, pointsForAmount, tierFor } from '@/config/loyalty';
@@ -23,6 +24,14 @@ function parseEuro(text: string) {
 }
 
 export default function CustomerScreen() {
+  return (
+    <StaffOnly>
+      <CustomerDesk />
+    </StaffOnly>
+  );
+}
+
+function CustomerDesk() {
   const theme = useTheme();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { profile: staff, isStaff } = useAuth();
@@ -47,13 +56,6 @@ export default function CustomerScreen() {
     return () => clearTimeout(t);
   }, [feedback]);
 
-  if (!isStaff) {
-    return (
-      <Screen edges={[]}>
-        <AppText variant="body">Questa sezione è riservata allo staff.</AppText>
-      </Screen>
-    );
-  }
   if (customer === undefined) return <Loading />;
   if (customer === null || !staff) {
     return (

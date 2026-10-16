@@ -24,7 +24,9 @@
     },
     "web": {
       "output": "single",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "name": "Dehors CAFE - BISTROT",
+      "shortName": "Dehors"
     },
     "plugins": [
       "expo-router",
@@ -42,7 +44,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "La fotocamera serve allo staff per leggere il QR delle tessere fedeltà.",
+          "cameraPermission": "La fotocamera serve allo staff per leggere il QR delle tessere fedelt\u00e0.",
           "microphonePermission": false,
           "recordAudioAndroid": false
         }
