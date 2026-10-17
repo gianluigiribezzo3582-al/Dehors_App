@@ -20,7 +20,7 @@ L'area staff (scheda Staff, scanner, gestione punti del cliente) è protetta su 
 1. **Navigazione**: le rotte staff esistono solo per gli account con ruolo `staff` o `admin` (`Stack.Protected` / `Tabs.Protected`).
    Per tutti gli altri la scheda non compare e i link diretti riportano alla Home. All'avvio l'app aspetta di conoscere il ruolo prima di mostrare qualsiasi schermata.
 2. **Schermate**: ogni schermata staff è avvolta in `StaffOnly`, che non mostra nulla a chi non è staff.
-3. **Dati**: le regole Firestore (`firestore.rules`) permettono di cercare clienti, modificare punti e contenuti (menù, premi, testi, eventi) e leggere i destinatari delle notifiche solo allo staff, e impediscono a chiunque di cambiarsi il ruolo da solo. Il ruolo si assegna solo dalla console Firebase. Le regole sono coperte da 40 test (`npm run test:rules`).
+3. **Dati**: le regole Firestore (`firestore.rules`) permettono di cercare clienti, modificare punti e contenuti (menù, premi, testi, eventi) e leggere i destinatari delle notifiche solo allo staff, e impediscono a chiunque di cambiarsi il ruolo da solo. Il ruolo si assegna solo dalla console Firebase. Le regole sono coperte da 45 test (`npm run test:rules`).
 
 ## Provare subito su Android
 
@@ -68,12 +68,14 @@ Dalla scheda **Staff → Gestione app** lo staff modifica, senza aggiornare l'ap
 | Sezione | Cosa si cambia |
 |---------|----------------|
 | Menù | categorie (nome, icona, nota), voci (nome, ingredienti, prezzo o testo prezzo, surgelato, vegano, senza glutine, settimana), «Non disponibile», ordine |
+| Esauriti | interruttore per ogni voce del menù e del pranzo: i clienti vedono subito «Esaurito»; «Rendi tutto disponibile» a inizio giornata |
+| Pranzo del giorno | piatti di oggi (nome, descrizione, prezzo facoltativo), nota, fascia oraria di visibilità (predefinita 10:00–15:00): compare in Home e in cima al Menù solo in quella fascia |
 | Eventi | titolo, data e ora, descrizione, pubblicato/bozza; alla pubblicazione può partire una notifica a tutti |
 | Premi | nome, descrizione, punti, icona, colore, **riscattabile una volta o più volte**, attivo/disattivo |
 | Testi, contatti e orari | avviso in Home, testi di benvenuto, punti per euro, telefoni, WhatsApp, email, indirizzo, Instagram, Facebook, sito, orari |
 | Invia notifica | messaggio libero a tutti, con apertura facoltativa di un evento |
 
-I contenuti sono salvati su Firestore (`content/menu`, `content/rewards`, `content/texts`, collezione `events`) e arrivano ai clienti in tempo reale; l'app ne tiene una copia per l'uso offline. I valori nei file `src/data/*.ts` e `src/config/*.ts` servono solo come contenuto iniziale.
+I contenuti sono salvati su Firestore (`content/menu`, `content/rewards`, `content/texts`, `content/lunch`, `content/availability`, collezione `events`) e arrivano ai clienti in tempo reale; l'app ne tiene una copia per l'uso offline. I valori nei file `src/data/*.ts` e `src/config/*.ts` servono solo come contenuto iniziale.
 
 ## Notifiche push (configurazione una tantum)
 

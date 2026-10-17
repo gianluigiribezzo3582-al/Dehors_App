@@ -4,11 +4,12 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Logo } from '@/components/logo';
 import { EventCard } from '@/components/event-card';
+import { LunchCard } from '@/components/lunch-card';
 import { RewardCard } from '@/components/reward-card';
 import { AppText, Button, Card, ProgressBar, SectionHeader, Screen, type IconName } from '@/components/ui';
 import { tierFor } from '@/config/loyalty';
 import { useAuth } from '@/hooks/use-auth';
-import { rewardStatus, useActiveRewards, useContent, useUpcomingEvents } from '@/hooks/use-content';
+import { rewardStatus, useActiveRewards, useContent, useUpcomingEvents, useVisibleLunch } from '@/hooks/use-content';
 import { useTheme } from '@/hooks/use-theme';
 import { Fonts, Palette, Radius, Spacing } from '@/theme/colors';
 import { callNumber, directionsTo, openWhatsapp } from '@/utils/contacts';
@@ -45,6 +46,7 @@ export default function HomeScreen() {
   const { texts } = useContent();
   const rewards = useActiveRewards();
   const events = useUpcomingEvents();
+  const lunch = useVisibleLunch();
   const status = openStatus(texts.hours);
 
   const nextReward = profile
@@ -138,6 +140,8 @@ export default function HomeScreen() {
         <QuickAction icon="navigate-outline" label="Indicazioni" onPress={() => directionsTo(texts)} />
         <QuickAction icon="logo-whatsapp" label="WhatsApp" onPress={() => openWhatsapp(texts.whatsapp)} />
       </View>
+
+      {lunch && <LunchCard lunch={lunch} />}
 
       {events.length > 0 && (
         <>

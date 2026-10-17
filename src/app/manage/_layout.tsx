@@ -25,6 +25,8 @@ export default function ManageLayout() {
         <Stack.Screen name="event" options={{ title: 'Evento' }} />
         <Stack.Screen name="texts" options={{ title: 'Testi, contatti e orari' }} />
         <Stack.Screen name="notify" options={{ title: 'Invia notifica' }} />
+        <Stack.Screen name="lunch" options={{ title: 'Pranzo del giorno' }} />
+        <Stack.Screen name="soldout" options={{ title: 'Esauriti' }} />
       </Stack>
     </StaffOnly>
   );

@@ -261,6 +261,14 @@ export function createFirebaseBackend(): Backend {
       await setDoc(doc(db, 'content', key), { ...plain(data), updatedAt: serverTimestamp() });
     },
 
+    async setSoldOut(itemId, soldOut) {
+      await setDoc(
+        doc(db, 'content', 'availability'),
+        { soldOut: { [itemId]: soldOut }, updatedAt: serverTimestamp() },
+        { merge: true },
+      );
+    },
+
     subscribeEvents(includeDrafts, cb) {
       const col = collection(db, 'events');
       const q = includeDrafts ? query(col) : query(col, where('published', '==', true));

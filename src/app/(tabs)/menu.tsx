@@ -1,11 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ScrollView, SectionList, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText, Chip, Divider, type IconName } from '@/components/ui';
-import { AllergenNotice, Allergens, type MenuItem, type MenuTag } from '@/data/menu';
-import { useContent } from '@/hooks/use-content';
+import { AllergenNotice, Allergens, type MenuCategory, type MenuItem, type MenuTag } from '@/data/menu';
+import { useContent, useVisibleLunch } from '@/hooks/use-content';
 import { useTheme } from '@/hooks/use-theme';
 import { Fonts, Radius, Spacing } from '@/theme/colors';
 import { formatEuro } from '@/utils/format';
@@ -16,15 +17,24 @@ const TAG_LABELS: Record<MenuTag, string> = {
   week: 'Della settimana',
 };
 
-function ItemRow({ item }: { item: MenuItem }) {
+const LUNCH_ID = 'pranzo';
+
+function ItemRow({ item, soldOut }: { item: MenuItem; soldOut: boolean }) {
   const theme = useTheme();
   return (
-    <View style={styles.item}>
+    <View style={[styles.item, soldOut && { opacity: 0.55 }]}>
       <View style={{ flex: 1, gap: 2 }}>
         <AppText variant="label">
           {item.name}
           {item.frozen ? '*' : ''}
         </AppText>
+        {soldOut && (
+          <View style={[styles.soldOut, { backgroundColor: theme.danger }]}>
+            <AppText variant="overline" color={theme.background}>
+              Esaurito
+            </AppText>
+          </View>
+        )}
         {item.description ? <AppText variant="caption">{item.description}</AppText> : null}
         {item.tags?.length ? (
           <View style={styles.tags}>
@@ -48,13 +58,32 @@ function ItemRow({ item }: { item: MenuItem }) {
 export default function MenuScreen() {
   const theme = useTheme();
   const [search, setSearch] = useState('');
-  const [active, setActive] = useState<string | null>(null);
-  const { menu } = useContent();
-  // Le voci segnate come non disponibili dallo staff non si vedono.
-  const Menu = useMemo(
-    () => menu.map((c) => ({ ...c, items: c.items.filter((i) => !i.hidden) })).filter((c) => c.items.length > 0),
-    [menu],
-  );
+  const params = useLocalSearchParams<{ cat?: string; t?: string }>();
+  const [active, setActive] = useState<string | null>(params.cat ?? null);
+  // Apertura dalla Home con una categoria scelta (es. «Pranzo del giorno»).
+  const [lastRequest, setLastRequest] = useState(params.t);
+  if (params.t !== lastRequest) {
+    setLastRequest(params.t);
+    setActive(params.cat ?? null);
+  }
+  const { menu, soldOut } = useContent();
+  const lunch = useVisibleLunch();
+  // Le voci segnate come non disponibili dallo staff non si vedono; il pranzo compare solo nella sua fascia oraria.
+  const Menu = useMemo(() => {
+    const categories: MenuCategory[] = menu
+      .map((c) => ({ ...c, items: c.items.filter((i) => !i.hidden) }))
+      .filter((c) => c.items.length > 0);
+    if (lunch) {
+      categories.unshift({
+        id: LUNCH_ID,
+        title: 'Pranzo del giorno',
+        icon: 'restaurant-outline',
+        note: [lunch.note, `Disponibile fino alle ${lunch.to}`].filter(Boolean).join(' · '),
+        items: lunch.dishes,
+      });
+    }
+    return categories;
+  }, [menu, lunch]);
 
   const sections = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -105,7 +134,7 @@ export default function MenuScreen() {
             </AppText>
           </View>
         )}
-        renderItem={({ item }) => <ItemRow item={item} />}
+        renderItem={({ item }) => <ItemRow item={item} soldOut={!!soldOut[item.id]} />}
         renderSectionFooter={({ section }) =>
           section.note ? (
             <AppText variant="caption" style={{ paddingTop: Spacing.sm }}>
@@ -147,5 +176,6 @@ const styles = StyleSheet.create({
   item: { flexDirection: 'row', gap: Spacing.md, paddingVertical: Spacing.md, alignItems: 'flex-start' },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 4 },
   tag: { borderWidth: 1, borderRadius: Radius.pill, paddingHorizontal: 8, paddingVertical: 1 },
+  soldOut: { alignSelf: 'flex-start', borderRadius: Radius.pill, paddingHorizontal: 8, paddingVertical: 2, marginTop: 2 },
   allergens: { marginTop: Spacing.xl, padding: Spacing.md, borderRadius: Radius.md, borderWidth: 1, gap: Spacing.sm },
 });

@@ -2,7 +2,7 @@ import { Loyalty } from '@/config/loyalty';
 import { Venue } from '@/config/venue';
 import { Menu } from '@/data/menu';
 import { Rewards } from '@/data/rewards';
-import type { ContentMap, SiteTexts } from './types';
+import type { ContentMap, LunchMenu, SiteTexts } from './types';
 
 /**
  * Contenuti iniziali: usati al primo avvio e finché lo staff non salva
@@ -26,6 +26,8 @@ export const DefaultTexts: SiteTexts = {
   pointsPerEuro: Loyalty.pointsPerEuro,
 };
 
+export const DefaultLunch: LunchMenu = { dishes: [], note: '', from: '10:00', to: '15:00' };
+
 export const DefaultContent: ContentMap = {
   menu: { categories: Menu },
   rewards: {
@@ -41,6 +43,8 @@ export const DefaultContent: ContentMap = {
     })),
   },
   texts: DefaultTexts,
+  lunch: DefaultLunch,
+  availability: { soldOut: {} },
 };
 
 /** Unisce i testi salvati con i valori predefiniti (campi aggiunti in versioni successive). */

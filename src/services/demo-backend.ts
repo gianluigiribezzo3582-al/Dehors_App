@@ -306,6 +306,14 @@ export function createDemoBackend(): Backend {
       await commit();
     },
 
+    async setSoldOut(itemId, soldOut) {
+      const state = await load();
+      requireStaff(state);
+      const current = state.content.availability ?? { soldOut: {} };
+      state.content.availability = { soldOut: { ...current.soldOut, [itemId]: soldOut } };
+      await commit();
+    },
+
     subscribeEvents(includeDrafts, cb) {
       return watch((state) => {
         const staff = includeDrafts && isStaffSession(state);

@@ -75,6 +75,8 @@ export interface Backend {
   /* Contenuti modificabili (lettura per tutti, scrittura solo staff) */
   subscribeContent<K extends ContentKey>(key: K, cb: (data: ContentMap[K] | null) => void): Unsubscribe;
   saveContent<K extends ContentKey>(key: K, data: ContentMap[K]): Promise<void>;
+  /** Segna/toglie «Esaurito» su una singola voce, senza toccare le altre (aggiornamento atomico). */
+  setSoldOut(itemId: string, soldOut: boolean): Promise<void>;
   /** Con includeDrafts (solo staff) restituisce anche gli eventi non pubblicati. */
   subscribeEvents(includeDrafts: boolean, cb: (items: EventItem[]) => void): Unsubscribe;
   saveEvent(event: Omit<EventItem, 'id' | 'createdAt'> & { id?: string; createdAt?: number }): Promise<EventItem>;

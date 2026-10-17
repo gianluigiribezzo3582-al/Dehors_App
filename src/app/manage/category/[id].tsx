@@ -36,6 +36,7 @@ export default function ManageCategoryScreen() {
 
 function CategoryForm({ menu, category }: { menu: MenuCategory[]; category?: MenuCategory }) {
   const theme = useTheme();
+  const { soldOut } = useContent();
   const { save, saving } = useSaveContent();
   const [title, setTitle] = useState(category?.title ?? '');
   const [note, setNote] = useState(category?.note ?? '');
@@ -110,6 +111,7 @@ function CategoryForm({ menu, category }: { menu: MenuCategory[]; category?: Men
                         subtitle={[
                           it.priceLabel ?? (it.price !== undefined ? formatEuro(it.price) : 'senza prezzo'),
                           it.hidden ? 'non disponibile' : null,
+                          soldOut[it.id] ? 'esaurito' : null,
                         ]
                           .filter(Boolean)
                           .join(' · ')}

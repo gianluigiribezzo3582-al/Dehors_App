@@ -77,10 +77,11 @@ service cloud.firestore {
       }
     }
 
-    // Menù, premi e testi: li leggono tutti (anche senza account), li modifica solo lo staff.
+    // Menù, premi, testi, pranzo del giorno ed esauriti: li leggono tutti (anche senza account),
+    // li modifica solo lo staff.
     match /content/{doc} {
       allow read: if true;
-      allow write: if isStaff() && doc in ['menu', 'rewards', 'texts'];
+      allow write: if isStaff() && doc in ['menu', 'rewards', 'texts', 'lunch', 'availability'];
     }
 
     // Eventi: pubblici solo se pubblicati; le bozze le vede solo lo staff.

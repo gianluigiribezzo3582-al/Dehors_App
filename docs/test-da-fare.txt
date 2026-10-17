@@ -275,6 +275,42 @@ Menù
 [ ] 16.10 "Nuova categoria" con nome, nota e icona: compare tra i filtri
           del Menù clienti (solo quando ha almeno una voce disponibile).
 
+Esauriti (scheda Staff > riquadro "Esauriti")
+[ ] 16.E1 Attiva l'interruttore di un prodotto: sul menù dei clienti
+          compare subito l'etichetta "ESAURITO" (sbiadito), senza
+          salvare nulla.
+[ ] 16.E2 La ricerca trova il prodotto; il filtro "Esauriti (N)" mostra
+          solo quelli segnati e il numero è giusto.
+[ ] 16.E3 Spegni l'interruttore: l'etichetta sparisce dal menù clienti.
+[ ] 16.E4 "Rendi tutto disponibile" (chiede conferma) toglie tutti gli
+          esauriti.
+[ ] 16.E5 Il riquadro "Esauriti" nella scheda Staff indica quanti
+          prodotti sono segnati.
+[ ] 16.E6 (Con Firebase, 2 telefoni staff) due persone segnano due
+          prodotti diversi nello stesso momento: restano segnati entrambi.
+
+Pranzo del giorno (scheda Staff > riquadro "Pranzo del giorno")
+[ ] 16.P1 Aggiungi 2-3 piatti (nome, descrizione, prezzo facoltativo) e
+          una nota, poi "Salva pranzo".
+[ ] 16.P2 Tra le 10:00 e le 15:00: in Home compare il riquadro marrone
+          "Pranzo del giorno" con i piatti e "fino alle 15:00"; nel Menù
+          compare per primo il filtro e la sezione "Pranzo del giorno".
+[ ] 16.P3 Toccando il riquadro in Home si apre il Menù già filtrato sul
+          pranzo.
+[ ] 16.P4 Prima delle 10:00 e dopo le 15:00 il pranzo NON compare né in
+          Home né nel Menù (per provare: cambia gli orari nella
+          schermata, es. "Visibile dalle" 00:00 "Fino alle" 00:01, salva
+          e verifica; poi rimetti 10:00 e 15:00). In alto nella
+          schermata staff c'è scritto se è visibile ora ai clienti.
+[ ] 16.P5 Allo scoccare delle 15:00 con l'app aperta, il riquadro
+          sparisce da solo entro un minuto.
+[ ] 16.P6 "Esaurito" su un piatto del pranzo (interruttore nella scheda
+          del piatto, attivo subito): in Home il piatto appare barrato con
+          l'etichetta "ESAURITO", nel Menù con l'etichetta.
+[ ] 16.P7 Orario scritto male (es. "10"): messaggio "Orario non valido".
+[ ] 16.P8 "Svuota piatti" + "Salva pranzo": il pranzo sparisce ai
+          clienti.
+
 Premi
 [ ] 16.11 Premi: modifica nome, punti, icona, colore: l'anteprima in alto
           si aggiorna mentre scrivi; dopo "Salva" la scheda Premi dei

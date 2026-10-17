@@ -60,6 +60,11 @@ await t('ospite NON modifica il menù', false, () => guest.doc('content/menu').s
 await t('staff modifica il menù', true, () => staff.doc('content/menu').set({ categories: [{ id: 'a' }] }));
 await t('staff modifica premi e testi', true, async () => { await staff.doc('content/rewards').set({ items: [] }); await staff.doc('content/texts').set({ phone: '1' }); });
 await t('staff NON crea documenti contenuto arbitrari', false, () => staff.doc('content/altro').set({ x: 1 }));
+await t('staff scrive pranzo del giorno', true, () => staff.doc('content/lunch').set({ dishes: [{ id: 'p1', name: 'Orecchiette' }], note: '', from: '10:00', to: '15:00' }));
+await t('staff segna un esaurito', true, () => staff.doc('content/availability').set({ soldOut: { p1: true } }, { merge: true }));
+await t('ospite legge pranzo ed esauriti', true, async () => { await guest.doc('content/lunch').get(); await guest.doc('content/availability').get(); });
+await t('cliente NON segna esauriti', false, () => cli.doc('content/availability').set({ soldOut: { p1: false } }, { merge: true }));
+await t('cliente NON modifica il pranzo', false, () => cli.doc('content/lunch').set({ dishes: [] }));
 // Eventi
 await t('ospite legge evento pubblicato', true, () => guest.doc('events/pub').get());
 await t('ospite NON legge bozza', false, () => guest.doc('events/draft').get());

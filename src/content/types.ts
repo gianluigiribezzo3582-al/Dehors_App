@@ -51,10 +51,33 @@ export type SiteTexts = {
   pointsPerEuro: number;
 };
 
+/** Piatto del pranzo del giorno (senza quantità). */
+export type LunchDish = {
+  id: string;
+  name: string;
+  description?: string;
+  price?: number;
+};
+
+/** Pranzo del giorno: visibile ai clienti solo nella fascia oraria indicata. */
+export type LunchMenu = {
+  dishes: LunchDish[];
+  /** Nota sotto i piatti, es. «Acqua e coperto inclusi». */
+  note: string;
+  /** Inizio e fine visibilità, «HH:MM». */
+  from: string;
+  to: string;
+};
+
+/** Prodotti esauriti in tempo reale: id voce (menù o pranzo) → true. */
+export type Availability = { soldOut: Record<string, boolean> };
+
 export type ContentMap = {
   menu: { categories: MenuCategory[] };
   rewards: { items: RewardDef[] };
   texts: SiteTexts;
+  lunch: LunchMenu;
+  availability: Availability;
 };
 
 export type ContentKey = keyof ContentMap;

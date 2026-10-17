@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 import { DefaultContent, withTextDefaults } from '@/content/defaults';
-import type { ContentMap, EventItem, RewardDef, SiteTexts } from '@/content/types';
+import type { ContentMap, EventItem, LunchMenu, RewardDef, SiteTexts } from '@/content/types';
 import type { MenuCategory } from '@/data/menu';
 import { backend } from '@/services/backend';
 
@@ -16,6 +16,9 @@ type ContentState = {
   texts: SiteTexts;
   /** Eventi pubblicati, dal più vicino. */
   events: EventItem[];
+  lunch: LunchMenu;
+  /** Voci esaurite (id → true), aggiornate in tempo reale. */
+  soldOut: Record<string, boolean>;
 };
 
 const ContentContext = createContext<ContentState>({
@@ -23,6 +26,8 @@ const ContentContext = createContext<ContentState>({
   rewards: DefaultContent.rewards.items,
   texts: DefaultContent.texts,
   events: [],
+  lunch: DefaultContent.lunch,
+  soldOut: {},
 });
 
 /**
@@ -44,7 +49,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       })
       .catch(() => {});
 
-    const keys = ['menu', 'rewards', 'texts'] as const;
+    const keys = ['menu', 'rewards', 'texts', 'lunch', 'availability'] as const;
     const unsubs = keys.map((key) =>
       backend.subscribeContent(key, (data) => {
         if (!data) return;
@@ -69,6 +74,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       rewards: content.rewards?.items ?? DefaultContent.rewards.items,
       texts: withTextDefaults(content.texts),
       events,
+      lunch: { ...DefaultContent.lunch, ...(content.lunch ?? {}) },
+      soldOut: content.availability?.soldOut ?? {},
     }),
     [content, events],
   );
@@ -107,4 +114,35 @@ export function rewardStatus(reward: RewardDef, profile: { points: number; redee
     available: enoughPoints && !alreadyUsed,
     missing: profile ? Math.max(0, reward.cost - profile.points) : reward.cost,
   };
+}
+
+/** Ora corrente, aggiornata ogni minuto (per contenuti a orario). */
+export function useNow(intervalMs = 60_000) {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), intervalMs);
+    return () => clearInterval(t);
+  }, [intervalMs]);
+  return now;
+}
+
+function minutesOf(hhmm: string) {
+  const [h, m] = hhmm.split(':').map(Number);
+  return (h || 0) * 60 + (m || 0);
+}
+
+/** true se «now» è dentro la fascia from–to (gestisce anche fasce oltre la mezzanotte). */
+export function isWithin(now: Date, from: string, to: string) {
+  const m = now.getHours() * 60 + now.getMinutes();
+  const a = minutesOf(from);
+  const b = minutesOf(to);
+  return a <= b ? m >= a && m < b : m >= a || m < b;
+}
+
+/** Pranzo del giorno da mostrare ai clienti: solo nella fascia oraria e se ci sono piatti. */
+export function useVisibleLunch() {
+  const { lunch } = useContent();
+  const now = useNow();
+  const visible = lunch.dishes.length > 0 && isWithin(now, lunch.from, lunch.to);
+  return visible ? lunch : null;
 }
