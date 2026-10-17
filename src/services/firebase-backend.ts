@@ -159,6 +159,11 @@ export function createFirebaseBackend(): Backend {
       if (!lastSignIn || Date.now() - lastSignIn > 5 * 60 * 1000) {
         throw new AppError('Per sicurezza esci, rientra e riprova subito a eliminare l\'account.');
       }
+      // Cancella tutto ciò che riguarda l'utente: storico punti, token notifiche, profilo, account.
+      const txs = await getDocs(txCollection(user.uid));
+      await Promise.all(txs.docs.map((d) => deleteDoc(d.ref)));
+      const tokens = await getDocs(query(collection(db, 'pushTokens'), where('uid', '==', user.uid)));
+      await Promise.all(tokens.docs.map((d) => deleteDoc(d.ref)));
       await deleteDoc(userRef(user.uid));
       await deleteUser(user);
     },

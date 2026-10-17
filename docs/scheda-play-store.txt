@@ -1,0 +1,107 @@
+SCHEDA PLAY STORE – testi pronti da copiare
+==========================================
+
+Nome dell'app (max 30 caratteri)
+--------------------------------
+Dehors Cafè-Bistrot
+
+
+Descrizione breve (max 80 caratteri)
+------------------------------------
+Tessera fedeltà, menù, pranzo del giorno ed eventi di Dehors a Bari.
+
+
+Descrizione completa (max 4000 caratteri)
+-----------------------------------------
+L'app ufficiale di Dehors Cafè-Bistrot, in Via Giuseppe Re David 197 a Bari.
+
+LA TUA TESSERA FEDELTÀ
+Registrati in pochi secondi e ricevi la tua tessera digitale con QR. Mostrala al bancone quando paghi: a ogni consumazione accumuli punti, che trovi subito nell'app insieme allo storico dei movimenti. In regalo i punti di benvenuto.
+
+PREMI
+Trasforma i punti in premi: caffè, colazioni, sconti, aperitivi e molto altro. Vedi quanti punti ti mancano per ogni premio e riscattalo al bancone mostrando la tessera.
+
+MENÙ SEMPRE AGGIORNATO
+Caffetteria, colazioni, pucce, insalate, pinse, aperitivi e cocktail, con prezzi e ingredienti. Cerca un prodotto, filtra per categoria e scopri in tempo reale cosa è esaurito.
+
+PRANZO DEL GIORNO
+Dalle 10 alle 15 trovi i piatti del giorno appena pubblicati dalla cucina.
+
+EVENTI E NOVITÀ
+Serate, musica e iniziative del locale direttamente in Home, con una notifica quando ne arriva uno nuovo.
+
+CONTATTI
+Chiamaci, scrivici su WhatsApp, trova la strada con le mappe e controlla gli orari di apertura.
+
+Tema chiaro e scuro automatico, in base alle impostazioni del telefono.
+
+
+Categoria
+---------
+App > Cibo e bevande
+
+
+Tag (se richiesti)
+------------------
+Bar, Caffetteria, Ristorante, Programma fedeltà
+
+
+Contatti per gli utenti
+-----------------------
+Email: ges.drinkfood@gmail.com
+Telefono: +39 080 975 3266
+Sito web: (se c'è)
+
+
+Note di versione 1.0.0
+----------------------
+Prima versione: tessera fedeltà con QR, premi, menù con esauriti in tempo reale, pranzo del giorno, eventi e notifiche.
+
+
+Grafiche
+--------
+- Icona: icona-512.png (512x512)
+- Immagine in evidenza: immagine-in-evidenza-1024x500.png
+- Screenshot telefono: almeno 2 (meglio 4-8), presi dal telefono in tema
+  chiaro: Home, Tessera, Premi, Menù, Pranzo del giorno, Info.
+
+
+Accesso all'app per la revisione Google (Contenuti dell'app > Accesso all'app)
+------------------------------------------------------------------------------
+Scegli "Tutte o alcune funzionalità sono limitate" e aggiungi:
+- Nome istruzioni: Account cliente
+  Email: (crea un account di prova, es. revisione.cliente@... ) / Password
+  Istruzioni: "Accedi da Home > Accedi. Tessera, punti e premi sono nelle
+  schede Tessera e Premi."
+- Nome istruzioni: Account staff
+  Email / Password di un account di prova reso staff
+  Istruzioni: "La scheda Staff permette al personale di scansionare il QR
+  dei clienti, gestire punti, menù, eventi e notifiche."
+
+
+Sicurezza dei dati (Contenuti dell'app > Sicurezza dei dati) – risposte
+-----------------------------------------------------------------------
+- L'app raccoglie o condivide dati utente? Sì.
+- I dati sono criptati in transito? Sì.
+- Gli utenti possono chiedere l'eliminazione dei dati? Sì (in app e via
+  email; URL: indirizzo dell'informativa privacy).
+Dati raccolti (tutti NON condivisi con terzi, raccolti per "Funzionalità
+dell'app" e "Gestione account"):
+- Informazioni personali > Nome: obbligatorio.
+- Informazioni personali > Indirizzo email: obbligatorio.
+- Informazioni personali > Numero di telefono: facoltativo.
+- Informazioni personali > ID utente: obbligatorio.
+- Attività nelle app > Altre azioni (storico punti): obbligatorio.
+- ID dispositivo o altri ID (token notifiche): facoltativo; scopo anche
+  "Comunicazioni dello sviluppatore".
+Nessun dato di posizione, finanziario, salute, foto, contatti.
+
+
+Altre dichiarazioni
+-------------------
+- Annunci: No.
+- Pubblico di destinazione: 18 anni e oltre (il menù contiene alcolici).
+- Classificazione contenuti: compila il questionario; segnala "riferimenti
+  a bevande alcoliche" (menù), nessuna vendita in app.
+- App di notizie: No. App governativa: No. Funzioni finanziarie: No.
+  Salute: No.

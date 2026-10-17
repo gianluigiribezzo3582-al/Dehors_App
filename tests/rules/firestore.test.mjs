@@ -97,6 +97,16 @@ await t('titolare NON cambia ruolo e punti insieme', false, () => admin.doc('use
 await t('staff NON nomina altri staff', false, () => staff.doc('users/cli2').update({ role: 'staff' }));
 await t('cliente NON nomina staff', false, () => cli.doc('users/cli2').update({ role: 'staff' }));
 
+// Eliminazione account (GDPR)
+await t('cliente cancella i propri movimenti', true, () => cli2.doc('users/cli2/transactions/t1').delete());
+await t('cliente NON cancella movimenti altrui', false, () => cli.doc('users/cli2/transactions/t1').delete());
+await t('cliente trova i propri token', true, () => cli.collection('pushTokens').where('uid', '==', 'cli1').get());
+await t('cliente cancella il proprio token', true, () => cli.doc('pushTokens/ExponentPushToken[abc]').delete());
+await t('cliente NON cancella token altrui', false, async () => {
+  await env.withSecurityRulesDisabled((c) => c.firestore().doc('pushTokens/altrui').set({ token: 'altrui', uid: 'cli2', platform: 'android', updatedAt: 1 }));
+  await cli.doc('pushTokens/altrui').delete();
+});
+
 console.log(results.join('\n'));
 console.log(`\n${results.filter((r) => r.startsWith('OK')).length}/${results.length} superati`);
 await env.cleanup();

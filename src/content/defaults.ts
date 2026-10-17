@@ -26,6 +26,7 @@ export const DefaultTexts: SiteTexts = {
   appleMapsUrl: Venue.appleMapsUrl,
   hours: { '0': '', '1': '', '2': '', '3': '', '4': '', '5': '', '6': '' },
   pointsPerEuro: Loyalty.pointsPerEuro,
+  privacyUrl: '',
 };
 
 export const DefaultLunch: LunchMenu = { dishes: [], note: '', from: '10:00', to: '15:00' };

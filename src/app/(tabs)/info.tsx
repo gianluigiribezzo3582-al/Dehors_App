@@ -118,6 +118,11 @@ export default function InfoScreen() {
         <AppText variant="caption" onPress={() => sendEmail(Venue.pec)}>
           PEC {Venue.pec}
         </AppText>
+        {t.privacyUrl ? (
+          <AppText variant="caption" color={theme.primary} onPress={() => openWebsite(t.privacyUrl)} style={{ marginTop: Spacing.sm }}>
+            Informativa privacy
+          </AppText>
+        ) : null}
         <AppText variant="caption" style={{ marginTop: Spacing.sm }}>
           {Venue.fullName} · v{Constants.expoConfig?.version ?? '1.0.0'}
         </AppText>

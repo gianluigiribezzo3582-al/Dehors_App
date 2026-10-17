@@ -89,6 +89,13 @@ function TextsForm({ initial }: { initial: SiteTexts }) {
         <Field label="Instagram (nome utente)" value={t.instagram} onChangeText={set('instagram')} autoCapitalize="none" placeholder="dehors.bari" />
         <Field label="Facebook (link pagina)" value={t.facebook} onChangeText={set('facebook')} autoCapitalize="none" placeholder="https://facebook.com/..." />
         <Field label="Sito web" value={t.website} onChangeText={set('website')} autoCapitalize="none" />
+        <Field
+          label="Link informativa privacy"
+          value={t.privacyUrl}
+          onChangeText={set('privacyUrl')}
+          autoCapitalize="none"
+          placeholder="https://docs.google.com/..."
+        />
       </Card>
 
       <SectionHeader title="Orari" />

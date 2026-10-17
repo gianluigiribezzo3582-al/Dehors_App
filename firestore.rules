@@ -86,7 +86,9 @@ service cloud.firestore {
           && request.resource.data.delta is int
           && request.resource.data.staffId == request.auth.uid;
 
-        allow update, delete: if false;
+        // Nessuno modifica lo storico; il cliente può solo cancellarlo eliminando l'account.
+        allow update: if false;
+        allow delete: if signedIn() && request.auth.uid == uid;
       }
     }
 
@@ -110,6 +112,8 @@ service cloud.firestore {
         && request.resource.data.keys().hasOnly(['token', 'uid', 'platform', 'updatedAt'])
         && (request.resource.data.uid == null || (signedIn() && request.resource.data.uid == request.auth.uid));
       allow read, delete: if isStaff();
+      // Ogni utente vede e cancella i propri token (eliminazione account).
+      allow read, delete: if signedIn() && resource.data.uid == request.auth.uid;
     }
   }
 }
