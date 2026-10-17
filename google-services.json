@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "251469095750",
+    "project_id": "dehors-897dc",
+    "storage_bucket": "dehors-897dc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251469095750:android:5092a5ec399bad4428fb47",
+        "android_client_info": {
+          "package_name": "it.dehors.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgZzvVXeQMQRZaUj7wDCiS3D04IH3PxF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
