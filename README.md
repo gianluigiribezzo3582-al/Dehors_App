@@ -54,12 +54,14 @@ Serve perché clienti e staff usino telefoni diversi con gli stessi dati.
    in [`src/config/firebase.ts`](src/config/firebase.ts).
 6. Riavvia `npx expo start`: il banner «Modalità demo» sparisce.
 
-### Rendere un account «staff»
+### Titolare e staff
 
-1. Registrati dall'app con l'account del personale.
-2. Firebase → Firestore → collezione `users` → documento di quell'utente.
-3. Cambia il campo `role` da `customer` a `staff` (o `admin`).
-4. Riapri l'app: compare la scheda **Staff** con lo scanner.
+Ruoli: `customer` (cliente), `staff` (dipendente), `admin` (titolare).
+
+1. **Una sola volta**: il titolare si registra dall'app, poi in Firebase → Firestore → collezione `users` → il suo documento cambia `role` da `customer` ad `admin`.
+2. **Dipendenti**: ognuno si registra dall'app con la sua email; il titolare va in **Staff → Gestione app → Staff e permessi**, lo cerca per email e tocca «Rendi staff» (o «Togli» per rimuoverlo). Il cambio vale subito.
+
+Il titolare non può cambiare il proprio ruolo né quello di un altro titolare, e non può nominare altri titolari dall'app (si fa solo dalla console).
 
 ## Gestione contenuti dall'app (staff)
 

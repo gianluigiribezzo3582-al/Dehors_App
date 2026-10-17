@@ -11,6 +11,11 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function isAdmin() {
+      return signedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     function isStaff() {
       return signedIn()
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['staff', 'admin'];
@@ -54,6 +59,14 @@ service cloud.firestore {
         && request.resource.data.points is int
         && request.resource.data.points >= 0
         && request.resource.data.totalEarned >= resource.data.totalEarned;
+
+      // Il titolare (admin) nomina o rimuove i dipendenti: cambia solo il ruolo, mai il proprio
+      // né quello di un altro titolare, e solo tra 'customer' e 'staff'.
+      allow update: if isAdmin()
+        && request.auth.uid != uid
+        && resource.data.role != 'admin'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['role'])
+        && request.resource.data.role in ['customer', 'staff'];
 
       allow delete: if signedIn() && request.auth.uid == uid;
 

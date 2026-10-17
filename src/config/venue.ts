@@ -22,8 +22,10 @@ export const Venue = {
   facebook: '',
   website: '',
   address: 'Via Giuseppe Re David 197, 70125 Bari',
-  /** Coordinate per "Indicazioni" (lascia null per cercare per indirizzo). */
-  coordinates: null as { lat: number; lng: number } | null,
+  /** Posizione ufficiale su Google Maps. */
+  googleMapsUrl: 'https://maps.app.goo.gl/XQZaTNGqU9msaNTF9',
+  /** Apple Maps: indicazioni verso l'indirizzo (sostituibile con un link condiviso da Apple Maps). */
+  appleMapsUrl: 'https://maps.apple.com/?daddr=Via%20Giuseppe%20Re%20David%20197%2C%2070125%20Bari&dirflg=d',
   /** Dati societari mostrati in fondo alla pagina Info. */
   company: {
     name: 'G.E.S. Drink&Food srls',

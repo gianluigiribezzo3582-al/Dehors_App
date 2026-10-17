@@ -47,6 +47,10 @@ export type SiteTexts = {
   facebook: string;
   website: string;
   address: string;
+  /** Link Google Maps del locale (usato su Android e web). */
+  googleMapsUrl: string;
+  /** Link Apple Maps (usato su iPhone); vuoto = indicazioni verso l'indirizzo. */
+  appleMapsUrl: string;
   hours: WeeklyHours;
   pointsPerEuro: number;
 };

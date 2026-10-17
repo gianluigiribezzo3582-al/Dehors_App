@@ -71,6 +71,9 @@ export interface Backend {
   getProfile(uid: string): Promise<UserProfile | null>;
   findByCardCode(code: string): Promise<UserProfile | null>;
   searchCustomersByEmail(prefix: string): Promise<UserProfile[]>;
+  /* Gestione dipendenti (solo titolare/admin) */
+  listStaff(): Promise<UserProfile[]>;
+  setRole(uid: string, role: 'customer' | 'staff'): Promise<void>;
   applyPoints(input: ApplyPointsInput): Promise<UserProfile>;
   /* Contenuti modificabili (lettura per tutti, scrittura solo staff) */
   subscribeContent<K extends ContentKey>(key: K, cb: (data: ContentMap[K] | null) => void): Unsubscribe;
@@ -123,6 +126,10 @@ export function generateCardCode(length = 8) {
 
 export function normalizeCardCode(code: string) {
   return code.toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+export function isAdmin(profile: UserProfile | null | undefined) {
+  return profile?.role === 'admin';
 }
 
 export function isStaff(profile: UserProfile | null | undefined) {

@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { StaffOnly } from '@/components/staff-only';
 import { AppText, Button, Card, Divider, Field, ListRow, SectionHeader, Screen, type IconName } from '@/components/ui';
+import { useAuth } from '@/hooks/use-auth';
 import { useContent } from '@/hooks/use-content';
 import { useTheme } from '@/hooks/use-theme';
 import { backend, errorMessage } from '@/services/backend';
@@ -36,6 +37,7 @@ function QuickTile({ icon, label, hint, onPress }: { icon: IconName; label: stri
 function StaffDesk() {
   const theme = useTheme();
   const { soldOut, lunch } = useContent();
+  const { isAdmin } = useAuth();
   const outCount = Object.values(soldOut).filter(Boolean).length;
   const lunchCount = lunch.dishes.length;
   const [code, setCode] = useState('');
@@ -169,6 +171,12 @@ function StaffDesk() {
         <ListRow icon="create-outline" title="Testi, contatti e orari" subtitle="Avviso in Home, punti per euro" onPress={() => router.push('/manage/texts')} />
         <Divider />
         <ListRow icon="notifications-outline" title="Invia notifica" subtitle="Messaggio a tutti i clienti" onPress={() => router.push('/manage/notify')} />
+        {isAdmin && (
+          <>
+            <Divider />
+            <ListRow icon="people-outline" title="Staff e permessi" subtitle="Aggiungi o togli i dipendenti" onPress={() => router.push('/manage/team')} />
+          </>
+        )}
       </Card>
     </Screen>
   );

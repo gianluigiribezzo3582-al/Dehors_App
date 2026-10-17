@@ -22,6 +22,8 @@ export const DefaultTexts: SiteTexts = {
   facebook: Venue.facebook,
   website: Venue.website,
   address: Venue.address,
+  googleMapsUrl: Venue.googleMapsUrl,
+  appleMapsUrl: Venue.appleMapsUrl,
   hours: { '0': '', '1': '', '2': '', '3': '', '4': '', '5': '', '6': '' },
   pointsPerEuro: Loyalty.pointsPerEuro,
 };

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { AppText, Button, Field, Screen } from '@/components/ui';
+import { AppText, Button, Field, PasswordField, Screen } from '@/components/ui';
 import { Loyalty } from '@/config/loyalty';
 import { useTheme } from '@/hooks/use-theme';
 import { backend, errorMessage } from '@/services/backend';
@@ -52,6 +52,7 @@ export default function RegisterScreen() {
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
+          autoCorrect={false}
           autoComplete="email"
           keyboardType="email-address"
           textContentType="emailAddress"
@@ -64,11 +65,10 @@ export default function RegisterScreen() {
           autoComplete="tel"
           textContentType="telephoneNumber"
         />
-        <Field
+        <PasswordField
           label="Password (min. 6 caratteri)"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry
           autoComplete="new-password"
           textContentType="newPassword"
         />

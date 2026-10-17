@@ -27,6 +27,7 @@ export default function ManageLayout() {
         <Stack.Screen name="notify" options={{ title: 'Invia notifica' }} />
         <Stack.Screen name="lunch" options={{ title: 'Pranzo del giorno' }} />
         <Stack.Screen name="soldout" options={{ title: 'Esauriti' }} />
+        <Stack.Screen name="team" options={{ title: 'Staff e permessi' }} />
       </Stack>
     </StaffOnly>
   );

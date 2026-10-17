@@ -69,6 +69,9 @@ PRIMA DI INIZIARE
 
 4. ACCESSO E USCITA
 -------------------
+[ ] 4.0  Nel campo password la prima lettera NON diventa maiuscola da
+         sola e non ci sono suggerimenti della tastiera; l'icona a occhio
+         mostra e nasconde la password (anche in registrazione).
 [ ] 4.1  Info > Esci > "Annulla": resti collegato.
 [ ] 4.2  Info > Esci > "Esci": torni ospite (Home con invito a registrarti).
 [ ] 4.3  Accedi con password sbagliata: messaggio "Email o password non
@@ -225,8 +228,11 @@ PRIMA DI INIZIARE
 [ ] 14.4 "Cellulare" apre il compositore con 388 328 2021.
 [ ] 14.5 "WhatsApp" apre la chat con 388 328 2021 (o il sito WhatsApp se
          l'app non è installata).
-[ ] 14.6 "Indicazioni" apre le mappe su Via Giuseppe Re David 197, Bari, e
-         il punto è quello giusto.
+[ ] 14.6 "Indicazioni" su Android apre Google Maps sul punto del locale
+         (il link ufficiale); su iPhone apre Apple Maps con le
+         indicazioni per Via Giuseppe Re David 197, Bari. Controlla che il
+         punto sia quello giusto; i due link si cambiano da Gestione app >
+         Testi, contatti e orari.
 [ ] 14.7 "Email" apre l'app di posta verso ges.drinkfoodgmail.com.
 [ ] 14.8 Toccando la PEC in fondo si apre la posta verso
          ges.drinkfoodpec.it.
@@ -310,6 +316,19 @@ Pranzo del giorno (scheda Staff > riquadro "Pranzo del giorno")
 [ ] 16.P7 Orario scritto male (es. "10"): messaggio "Orario non valido".
 [ ] 16.P8 "Svuota piatti" + "Salva pranzo": il pranzo sparisce ai
           clienti.
+
+Staff e permessi (solo titolare, ruolo "admin")
+[ ] 16.T1 Il titolare vede "Staff e permessi" in Gestione app; un
+          dipendente (staff) NON la vede e, se ci arriva, legge "Solo il
+          titolare può gestire lo staff".
+[ ] 16.T2 Un collega si registra; il titolare lo cerca per email e tocca
+          "Rendi staff" (chiede conferma): compare in "Staff attuale".
+[ ] 16.T3 Sul telefono del collega la scheda Staff compare subito (al
+          massimo chiudendo e riaprendo l'app).
+[ ] 16.T4 "Togli": il collega torna cliente e perde subito la scheda
+          Staff, anche se era dentro una schermata staff.
+[ ] 16.T5 Accanto al titolare non ci sono pulsanti: non può togliersi da
+          solo.
 
 Premi
 [ ] 16.11 Premi: modifica nome, punti, icona, colore: l'anteprima in alto
@@ -404,25 +423,46 @@ DEPLOY UFFICIALE SUL PLAY STORE (ANDROID)
 Le regole di Google cambiano spesso: prima di ogni passaggio controlla
 la guida aggiornata su https://support.google.com/googleplay/android-developer
 
-A. PREREQUISITI TECNICI (li preparo io quando me lo chiedi)
------------------------------------------------------------
-[ ] A.1  Attivare Firebase (database condiviso): senza, ogni telefono ha
-         dati propri e l'app non è utilizzabile davvero. Vedi README,
-         sezione "Attivare il database vero (Firebase)".
-[ ] A.2  Togliere i dati e gli account demo dalla versione pubblicata.
-[ ] A.3  Rimuovere i permessi non necessari che la build aggiunge
-         (SYSTEM_ALERT_WINDOW, lettura/scrittura memoria): Google può
-         chiederne conto in revisione.
-[ ] A.4  Creare la chiave di firma ufficiale (upload key) e conservarla
-         in un posto sicuro con la password: se si perde, aggiornare
-         l'app diventa complicato. MAI metterla su GitHub.
-[ ] A.5  Compilare il pacchetto per lo Store in formato .aab (non .apk),
-         firmato con la chiave ufficiale.
-[ ] A.6  A ogni aggiornamento aumentare il numero di versione
-         (versionCode/version in app.json), altrimenti il Play Store
-         rifiuta il caricamento.
-[ ] A.7  Decidere l'ID definitivo dell'app (ora "it.dehors.app"): dopo la
-         prima pubblicazione NON si può più cambiare.
+PERCORSO CONSIGLIATO (in ordine)
+--------------------------------
+ 1. Firebase (tu, ~20 minuti) -> mi mandi la configurazione.
+ 2. Build "vera" collegata a Firebase (io) -> APK da passare ai
+    colleghi per i primi test reali su più telefoni.
+ 3. Ruoli: tu diventi titolare (admin) dalla console Firebase, poi
+    nomini i colleghi staff dall'app.
+ 4. Test con i colleghi usando questo file (sezioni 1-18).
+ 5. Account Google Play Console (tu) e scheda dell'app.
+ 6. Chiave di firma e pacchetto .aab (io) -> caricamento in "Test
+    interno" del Play Store: i colleghi installano dal Play Store.
+ 7. Notifiche push (tu + io, una tantum).
+ 8. Test chiuso / produzione e revisione Google.
+ 9. Poi: versione iOS.
+
+A. PREREQUISITI TECNICI
+-----------------------
+[ ] A.1  Firebase: crea il progetto, attiva Authentication
+         (Email/Password) e Firestore (regione Europa), incolla le
+         regole di firestore.rules, registra un'app Web e mandami i
+         valori di firebaseConfig (vedi README). Da quel momento l'app
+         non è più in modalità demo.
+[x] A.2  Dati e account demo: esistono solo in modalità demo, non
+         finiscono nella versione collegata a Firebase.
+[x] A.3  Permessi superflui rimossi (finestre sovrapposte, memoria,
+         microfono): restano fotocamera, internet, vibrazione e
+         notifiche.
+[ ] A.4  Chiave di caricamento (upload key): la genero io e te la
+         mando con la password. Va conservata in un posto sicuro (es.
+         cloud personale + copia offline), MAI su GitHub. Con "Play App
+         Signing" attivo, se si perde si può chiedere a Google di
+         sostituirla.
+[ ] A.5  Pacchetto .aab firmato con la chiave di caricamento (lo
+         preparo io).
+[ ] A.6  A ogni aggiornamento aumento il numero di versione
+         (android.versionCode in app.json, ora 1): il Play Store
+         rifiuta un pacchetto con un numero già usato.
+[ ] A.7  ID dell'app: "it.dehors.app". Dopo la prima pubblicazione
+         NON si può più cambiare: se preferisci un altro ID dimmelo
+         prima del punto 6.
 
 B. ACCOUNT SVILUPPATORE GOOGLE PLAY
 -----------------------------------

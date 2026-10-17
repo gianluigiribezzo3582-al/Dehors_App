@@ -260,6 +260,27 @@ export function createDemoBackend(): Backend {
         .map((u) => publicProfile(u)!);
     },
 
+    async listStaff() {
+      const state = await load();
+      requireStaff(state);
+      return Object.values(state.users)
+        .filter((u) => u.role === 'staff' || u.role === 'admin')
+        .map((u) => publicProfile(u)!)
+        .sort((a, b) => a.name.localeCompare(b.name));
+    },
+
+    async setRole(uid, role) {
+      const state = await load();
+      const me = state.session ? state.users[state.session] : undefined;
+      if (me?.role !== 'admin') throw new AppError('Solo il titolare può gestire lo staff.');
+      if (uid === me.id) throw new AppError('Non puoi cambiare il tuo stesso ruolo.');
+      const user = state.users[uid];
+      if (!user) throw new AppError('Utente non trovato.');
+      if (user.role === 'admin') throw new AppError('Non puoi modificare un altro titolare.');
+      user.role = role;
+      await commit();
+    },
+
     async applyPoints({ userId, delta, kind, amountEur, rewardId, rewardTitle, singleUse, note, staff }) {
       await delay();
       if (!Number.isInteger(delta) || delta === 0) throw new AppError('Numero di punti non valido.');

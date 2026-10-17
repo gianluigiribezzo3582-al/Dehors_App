@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 import { backend } from '@/services/backend';
-import { isStaff, type UserProfile } from '@/services/types';
+import { isAdmin, isStaff, type UserProfile } from '@/services/types';
 
 type AuthState = {
   /** true quando sappiamo se c'è un utente collegato e, se sì, abbiamo letto il suo profilo (e quindi il ruolo). */
@@ -9,9 +9,11 @@ type AuthState = {
   uid: string | null;
   profile: UserProfile | null;
   isStaff: boolean;
+  /** Titolare: può nominare e rimuovere lo staff. */
+  isAdmin: boolean;
 };
 
-const AuthContext = createContext<AuthState>({ ready: false, uid: null, profile: null, isStaff: false });
+const AuthContext = createContext<AuthState>({ ready: false, uid: null, profile: null, isStaff: false, isAdmin: false });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [authKnown, setAuthKnown] = useState(false);
@@ -37,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const ready = authKnown && (!uid || loaded?.uid === uid);
 
   return (
-    <AuthContext.Provider value={{ ready, uid, profile, isStaff: isStaff(profile) }}>
+    <AuthContext.Provider value={{ ready, uid, profile, isStaff: isStaff(profile), isAdmin: isAdmin(profile) }}>
       {children}
     </AuthContext.Provider>
   );

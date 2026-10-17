@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import type { ComponentProps, ReactNode } from 'react';
+import { useState, type ComponentProps, type ReactNode } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -147,6 +147,35 @@ export function Field({ label, ...props }: TextInputProps & { label: string }) {
   );
 }
 
+/** Campo password: niente maiuscole/correttore automatici e icona per mostrare o nascondere. */
+export function PasswordField({ label, ...props }: Omit<TextInputProps, 'secureTextEntry'> & { label: string }) {
+  const theme = useTheme();
+  const [visible, setVisible] = useState(false);
+  return (
+    <View style={{ gap: Spacing.xs }}>
+      <AppText variant="caption">{label}</AppText>
+      <View style={[styles.input, styles.passwordRow, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+        <TextInput
+          placeholderTextColor={theme.textSecondary}
+          autoCapitalize="none"
+          autoCorrect={false}
+          spellCheck={false}
+          {...props}
+          secureTextEntry={!visible}
+          style={[styles.passwordInput, { color: theme.text }, props.style]}
+        />
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={visible ? 'Nascondi password' : 'Mostra password'}
+          onPress={() => setVisible((v) => !v)}
+          hitSlop={10}>
+          <Ionicons name={visible ? 'eye-off-outline' : 'eye-outline'} size={22} color={theme.textSecondary} />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
 export function SectionHeader({ title, action }: { title: string; action?: ReactNode }) {
   return (
     <View style={styles.sectionHeader}>
@@ -180,11 +209,8 @@ export function ListRow({
   onPress?: () => void;
 }) {
   const theme = useTheme();
-  return (
-    <Pressable
-      disabled={!onPress}
-      onPress={onPress}
-      style={({ pressed }) => [styles.row, { opacity: pressed ? 0.6 : 1 }]}>
+  const content = (
+    <>
       {icon && (
         <View style={[styles.rowIcon, { backgroundColor: theme.surfaceAlt }]}>
           <Ionicons name={icon} size={18} color={theme.primary} />
@@ -195,6 +221,13 @@ export function ListRow({
         {subtitle ? <AppText variant="caption">{subtitle}</AppText> : null}
       </View>
       {right ?? (onPress ? <Ionicons name="chevron-forward" size={18} color={theme.textSecondary} /> : null)}
+    </>
+  );
+  // Senza azione propria è un semplice contenitore: così i pulsanti in `right` restano attivi.
+  if (!onPress) return <View style={styles.row}>{content}</View>;
+  return (
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.row, { opacity: pressed ? 0.6 : 1 }]}>
+      {content}
     </Pressable>
   );
 }
@@ -249,6 +282,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Fonts.regular,
   },
+  passwordRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  passwordInput: { flex: 1, fontSize: 16, fontFamily: Fonts.regular, minHeight: 48 },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',

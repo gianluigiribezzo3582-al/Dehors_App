@@ -72,6 +72,20 @@ function TextsForm({ initial }: { initial: SiteTexts }) {
         <Field label="Numero WhatsApp" value={t.whatsapp} onChangeText={set('whatsapp')} keyboardType="phone-pad" />
         <Field label="Email" value={t.email} onChangeText={set('email')} autoCapitalize="none" keyboardType="email-address" />
         <Field label="Indirizzo" value={t.address} onChangeText={set('address')} />
+        <Field
+          label="Link Google Maps (Android)"
+          value={t.googleMapsUrl}
+          onChangeText={set('googleMapsUrl')}
+          autoCapitalize="none"
+          placeholder="https://maps.app.goo.gl/..."
+        />
+        <Field
+          label="Link Apple Maps (iPhone)"
+          value={t.appleMapsUrl}
+          onChangeText={set('appleMapsUrl')}
+          autoCapitalize="none"
+          placeholder="https://maps.apple.com/..."
+        />
         <Field label="Instagram (nome utente)" value={t.instagram} onChangeText={set('instagram')} autoCapitalize="none" placeholder="dehors.bari" />
         <Field label="Facebook (link pagina)" value={t.facebook} onChangeText={set('facebook')} autoCapitalize="none" placeholder="https://facebook.com/..." />
         <Field label="Sito web" value={t.website} onChangeText={set('website')} autoCapitalize="none" />

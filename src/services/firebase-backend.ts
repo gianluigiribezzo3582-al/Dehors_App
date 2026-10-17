@@ -212,6 +212,17 @@ export function createFirebaseBackend(): Backend {
       return snap.docs.map((d) => toProfile(d.id, d.data()));
     },
 
+    async listStaff() {
+      const q = query(collection(db, 'users'), where('role', 'in', ['staff', 'admin']));
+      const snap = await getDocs(q);
+      return snap.docs.map((d) => toProfile(d.id, d.data())).sort((a, b) => a.name.localeCompare(b.name));
+    },
+
+    async setRole(uid, role) {
+      if (uid === auth.currentUser?.uid) throw new AppError('Non puoi cambiare il tuo stesso ruolo.');
+      await updateDoc(userRef(uid), { role });
+    },
+
     async applyPoints({ userId, delta, kind, amountEur, rewardId, rewardTitle, singleUse, note, staff }) {
       if (!Number.isInteger(delta) || delta === 0) throw new AppError('Numero di punti non valido.');
       return runTransaction(db, async (tx) => {

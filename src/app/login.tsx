@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 
 import { dialog } from '@/components/dialog';
-import { AppText, Button, Field, Screen } from '@/components/ui';
+import { AppText, Button, Field, PasswordField, Screen } from '@/components/ui';
 import { useTheme } from '@/hooks/use-theme';
 import { backend, errorMessage } from '@/services/backend';
 
@@ -57,15 +57,15 @@ export default function LoginScreen() {
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
+          autoCorrect={false}
           autoComplete="email"
           keyboardType="email-address"
           textContentType="emailAddress"
         />
-        <Field
+        <PasswordField
           label="Password"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry
           autoComplete="current-password"
           textContentType="password"
           onSubmitEditing={submit}

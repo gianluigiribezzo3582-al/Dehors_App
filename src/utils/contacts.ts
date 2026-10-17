@@ -2,7 +2,6 @@ import * as Linking from 'expo-linking';
 import { Platform } from 'react-native';
 
 import { dialog } from '@/components/dialog';
-import { Venue } from '@/config/venue';
 import type { SiteTexts } from '@/content/types';
 
 async function open(url: string, fallback?: string) {
@@ -39,18 +38,12 @@ export function openInstagram(handle: string) {
   return open(`instagram://user?username=${user}`, `https://instagram.com/${user}`);
 }
 
+/** Indicazioni: Apple Maps su iPhone, Google Maps altrove (link impostabili dallo staff). */
 export function directionsTo(t: SiteTexts) {
-  const c = Venue.coordinates;
   const q = encodeURIComponent(t.address);
-  const label = encodeURIComponent(Venue.fullName);
   if (Platform.OS === 'ios') {
-    return open(c ? `maps://?daddr=${c.lat},${c.lng}&q=${label}` : `maps://?daddr=${q}`);
+    return open(t.appleMapsUrl || `https://maps.apple.com/?daddr=${q}`);
   }
-  const web = c
-    ? `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`
-    : `https://www.google.com/maps/dir/?api=1&destination=${q}`;
-  if (Platform.OS === 'android') {
-    return open(c ? `geo:${c.lat},${c.lng}?q=${c.lat},${c.lng}(${label})` : `geo:0,0?q=${q}`, web);
-  }
-  return open(web);
+  const fallback = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+  return open(t.googleMapsUrl || fallback, fallback);
 }

@@ -17,6 +17,10 @@ const profile = (o = {}) => ({ name: 'Mario', email: 'mario@x.it', phone: null, 
 await env.withSecurityRulesDisabled(async (ctx) => {
   const db = ctx.firestore();
   await db.doc('users/staff1').set(profile({ name: 'Staff', email: 'staff@x.it', role: 'staff' }));
+  await db.doc('users/staff2').set(profile({ name: 'Staff 2', email: 'staff2@x.it', role: 'staff' }));
+  await db.doc('users/admin1').set(profile({ name: 'Titolare', email: 'boss@x.it', role: 'admin' }));
+  await db.doc('users/admin2').set(profile({ name: 'Socio', email: 'socio@x.it', role: 'admin' }));
+  await db.doc('users/cli3').set(profile({ name: 'Anna', email: 'anna@x.it' }));
   await db.doc('users/cli2').set(profile({ name: 'Luigi', email: 'luigi@x.it', points: 50, redeemed: { caffe: 2 } }));
   await db.doc('users/cli2/transactions/t1').set({ delta: 5, kind: 'earn' });
   await db.doc('events/pub').set({ title: 'Pub', published: true, startsAt: 1 });
@@ -28,6 +32,7 @@ const guest = env.unauthenticatedContext().firestore();
 const cli = env.authenticatedContext('cli1', { email: 'mario@x.it' }).firestore();
 const cli2 = env.authenticatedContext('cli2', { email: 'luigi@x.it' }).firestore();
 const staff = env.authenticatedContext('staff1', { email: 'staff@x.it' }).firestore();
+const admin = env.authenticatedContext('admin1', { email: 'boss@x.it' }).firestore();
 
 // Registrazione
 await t('cliente crea il proprio profilo', true, () => cli.doc('users/cli1').set(profile()));
@@ -80,6 +85,17 @@ await t('cliente NON collega token a un altro', false, () => cli.doc('pushTokens
 await t('ospite NON legge i token', false, () => guest.collection('pushTokens').get());
 await t('cliente NON legge i token', false, () => cli.collection('pushTokens').get());
 await t('staff legge i token', true, () => staff.collection('pushTokens').get());
+
+// Gestione staff (titolare)
+await t('titolare rende staff un cliente', true, () => admin.doc('users/cli3').update({ role: 'staff' }));
+await t('titolare toglie un dipendente', true, () => admin.doc('users/staff2').update({ role: 'customer' }));
+await t('titolare elenca lo staff', true, () => admin.collection('users').where('role', 'in', ['staff', 'admin']).get());
+await t('titolare NON nomina altri titolari', false, () => admin.doc('users/cli2').update({ role: 'admin' }));
+await t('titolare NON cambia il proprio ruolo', false, () => admin.doc('users/admin1').update({ role: 'staff' }));
+await t('titolare NON declassa un altro titolare', false, () => admin.doc('users/admin2').update({ role: 'customer' }));
+await t('titolare NON cambia ruolo e punti insieme', false, () => admin.doc('users/cli2').update({ role: 'staff', points: 1000 }));
+await t('staff NON nomina altri staff', false, () => staff.doc('users/cli2').update({ role: 'staff' }));
+await t('cliente NON nomina staff', false, () => cli.doc('users/cli2').update({ role: 'staff' }));
 
 console.log(results.join('\n'));
 console.log(`\n${results.filter((r) => r.startsWith('OK')).length}/${results.length} superati`);
