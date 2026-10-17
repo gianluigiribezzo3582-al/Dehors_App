@@ -36,7 +36,8 @@ service cloud.firestore {
         && request.resource.data.name.size() > 0
         && request.resource.data.name.size() <= 80
         && request.resource.data.cardCode is string
-        && request.resource.data.cardCode.size() == 8;
+        && request.resource.data.cardCode.size() == 8
+        && request.resource.data.redeemed == {};
 
       // Il cliente può modificare solo nome e telefono.
       allow update: if signedIn()
@@ -46,9 +47,10 @@ service cloud.firestore {
         && request.resource.data.name.size() > 0
         && request.resource.data.name.size() <= 80;
 
-      // Lo staff può modificare solo il saldo punti (mai negativo; il totale storico non scende).
+      // Lo staff può modificare solo saldo punti e premi riscattati (saldo mai negativo; il totale storico non scende).
       allow update: if isStaff()
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['points', 'totalEarned'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['points', 'totalEarned', 'redeemed'])
+        && request.resource.data.redeemed is map
         && request.resource.data.points is int
         && request.resource.data.points >= 0
         && request.resource.data.totalEarned >= resource.data.totalEarned;
@@ -73,6 +75,27 @@ service cloud.firestore {
 
         allow update, delete: if false;
       }
+    }
+
+    // Menù, premi e testi: li leggono tutti (anche senza account), li modifica solo lo staff.
+    match /content/{doc} {
+      allow read: if true;
+      allow write: if isStaff() && doc in ['menu', 'rewards', 'texts'];
+    }
+
+    // Eventi: pubblici solo se pubblicati; le bozze le vede solo lo staff.
+    match /events/{eventId} {
+      allow read: if resource.data.published == true || isStaff();
+      allow write: if isStaff();
+    }
+
+    // Token per le notifiche: ogni telefono registra il proprio; solo lo staff li legge per inviare.
+    match /pushTokens/{token} {
+      allow create, update: if request.resource.data.token == token
+        && token.size() < 200
+        && request.resource.data.keys().hasOnly(['token', 'uid', 'platform', 'updatedAt'])
+        && (request.resource.data.uid == null || (signedIn() && request.resource.data.uid == request.auth.uid));
+      allow read, delete: if isStaff();
     }
   }
 }

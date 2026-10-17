@@ -1,10 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Loyalty } from '@/config/loyalty';
+import type { ContentMap, EventItem } from '@/content/types';
 import {
   AppError,
   generateCardCode,
+  newId,
   normalizeCardCode,
+  plain,
   type Backend,
   type PointsTransaction,
   type UserProfile,
@@ -19,14 +22,13 @@ type DemoDb = {
   users: Record<string, DemoUser>;
   transactions: Record<string, PointsTransaction[]>;
   session: string | null;
+  content: Partial<ContentMap>;
+  events: EventItem[];
+  pushTokens: string[];
 };
 
 const STORAGE_KEY = 'dehors-demo-db-v1';
 export const DEMO_STAFF = { email: 'staff@dehors.demo', password: 'staff123' };
-
-function newId() {
-  return `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
-}
 
 function seed(): DemoDb {
   const staffId = 'demo-staff';
@@ -34,6 +36,9 @@ function seed(): DemoDb {
   const now = Date.now();
   return {
     session: null,
+    content: {},
+    events: [],
+    pushTokens: [],
     users: {
       [staffId]: {
         id: staffId,
@@ -44,6 +49,7 @@ function seed(): DemoDb {
         points: 0,
         totalEarned: 0,
         cardCode: 'STAFF001',
+        redeemed: {},
         createdAt: now,
       },
       [customerId]: {
@@ -55,12 +61,13 @@ function seed(): DemoDb {
         points: 64,
         totalEarned: 134,
         cardCode: 'DEMO2345',
+        redeemed: { colazione: 1 },
         createdAt: now,
       },
     },
     transactions: {
       [customerId]: [
-        { id: newId(), delta: -50, kind: 'redeem', rewardId: 'colazione', staffName: 'Staff Dehors', createdAt: now - 86400000 },
+        { id: newId(), delta: -50, kind: 'redeem', rewardId: 'colazione', rewardTitle: 'Colazione', staffName: 'Staff Dehors', createdAt: now - 86400000 },
         { id: newId(), delta: 24, kind: 'earn', amountEur: 24.5, staffName: 'Staff Dehors', createdAt: now - 3 * 86400000 },
         { id: newId(), delta: 100, kind: 'earn', amountEur: 100, staffName: 'Staff Dehors', createdAt: now - 7 * 86400000 },
         { id: newId(), delta: 10, kind: 'welcome', createdAt: now - 10 * 86400000 },
@@ -89,6 +96,17 @@ function publicProfile(user: DemoUser | undefined): UserProfile | null {
   return profile;
 }
 
+/** Completa i dati salvati da versioni precedenti dell'app. */
+function normalize(state: DemoDb): DemoDb {
+  state.content ??= {};
+  state.events ??= [];
+  state.pushTokens ??= [];
+  Object.values(state.users).forEach((u) => {
+    u.redeemed ??= {};
+  });
+  return state;
+}
+
 export function createDemoBackend(): Backend {
   let db: DemoDb | null = null;
   const listeners = new Set<() => void>();
@@ -97,7 +115,7 @@ export function createDemoBackend(): Backend {
     if (db) return db;
     try {
       const raw = await AsyncStorage.getItem(STORAGE_KEY);
-      db = raw ? (JSON.parse(raw) as DemoDb) : seed();
+      db = raw ? normalize(JSON.parse(raw) as DemoDb) : seed();
     } catch {
       db = seed();
     }
@@ -169,6 +187,7 @@ export function createDemoBackend(): Backend {
         points: Loyalty.welcomeBonus,
         totalEarned: Loyalty.welcomeBonus,
         cardCode: generateCardCode(),
+        redeemed: {},
         createdAt: Date.now(),
       };
       state.transactions[id] =
@@ -241,7 +260,7 @@ export function createDemoBackend(): Backend {
         .map((u) => publicProfile(u)!);
     },
 
-    async applyPoints({ userId, delta, kind, amountEur, rewardId, note, staff }) {
+    async applyPoints({ userId, delta, kind, amountEur, rewardId, rewardTitle, singleUse, note, staff }) {
       await delay();
       if (!Number.isInteger(delta) || delta === 0) throw new AppError('Numero di punti non valido.');
       const state = await load();
@@ -250,6 +269,12 @@ export function createDemoBackend(): Backend {
       const user = state.users[userId];
       if (!user) throw new AppError('Cliente non trovato.');
       if (user.points + delta < 0) throw new AppError(`Saldo insufficiente: il cliente ha ${user.points} punti.`);
+      if (kind === 'redeem' && rewardId) {
+        if (singleUse && (user.redeemed[rewardId] ?? 0) > 0) {
+          throw new AppError('Questo premio si può riscattare una sola volta e il cliente lo ha già usato.');
+        }
+        user.redeemed[rewardId] = (user.redeemed[rewardId] ?? 0) + 1;
+      }
       user.points += delta;
       if (delta > 0) user.totalEarned += delta;
       const list = state.transactions[userId] ?? [];
@@ -259,6 +284,7 @@ export function createDemoBackend(): Backend {
         kind,
         amountEur,
         rewardId,
+        rewardTitle,
         note: note?.trim() || undefined,
         staffId,
         staffName: state.users[staffId]?.name ?? staff.name,
@@ -267,6 +293,71 @@ export function createDemoBackend(): Backend {
       state.transactions[userId] = list;
       await commit();
       return publicProfile(user)!;
+    },
+
+    subscribeContent(key, cb) {
+      return watch((state) => cb((state.content[key] as never) ?? null));
+    },
+
+    async saveContent(key, data) {
+      const state = await load();
+      requireStaff(state);
+      (state.content as Record<string, unknown>)[key] = plain(data);
+      await commit();
+    },
+
+    subscribeEvents(includeDrafts, cb) {
+      return watch((state) => {
+        const staff = includeDrafts && isStaffSession(state);
+        cb(
+          state.events
+            .filter((e) => staff || e.published)
+            .slice()
+            .sort((a, b) => a.startsAt - b.startsAt),
+        );
+      });
+    },
+
+    async saveEvent(input) {
+      const state = await load();
+      requireStaff(state);
+      const event: EventItem = plain({
+        id: input.id ?? newId(),
+        title: input.title.trim(),
+        description: input.description.trim(),
+        details: input.details?.trim() || undefined,
+        startsAt: input.startsAt,
+        published: input.published,
+        createdAt: input.createdAt ?? Date.now(),
+      });
+      state.events = [...state.events.filter((e) => e.id !== event.id), event];
+      await commit();
+      return event;
+    },
+
+    async deleteEvent(id) {
+      const state = await load();
+      requireStaff(state);
+      state.events = state.events.filter((e) => e.id !== id);
+      await commit();
+    },
+
+    async registerPushToken(token) {
+      const state = await load();
+      if (!state.pushTokens.includes(token)) state.pushTokens.push(token);
+      await commit();
+    },
+
+    async listPushTokens() {
+      const state = await load();
+      requireStaff(state);
+      return [...state.pushTokens];
+    },
+
+    async removePushTokens(tokens) {
+      const state = await load();
+      state.pushTokens = state.pushTokens.filter((t) => !tokens.includes(t));
+      await commit();
     },
   };
 }

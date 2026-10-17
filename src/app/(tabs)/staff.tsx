@@ -121,6 +121,19 @@ function StaffDesk() {
           </View>
         )}
       </Card>
+
+      <SectionHeader title="Gestione app" />
+      <Card style={{ gap: 0, paddingVertical: Spacing.xs }}>
+        <ListRow icon="restaurant-outline" title="Menù" subtitle="Voci, prezzi, disponibilità" onPress={() => router.push('/manage/menu')} />
+        <Divider />
+        <ListRow icon="calendar-outline" title="Eventi" subtitle="Eventi in Home e notifica" onPress={() => router.push('/manage/events')} />
+        <Divider />
+        <ListRow icon="gift-outline" title="Premi" subtitle="Punti, una volta o più volte" onPress={() => router.push('/manage/rewards')} />
+        <Divider />
+        <ListRow icon="create-outline" title="Testi, contatti e orari" subtitle="Avviso in Home, punti per euro" onPress={() => router.push('/manage/texts')} />
+        <Divider />
+        <ListRow icon="notifications-outline" title="Invia notifica" subtitle="Messaggio a tutti i clienti" onPress={() => router.push('/manage/notify')} />
+      </Card>
     </Screen>
   );
 }

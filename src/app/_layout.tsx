@@ -3,7 +3,7 @@ import { Urbanist_500Medium } from '@expo-google-fonts/urbanist/500Medium';
 import { Urbanist_600SemiBold } from '@expo-google-fonts/urbanist/600SemiBold';
 import { Urbanist_700Bold } from '@expo-google-fonts/urbanist/700Bold';
 import { useFonts } from 'expo-font';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
@@ -12,12 +12,15 @@ import { useColorScheme } from 'react-native';
 
 import { DialogHost } from '@/components/dialog';
 import { AuthProvider, useAuth } from '@/hooks/use-auth';
+import { ContentProvider } from '@/hooks/use-content';
+import { configureNotifications, onNotificationOpened, registerForPush } from '@/services/notifications';
 import { Colors } from '@/theme/colors';
 
 SplashScreen.preventAutoHideAsync();
+configureNotifications();
 
 function RootStack() {
-  const { ready: authReady, isStaff } = useAuth();
+  const { ready: authReady, isStaff, uid } = useAuth();
   const [fontsLoaded, fontError] = useFonts({
     Urbanist_400Regular,
     Urbanist_500Medium,
@@ -31,6 +34,19 @@ function RootStack() {
 
   useEffect(() => {
     if (ready) SplashScreen.hideAsync();
+  }, [ready]);
+
+  // Registra il telefono per le notifiche (anche gli ospiti) e aggiorna il legame con l'utente.
+  useEffect(() => {
+    if (ready) registerForPush(uid);
+  }, [ready, uid]);
+
+  // Tocco su una notifica di un evento: apre il dettaglio.
+  useEffect(() => {
+    if (!ready) return;
+    return onNotificationOpened((data) => {
+      if (data?.eventId) router.push(`/event/${data.eventId}`);
+    });
   }, [ready]);
 
   // Finché non conosciamo l'utente e il suo ruolo resta la schermata di avvio:
@@ -52,10 +68,12 @@ function RootStack() {
       <Stack.Screen name="profile" options={{ title: 'Il mio profilo' }} />
       <Stack.Screen name="history" options={{ title: 'Movimenti punti' }} />
       <Stack.Screen name="reward/[id]" options={{ title: 'Premio', presentation: 'modal' }} />
+      <Stack.Screen name="event/[id]" options={{ title: 'Evento' }} />
       {/* Area staff: rotte inesistenti per chi non ha ruolo staff/admin. */}
       <Stack.Protected guard={isStaff}>
         <Stack.Screen name="scan" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="customer/[id]" options={{ title: 'Cliente' }} />
+        <Stack.Screen name="manage" options={{ headerShown: false }} />
       </Stack.Protected>
     </Stack>
   );
@@ -79,7 +97,9 @@ export default function RootLayout() {
       }}>
       <AuthProvider>
         <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
-        <RootStack />
+        <ContentProvider>
+          <RootStack />
+        </ContentProvider>
         <DialogHost />
       </AuthProvider>
     </ThemeProvider>

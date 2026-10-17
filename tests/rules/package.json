@@ -1,0 +1,13 @@
+{
+  "name": "dehors-firestore-rules-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "firebase emulators:exec --config ../../firebase.json --only firestore --project dehors-test \"node firestore.test.mjs\""
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "firebase": "^12.19.0",
+    "firebase-tools": "^15.34.0"
+  }
+}

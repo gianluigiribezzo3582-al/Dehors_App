@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 
 import { dialog } from '@/components/dialog';
 import { Venue } from '@/config/venue';
+import type { SiteTexts } from '@/content/types';
 
 async function open(url: string, fallback?: string) {
   try {
@@ -18,21 +19,29 @@ async function open(url: string, fallback?: string) {
   }
 }
 
-export const callVenue = () => open(`tel:${Venue.phone}`);
-export const callMobile = () => open(`tel:${Venue.mobile}`);
-export const emailVenue = () => open(`mailto:${Venue.email}`);
-export const pecVenue = () => open(`mailto:${Venue.pec}`);
-export const whatsappVenue = () => {
-  const number = Venue.whatsapp.replace(/[^0-9]/g, '');
-  return open(`whatsapp://send?phone=${number}`, `https://wa.me/${number}`);
-};
-export const instagramVenue = () =>
-  open(`instagram://user?username=${Venue.instagram}`, `https://instagram.com/${Venue.instagram}`);
-export const openWebsite = (url: string) => open(url);
+/** «080 975 3266» → «+390809753266» (aggiunge il prefisso italiano se manca). */
+export function toDialable(phone: string) {
+  const cleaned = phone.replace(/[^\d+]/g, '').replace(/^00/, '+');
+  return cleaned.startsWith('+') ? cleaned : `+39${cleaned}`;
+}
 
-export function directionsToVenue() {
+export const callNumber = (phone: string) => open(`tel:${toDialable(phone)}`);
+export const sendEmail = (email: string) => open(`mailto:${email}`);
+export const openWebsite = (url: string) => open(/^https?:\/\//.test(url) ? url : `https://${url}`);
+
+export function openWhatsapp(phone: string) {
+  const number = toDialable(phone).replace('+', '');
+  return open(`whatsapp://send?phone=${number}`, `https://wa.me/${number}`);
+}
+
+export function openInstagram(handle: string) {
+  const user = handle.replace(/^@/, '').trim();
+  return open(`instagram://user?username=${user}`, `https://instagram.com/${user}`);
+}
+
+export function directionsTo(t: SiteTexts) {
   const c = Venue.coordinates;
-  const q = encodeURIComponent(Venue.address);
+  const q = encodeURIComponent(t.address);
   const label = encodeURIComponent(Venue.fullName);
   if (Platform.OS === 'ios') {
     return open(c ? `maps://?daddr=${c.lat},${c.lng}&q=${label}` : `maps://?daddr=${q}`);

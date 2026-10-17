@@ -1,5 +1,6 @@
 /**
- * Menù di Dehors Cafè-Bistrot (da «Menu ottobre 2026»).
+ * Menù iniziale di Dehors Cafè-Bistrot (da «Menu ottobre 2026»).
+ * Dopo il primo salvataggio dalla gestione staff nell'app, fa fede il menù salvato online.
  *
  * - `price` in euro; per prezzi non singoli («da € 3,50 a € 6,00», «+ € 0,50») usa `priceLabel`.
  * - `frozen: true` aggiunge l'asterisco (prodotto surgelato/congelato all'origine).
@@ -15,6 +16,8 @@ export type MenuItem = {
   priceLabel?: string;
   frozen?: boolean;
   tags?: MenuTag[];
+  /** true = non disponibile, nascosto ai clienti. */
+  hidden?: boolean;
 };
 
 export type MenuCategory = {

@@ -1,17 +1,12 @@
-import type { ImageSourcePropType } from 'react-native';
-
 /**
- * Premi del programma fedeltà.
- * Per aggiungere una foto/sfondo: salva l'immagine in assets/images/rewards/
- * e imposta `image: require('@/assets/images/rewards/nome-file.jpg')`.
- * Senza immagine la card usa il colore `tint`.
+ * Premi iniziali del programma fedeltà.
+ * Dopo il primo salvataggio dalla gestione staff nell'app, fanno fede i premi salvati online.
  */
 export type Reward = {
   id: string;
   title: string;
   description: string;
   cost: number;
-  image?: ImageSourcePropType;
   tint: string;
   icon: string;
 };
@@ -58,7 +53,3 @@ export const Rewards: Reward[] = [
     icon: 'pizza',
   },
 ];
-
-export function rewardById(id: string | undefined): Reward | undefined {
-  return Rewards.find((r) => r.id === id);
-}

@@ -1,6 +1,6 @@
 /** Regole del programma fedeltà. */
 export const Loyalty = {
-  /** Punti assegnati per ogni euro speso (arrotondati per difetto). */
+  /** Punti per ogni euro speso (valore iniziale: lo staff lo cambia da Gestione > Testi). */
   pointsPerEuro: 1,
   /** Punti regalati a chi si registra. */
   welcomeBonus: 10,
@@ -25,7 +25,7 @@ export function tierFor(totalEarned: number): { current: Tier; next: Tier | null
   return { current: tiers[index], next: tiers[index + 1] ?? null };
 }
 
-export function pointsForAmount(euro: number): number {
+export function pointsForAmount(euro: number, pointsPerEuro: number): number {
   if (!Number.isFinite(euro) || euro <= 0) return 0;
-  return Math.floor(euro * Loyalty.pointsPerEuro);
+  return Math.floor(euro * pointsPerEuro);
 }

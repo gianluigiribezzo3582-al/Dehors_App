@@ -5,7 +5,8 @@ import { LoginPrompt } from '@/components/login-prompt';
 import { LoyaltyCard } from '@/components/loyalty-card';
 import { TransactionRow } from '@/components/transaction-row';
 import { AppText, Button, Card, Divider, Loading, ProgressBar, SectionHeader, Screen } from '@/components/ui';
-import { Loyalty, tierFor } from '@/config/loyalty';
+import { tierFor } from '@/config/loyalty';
+import { useContent } from '@/hooks/use-content';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme } from '@/hooks/use-theme';
 import { useTransactions } from '@/hooks/use-transactions';
@@ -15,6 +16,7 @@ export default function CardScreen() {
   const theme = useTheme();
   const { uid, profile } = useAuth();
   const transactions = useTransactions(uid, 5);
+  const { texts } = useContent();
 
   if (!uid) {
     return (
@@ -37,7 +39,7 @@ export default function CardScreen() {
       <AppText variant="display">Tessera</AppText>
       <LoyaltyCard profile={profile} />
       <AppText variant="caption" style={{ textAlign: 'center' }}>
-        Mostra il QR al personale quando paghi: riceverai {Loyalty.pointsPerEuro} punto per ogni euro speso.
+        Mostra il QR al personale quando paghi: riceverai {texts.pointsPerEuro} {texts.pointsPerEuro === 1 ? 'punto' : 'punti'} per ogni euro speso.
       </AppText>
 
       <Card>

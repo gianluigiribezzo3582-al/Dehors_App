@@ -1,3 +1,5 @@
+import type { ContentKey, ContentMap, EventItem } from '@/content/types';
+
 export type Role = 'customer' | 'staff' | 'admin';
 
 export type UserProfile = {
@@ -12,6 +14,8 @@ export type UserProfile = {
   totalEarned: number;
   /** Codice tessera breve, digitabile dallo staff se il QR non si legge. */
   cardCode: string;
+  /** Quante volte ha riscattato ciascun premio (id premio → numero). */
+  redeemed: Record<string, number>;
   createdAt: number;
 };
 
@@ -23,6 +27,7 @@ export type PointsTransaction = {
   kind: TransactionKind;
   amountEur?: number;
   rewardId?: string;
+  rewardTitle?: string;
   note?: string;
   staffId?: string;
   staffName?: string;
@@ -42,6 +47,9 @@ export type ApplyPointsInput = {
   kind: Exclude<TransactionKind, 'welcome'>;
   amountEur?: number;
   rewardId?: string;
+  rewardTitle?: string;
+  /** Per i premi riscattabili una sola volta: rifiuta se già riscattato. */
+  singleUse?: boolean;
   note?: string;
   staff: Pick<UserProfile, 'id' | 'name'>;
 };
@@ -64,6 +72,26 @@ export interface Backend {
   findByCardCode(code: string): Promise<UserProfile | null>;
   searchCustomersByEmail(prefix: string): Promise<UserProfile[]>;
   applyPoints(input: ApplyPointsInput): Promise<UserProfile>;
+  /* Contenuti modificabili (lettura per tutti, scrittura solo staff) */
+  subscribeContent<K extends ContentKey>(key: K, cb: (data: ContentMap[K] | null) => void): Unsubscribe;
+  saveContent<K extends ContentKey>(key: K, data: ContentMap[K]): Promise<void>;
+  /** Con includeDrafts (solo staff) restituisce anche gli eventi non pubblicati. */
+  subscribeEvents(includeDrafts: boolean, cb: (items: EventItem[]) => void): Unsubscribe;
+  saveEvent(event: Omit<EventItem, 'id' | 'createdAt'> & { id?: string; createdAt?: number }): Promise<EventItem>;
+  deleteEvent(id: string): Promise<void>;
+  /* Notifiche push */
+  registerPushToken(token: string, uid: string | null): Promise<void>;
+  listPushTokens(): Promise<string[]>;
+  removePushTokens(tokens: string[]): Promise<void>;
+}
+
+/** Rimuove i campi undefined (Firestore non li accetta) facendo una copia profonda. */
+export function plain<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
+export function newId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
 }
 
 export class AppError extends Error {}

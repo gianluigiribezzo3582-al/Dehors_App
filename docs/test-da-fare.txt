@@ -14,8 +14,8 @@ PRIMA DI INIZIARE
 - Finché Firebase non è configurato l'app è in MODALITÀ DEMO: i dati
   restano solo su quel telefono. Due telefoni NON si vedono tra loro.
 - Account di prova già presenti in ogni installazione:
-    Staff:   staff@dehors.demo   /  staff123
-    Cliente: cliente@dehors.demo /  cliente123   (codice tessera DEMO2345)
+    Staff:   staffdehors.demo   /  staff123
+    Cliente: clientedehors.demo /  cliente123   (codice tessera DEMO2345)
 - Per lo scanner QR serve un secondo schermo che mostri una tessera
   (un altro telefono con l'app, oppure l'anteprima web aperta sul PC).
   In demo il cliente dell'altro telefono risulterà "Tessera non trovata":
@@ -57,7 +57,7 @@ PRIMA DI INIZIARE
 [ ] 3.1  Home > "Crea la tua tessera": si apre il modulo di registrazione.
 [ ] 3.2  Lascia il nome vuoto e premi Registrati: messaggio "Inserisci il
          tuo nome".
-[ ] 3.3  Email senza "@" o senza dominio: messaggio di email non valida.
+[ ] 3.3  Email senza "" o senza dominio: messaggio di email non valida.
 [ ] 3.4  Password di 5 caratteri: messaggio "almeno 6 caratteri".
 [ ] 3.5  Casella privacy non spuntata: messaggio che chiede di accettare.
 [ ] 3.6  Dati validi (telefono facoltativo): vieni portato alla scheda
@@ -110,7 +110,7 @@ PRIMA DI INIZIARE
 
 7. PREMI (CLIENTE)
 ------------------
-[ ] 7.1  In alto: saldo attuale e "Sbloccati X/5".
+[ ] 7.1  In alto c'è solo il saldo attuale (niente più "Sbloccati").
 [ ] 7.2  I premi raggiungibili sono nella sezione "Puoi riscattarli ora",
          con "Disponibile · mostra la tessera al bancone".
 [ ] 7.3  Gli altri mostrano "Ti mancano X punti" con barra di avanzamento.
@@ -119,6 +119,10 @@ PRIMA DI INIZIARE
          porta alla Tessera; se non lo è, il pulsante è disattivato.
 [ ] 7.6  Da ospite i premi sono visibili senza punti e c'è l'invito a
          registrarsi.
+[ ] 7.7  Ogni card dice "Riscattabile più volte" oppure "Riscattabile una
+         sola volta".
+[ ] 7.8  Un premio "una sola volta" già riscattato appare sbiadito con
+         "Già riscattato" e il dettaglio ha il pulsante disattivato.
 
 
 8. PROFILO E ACCOUNT
@@ -136,7 +140,7 @@ PRIMA DI INIZIARE
 -------------------------
 [ ] 9.1  Da ospite la scheda "Staff" NON compare nella barra in basso.
 [ ] 9.2  Da cliente la scheda "Staff" NON compare.
-[ ] 9.3  Accedi come staff@dehors.demo: compare la scheda "Staff".
+[ ] 9.3  Accedi come staffdehors.demo: compare la scheda "Staff".
 [ ] 9.4  Esci dallo staff: la scheda "Staff" sparisce subito.
 [ ] 9.5  Da staff chiudi e riapri l'app: la scheda Staff c'è ancora.
 
@@ -178,6 +182,9 @@ PRIMA DI INIZIARE
          confermando, i punti scendono e compare il movimento "Premio: ...".
 [ ] 12.6 I premi oltre il saldo sono grigi con "mancano X" e non si
          possono toccare.
+[ ] 12.6b Ogni premio indica "più volte" / "una volta" e quante volte il
+          cliente lo ha già usato. Un premio "una volta" già usato mostra
+          "già usato" e non si può riscattare di nuovo.
 [ ] 12.7 Correzione manuale: "+ Aggiungi", tasto rapido "+5": +5 punti.
 [ ] 12.8 Correzione manuale: "− Togli", scrivi 3 punti e una nota, premi
          "Togli punti": −3 punti; nello storico compare la nota.
@@ -185,7 +192,7 @@ PRIMA DI INIZIARE
          insufficiente", saldo invariato.
 [ ] 12.10 "Ultimi movimenti" della scheda cliente mostra anche il nome
           dello staff che ha fatto l'operazione.
-[ ] 12.11 Esci, entra come cliente@dehors.demo: saldo e movimenti
+[ ] 12.11 Esci, entra come clientedehors.demo: saldo e movimenti
           riflettono le operazioni fatte dallo staff.
 
 
@@ -220,9 +227,9 @@ PRIMA DI INIZIARE
          l'app non è installata).
 [ ] 14.6 "Indicazioni" apre le mappe su Via Giuseppe Re David 197, Bari, e
          il punto è quello giusto.
-[ ] 14.7 "Email" apre l'app di posta verso ges.drinkfood@gmail.com.
+[ ] 14.7 "Email" apre l'app di posta verso ges.drinkfoodgmail.com.
 [ ] 14.8 Toccando la PEC in fondo si apre la posta verso
-         ges.drinkfood@pec.it.
+         ges.drinkfoodpec.it.
 [ ] 14.9 In fondo: G.E.S. Drink&Food srls e P.IVA 08572000720 corretti.
 [ ] 14.10 Home: i pulsanti rapidi "Chiama", "Indicazioni", "WhatsApp" fanno
           lo stesso.
@@ -241,25 +248,117 @@ PRIMA DI INIZIARE
          eri.
 
 
-16. SOLO DOPO AVER ATTIVATO FIREBASE (due telefoni)
+16. GESTIONE CONTENUTI DALL'APP (STAFF)
+---------------------------------------
+Entra come staff > scheda Staff > in fondo "Gestione app".
+
+Sicurezza
+[ ] 16.1 Da cliente/ospite la sezione "Gestione app" non è raggiungibile.
+
+Menù
+[ ] 16.2 Menù: compaiono tutte le categorie con il numero di voci; le
+         frecce su/giù cambiano l'ordine, e nel Menù clienti l'ordine
+         cambia uguale.
+[ ] 16.3 Apri una categoria > una voce > cambia il prezzo (es. 1,20) >
+         "Salva voce": nel Menù clienti il prezzo è aggiornato.
+[ ] 16.4 Voce > "Non disponibile" acceso > Salva: la voce sparisce dal
+         Menù clienti; nella gestione resta, sbiadita, con "non
+         disponibile". Rispegnilo: ricompare.
+[ ] 16.5 "Aggiungi voce" con nome, ingredienti e prezzo: compare in fondo
+         alla categoria nel Menù clienti.
+[ ] 16.6 Prezzo scritto male (es. "abc"): messaggio "Prezzo non valido".
+[ ] 16.7 Testo prezzo (es. "da € 3,50 a € 6,00") al posto del prezzo: nel
+         menù compare il testo.
+[ ] 16.8 Spunte surgelato / vegano / senza glutine / settimana: nel menù
+         compaiono asterisco ed etichette.
+[ ] 16.9 Elimina una voce (chiede conferma) e una categoria di prova.
+[ ] 16.10 "Nuova categoria" con nome, nota e icona: compare tra i filtri
+          del Menù clienti (solo quando ha almeno una voce disponibile).
+
+Premi
+[ ] 16.11 Premi: modifica nome, punti, icona, colore: l'anteprima in alto
+          si aggiorna mentre scrivi; dopo "Salva" la scheda Premi dei
+          clienti è aggiornata.
+[ ] 16.12 Spegni "Riscattabile più volte" su un premio: riscattalo a un
+          cliente dalla sua scheda, poi riprova: deve dire "già usato".
+[ ] 16.13 Spegni "Attivo": il premio sparisce ai clienti e dalla scheda
+          cliente dello staff. Riaccendilo.
+[ ] 16.14 "Nuovo premio" e "Elimina premio" funzionano.
+
+Eventi
+[ ] 16.15 Eventi > "Nuovo evento": scegli data e ora con i selettori,
+          scrivi titolo, "In breve" e descrizione, lascia "Pubblicato" e
+          "Invia notifica" accesi > "Crea evento".
+[ ] 16.16 Messaggio di conferma; finché le notifiche non sono configurate
+          compare un'anteprima della notifica su questo telefono.
+[ ] 16.17 In Home (anche da ospite) compare "Eventi in programma" con la
+          card (giorno e mese nel riquadro verde, "Oggi"/"Domani" se
+          vicino). Toccandola si apre il dettaglio con "Prenota".
+[ ] 16.18 Evento salvato come bozza (Pubblicato spento): NON compare ai
+          clienti; nella gestione è segnato "bozza".
+[ ] 16.19 Un evento con data passata sparisce dalla Home e finisce in
+          "Passati" nella gestione.
+[ ] 16.20 Modifica ed eliminazione di un evento.
+
+Testi, contatti e orari
+[ ] 16.21 Scrivi un "Avviso in evidenza": compare in Home con l'icona del
+          megafono. Svuotalo: sparisce.
+[ ] 16.22 Cambia titolo e testo dell'invito: li vede chi non è collegato.
+[ ] 16.23 Orari: inserisci gli orari reali (es. "07:00-13:00,
+          17:00-23:00", "Chiuso", "18:00-02:00"). In Home compare
+          "Aperto fino alle..." / "Apre alle..." e in Info la tabella
+          degli orari con il giorno di oggi evidenziato.
+[ ] 16.24 Orario scritto male (es. "dalle 7"): messaggio "Orari non
+          validi" con il giorno da correggere.
+[ ] 16.25 Inserisci Instagram e Facebook: compaiono le voci in Info e si
+          aprono le app giuste. Svuota un contatto: la voce sparisce.
+[ ] 16.26 Cambia "Punti per ogni euro" (es. 2): nella scheda cliente dello
+          staff 10 € danno 20 punti; la Tessera del cliente lo dice.
+
+Senza rete
+[ ] 16.27 Chiudi l'app, attiva la modalità aereo, riaprila: menù, premi e
+          testi sono quelli dell'ultima volta (non quelli iniziali).
+
+
+17. NOTIFICHE
+-------------
+[ ] 17.1 Al primo avvio l'app chiede il permesso per le notifiche.
+[ ] 17.2 Staff > Invia notifica: senza titolo o messaggio compare un
+         avviso; con entrambi chiede conferma prima di inviare.
+[ ] 17.3 Prima della configurazione (README, "Notifiche push") la
+         notifica compare solo sul telefono dello staff come anteprima.
+--- Dopo la configurazione delle notifiche (Firebase + Expo):
+[ ] 17.4 La notifica arriva su un secondo telefono con l'app installata,
+         anche ad app chiusa, con l'icona del logo.
+[ ] 17.5 Toccando la notifica di un evento si apre il dettaglio
+         dell'evento.
+[ ] 17.6 Chi ha negato il permesso non riceve notifiche e l'app funziona
+         comunque.
+
+
+18. SOLO DOPO AVER ATTIVATO FIREBASE (due telefoni)
 ---------------------------------------------------
-[ ] 16.1 Telefono A: registra un nuovo cliente.
-[ ] 16.2 Telefono B (account con ruolo staff impostato in Firebase):
+[ ] 18.1 Telefono A: registra un nuovo cliente.
+[ ] 18.2 Telefono B (account con ruolo staff impostato in Firebase):
          scansiona il QR del telefono A, aggiungi punti.
-[ ] 16.3 Sul telefono A il saldo si aggiorna da solo, senza ricaricare.
-[ ] 16.4 Telefono B: riscatta un premio; sul telefono A compare il
+[ ] 18.3 Sul telefono A il saldo si aggiorna da solo, senza ricaricare.
+[ ] 18.4 Telefono B: riscatta un premio; sul telefono A compare il
          movimento.
-[ ] 16.5 Un account cliente NON vede la scheda Staff nemmeno dopo aver
+[ ] 18.5 Un account cliente NON vede la scheda Staff nemmeno dopo aver
          riavviato l'app.
-[ ] 16.6 "Password dimenticata" invia davvero l'email di reimpostazione.
+[ ] 18.6 "Password dimenticata" invia davvero l'email di reimpostazione.
+[ ] 18.7 Telefono B (staff) cambia un prezzo del menù o pubblica un
+         evento: sul telefono A compare entro pochi secondi, senza
+         aggiornare l'app.
 
 
 COSE ANCORA DA FORNIRE
 ----------------------
-- Orari di apertura (la sezione orari è nascosta finché non ci sono).
-- Profili Instagram e Facebook.
+- Orari di apertura, Instagram e Facebook: ora li inserisce lo staff
+  dall'app (Gestione app > Testi, contatti e orari).
 - File vettoriale ufficiale del logo (facoltativo).
-- Conferma o modifica dei premi e dei punti necessari, e foto/sfondi.
+- Foto/sfondi dei premi (oggi le card usano colore e icona).
+- Configurazione delle notifiche push (README, "Notifiche push").
 
 
 =====================================================================
@@ -322,7 +421,7 @@ C. DOCUMENTI E MATERIALI DA PREPARARE
 [ ] C.7  Testi: nome app (max 30 caratteri, es. "Dehors Cafè-Bistrot"),
          descrizione breve (max 80), descrizione completa (max 4000).
 [ ] C.8  Email di contatto pubblica per gli utenti
-         (es. ges.drinkfood@gmail.com) e sito web se c'è.
+         (es. ges.drinkfoodgmail.com) e sito web se c'è.
 
 D. CONFIGURAZIONE NELLA PLAY CONSOLE
 ------------------------------------
@@ -340,6 +439,8 @@ D. CONFIGURAZIONE NELLA PLAY CONSOLE
          condivisione con terzi a fini pubblicitari. La fotocamera è
          usata solo dallo staff per leggere i QR, le immagini non vengono
          salvate né inviate.
+         Dichiara anche l'identificativo del dispositivo per le notifiche
+         push (scopo: comunicazioni dell'app; l'utente può disattivarle).
 [ ] D.6  Cancellazione account: indica l'URL della pagina del punto C.2.
 [ ] D.7  Accesso all'app: l'app ha un login, quindi fornisci a Google un
          account di prova (cliente) e, se vuoi far vedere l'area staff,

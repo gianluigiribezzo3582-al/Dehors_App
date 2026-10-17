@@ -20,7 +20,7 @@ L'area staff (scheda Staff, scanner, gestione punti del cliente) è protetta su 
 1. **Navigazione**: le rotte staff esistono solo per gli account con ruolo `staff` o `admin` (`Stack.Protected` / `Tabs.Protected`).
    Per tutti gli altri la scheda non compare e i link diretti riportano alla Home. All'avvio l'app aspetta di conoscere il ruolo prima di mostrare qualsiasi schermata.
 2. **Schermate**: ogni schermata staff è avvolta in `StaffOnly`, che non mostra nulla a chi non è staff.
-3. **Dati**: le regole Firestore (`firestore.rules`) permettono di cercare clienti e modificare punti solo allo staff, e impediscono a chiunque di cambiarsi il ruolo da solo. Il ruolo si assegna solo dalla console Firebase.
+3. **Dati**: le regole Firestore (`firestore.rules`) permettono di cercare clienti, modificare punti e contenuti (menù, premi, testi, eventi) e leggere i destinatari delle notifiche solo allo staff, e impediscono a chiunque di cambiarsi il ruolo da solo. Il ruolo si assegna solo dalla console Firebase. Le regole sono coperte da 40 test (`npm run test:rules`).
 
 ## Provare subito su Android
 
@@ -61,19 +61,38 @@ Serve perché clienti e staff usino telefoni diversi con gli stessi dati.
 3. Cambia il campo `role` da `customer` a `staff` (o `admin`).
 4. Riapri l'app: compare la scheda **Staff** con lo scanner.
 
-## Dove personalizzare
+## Gestione contenuti dall'app (staff)
+
+Dalla scheda **Staff → Gestione app** lo staff modifica, senza aggiornare l'app sugli store:
+
+| Sezione | Cosa si cambia |
+|---------|----------------|
+| Menù | categorie (nome, icona, nota), voci (nome, ingredienti, prezzo o testo prezzo, surgelato, vegano, senza glutine, settimana), «Non disponibile», ordine |
+| Eventi | titolo, data e ora, descrizione, pubblicato/bozza; alla pubblicazione può partire una notifica a tutti |
+| Premi | nome, descrizione, punti, icona, colore, **riscattabile una volta o più volte**, attivo/disattivo |
+| Testi, contatti e orari | avviso in Home, testi di benvenuto, punti per euro, telefoni, WhatsApp, email, indirizzo, Instagram, Facebook, sito, orari |
+| Invia notifica | messaggio libero a tutti, con apertura facoltativa di un evento |
+
+I contenuti sono salvati su Firestore (`content/menu`, `content/rewards`, `content/texts`, collezione `events`) e arrivano ai clienti in tempo reale; l'app ne tiene una copia per l'uso offline. I valori nei file `src/data/*.ts` e `src/config/*.ts` servono solo come contenuto iniziale.
+
+## Notifiche push (configurazione una tantum)
+
+L'invio usa il servizio gratuito di Expo. Finché non è configurato, «Invia notifica» mostra solo un'anteprima sul telefono dello staff.
+
+1. Crea un account su <https://expo.dev> e, dalla cartella del progetto, esegui `npx eas-cli@latest login` e poi `npx eas-cli@latest init`: aggiunge `extra.eas.projectId` in `app.json`.
+2. Nella console Firebase → Impostazioni progetto → aggiungi un'app **Android** con ID pacchetto `it.dehors.app`, scarica `google-services.json` nella cartella principale e aggiungi in `app.json`, sotto `android`, `"googleServicesFile": "./google-services.json"`.
+3. Firebase → Impostazioni progetto → Account di servizio → «Genera nuova chiave privata»; su expo.dev → progetto → Credentials → Android → FCM V1 carica quel file JSON.
+4. Ricompila l'app. Da quel momento i telefoni si registrano all'avvio (dopo il consenso alle notifiche) e lo staff invia a tutti.
+
+## Dove personalizzare (codice)
 
 | Cosa | File |
 |------|------|
-| Nome, telefoni, WhatsApp, email/PEC, social, indirizzo, orari, dati societari | `src/config/venue.ts` |
+| Nome del locale, dati societari, PEC, coordinate | `src/config/venue.ts` |
+| Contenuti iniziali (menù, premi, testi) | `src/data/menu.ts`, `src/data/rewards.ts`, `src/content/defaults.ts` |
 | Logo | pittogramma vettoriale in `src/config/logo.ts` (copia in `assets/brand/logo-mark.svg`), scritta in carattere Urbanist; icone e splash in `assets/images/` |
-| Menù | `src/data/menu.ts` |
-| Premi, costi in punti, foto/sfondi | `src/data/rewards.ts` (immagini in `assets/images/rewards/`) |
-| Punti per euro, bonus benvenuto, livelli | `src/config/loyalty.ts` |
+| Bonus benvenuto, livelli | `src/config/loyalty.ts` (il bonus va aggiornato anche in `firestore.rules`) |
 | Colori | `src/theme/colors.ts` |
-| Icona app e splash | `assets/images/` + `app.json` |
-
-> Se cambi il bonus di benvenuto, aggiorna anche `welcomeBonus()` in `firestore.rules`.
 
 ## Struttura
 
@@ -95,5 +114,6 @@ src/
 npx expo start          # avvia in sviluppo
 npm run lint            # controllo codice
 npm run typecheck       # controllo tipi TypeScript
+npm run test:rules      # test delle regole di sicurezza Firestore (serve Java)
 npx eas-cli build -p android --profile preview   # APK installabile (serve account Expo)
 ```

@@ -3,14 +3,15 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Logo } from '@/components/logo';
+import { EventCard } from '@/components/event-card';
 import { RewardCard } from '@/components/reward-card';
 import { AppText, Button, Card, ProgressBar, SectionHeader, Screen, type IconName } from '@/components/ui';
 import { tierFor } from '@/config/loyalty';
-import { Rewards } from '@/data/rewards';
 import { useAuth } from '@/hooks/use-auth';
+import { rewardStatus, useActiveRewards, useContent, useUpcomingEvents } from '@/hooks/use-content';
 import { useTheme } from '@/hooks/use-theme';
 import { Fonts, Palette, Radius, Spacing } from '@/theme/colors';
-import { callVenue, directionsToVenue, whatsappVenue } from '@/utils/contacts';
+import { callNumber, directionsTo, openWhatsapp } from '@/utils/contacts';
 import { firstName } from '@/utils/format';
 import { openStatus } from '@/utils/hours';
 
@@ -41,10 +42,15 @@ function QuickAction({ icon, label, onPress }: { icon: IconName; label: string; 
 export default function HomeScreen() {
   const theme = useTheme();
   const { profile, uid } = useAuth();
-  const status = openStatus();
+  const { texts } = useContent();
+  const rewards = useActiveRewards();
+  const events = useUpcomingEvents();
+  const status = openStatus(texts.hours);
 
-  const nextReward = profile ? Rewards.find((r) => r.cost > profile.points) : undefined;
-  const available = profile ? Rewards.filter((r) => r.cost <= profile.points) : [];
+  const nextReward = profile
+    ? rewards.find((r) => r.cost > profile.points && !rewardStatus(r, profile).alreadyUsed)
+    : undefined;
+  const available = profile ? rewards.filter((r) => rewardStatus(r, profile).available) : [];
   const tier = profile ? tierFor(profile.totalEarned) : null;
 
   return (
@@ -67,6 +73,15 @@ export default function HomeScreen() {
           {profile ? `, ${firstName(profile.name)}` : ''}
         </AppText>
       </View>
+
+      {texts.announcement ? (
+        <View style={[styles.announcement, { borderColor: theme.accent, backgroundColor: theme.surface }]}>
+          <Ionicons name="megaphone-outline" size={20} color={theme.accent} />
+          <AppText variant="body" style={{ flex: 1 }}>
+            {texts.announcement}
+          </AppText>
+        </View>
+      ) : null}
 
       {profile ? (
         <Pressable onPress={() => router.push('/card')}>
@@ -108,10 +123,9 @@ export default function HomeScreen() {
         </Pressable>
       ) : uid ? null : (
         <Card style={{ gap: Spacing.md }}>
-          <AppText variant="heading">Unisciti al programma fedeltà</AppText>
+          <AppText variant="heading">{texts.welcomeTitle}</AppText>
           <AppText variant="body" color={theme.textSecondary}>
-            Registrati per ricevere la tua tessera digitale con QR: accumuli punti a ogni consumazione e li trasformi
-            in premi e sconti.
+            {texts.welcomeBody}
           </AppText>
           <Button title="Crea la tua tessera" icon="sparkles-outline" onPress={() => router.push('/register')} />
           <Button title="Accedi" variant="ghost" onPress={() => router.push('/login')} />
@@ -119,17 +133,26 @@ export default function HomeScreen() {
       )}
 
       <View style={styles.actions}>
-        <QuickAction icon="call-outline" label="Chiama" onPress={callVenue} />
+        <QuickAction icon="call-outline" label="Chiama" onPress={() => callNumber(texts.phone)} />
         <QuickAction icon="restaurant-outline" label="Menù" onPress={() => router.push('/menu')} />
-        <QuickAction icon="navigate-outline" label="Indicazioni" onPress={directionsToVenue} />
-        <QuickAction icon="logo-whatsapp" label="WhatsApp" onPress={whatsappVenue} />
+        <QuickAction icon="navigate-outline" label="Indicazioni" onPress={() => directionsTo(texts)} />
+        <QuickAction icon="logo-whatsapp" label="WhatsApp" onPress={() => openWhatsapp(texts.whatsapp)} />
       </View>
+
+      {events.length > 0 && (
+        <>
+          <SectionHeader title="Eventi in programma" />
+          {events.slice(0, 5).map((e) => (
+            <EventCard key={e.id} event={e} onPress={() => router.push(`/event/${e.id}`)} />
+          ))}
+        </>
+      )}
 
       {available.length > 0 && (
         <>
           <SectionHeader title="Premi disponibili" />
           {available.slice(0, 2).map((r) => (
-            <RewardCard key={r.id} reward={r} points={profile?.points ?? null} compact onPress={() => router.push(`/reward/${r.id}`)} />
+            <RewardCard key={r.id} reward={r} profile={profile} compact onPress={() => router.push(`/reward/${r.id}`)} />
           ))}
         </>
       )}
@@ -138,10 +161,11 @@ export default function HomeScreen() {
         title="Premi del programma"
         action={<Button title="Vedi tutti" variant="ghost" onPress={() => router.push('/rewards')} style={{ minHeight: 32, paddingHorizontal: 0 }} />}
       />
-      {Rewards.filter((r) => !available.includes(r))
+      {rewards
+        .filter((r) => !available.includes(r))
         .slice(0, 2)
         .map((r) => (
-          <RewardCard key={r.id} reward={r} points={profile?.points ?? null} compact onPress={() => router.push(`/reward/${r.id}`)} />
+          <RewardCard key={r.id} reward={r} profile={profile} compact onPress={() => router.push(`/reward/${r.id}`)} />
         ))}
     </Screen>
   );
@@ -162,6 +186,14 @@ const styles = StyleSheet.create({
   pointsTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   qrHint: { alignItems: 'center', gap: 4 },
   actions: { flexDirection: 'row', gap: Spacing.sm },
+  announcement: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    alignItems: 'flex-start',
+    padding: Spacing.md,
+    borderRadius: Radius.md,
+    borderLeftWidth: 3,
+  },
   action: {
     flex: 1,
     alignItems: 'center',

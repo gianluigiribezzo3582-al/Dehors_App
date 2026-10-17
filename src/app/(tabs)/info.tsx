@@ -11,23 +11,16 @@ import { useAuth } from '@/hooks/use-auth';
 import { useTheme } from '@/hooks/use-theme';
 import { backend, errorMessage } from '@/services/backend';
 import { Spacing } from '@/theme/colors';
-import {
-  callMobile,
-  callVenue,
-  directionsToVenue,
-  emailVenue,
-  instagramVenue,
-  openWebsite,
-  pecVenue,
-  whatsappVenue,
-} from '@/utils/contacts';
+import { useContent } from '@/hooks/use-content';
+import { callNumber, directionsTo, openInstagram, openWebsite, openWhatsapp, sendEmail } from '@/utils/contacts';
 import { openStatus, weeklyHours } from '@/utils/hours';
 
 export default function InfoScreen() {
   const theme = useTheme();
   const { uid, profile, isStaff } = useAuth();
-  const status = openStatus();
-  const hours = weeklyHours();
+  const { texts: t } = useContent();
+  const status = openStatus(t.hours);
+  const hours = weeklyHours(t.hours);
 
   const logout = async () => {
     if (!(await dialog.confirm({ title: 'Vuoi uscire?', confirmText: 'Esci', destructive: true }))) return;
@@ -35,14 +28,14 @@ export default function InfoScreen() {
   };
 
   const contacts = [
-    { icon: 'call-outline', title: 'Telefono', subtitle: Venue.phoneDisplay, onPress: callVenue },
-    { icon: 'phone-portrait-outline', title: 'Cellulare', subtitle: Venue.mobileDisplay, onPress: callMobile },
-    { icon: 'logo-whatsapp', title: 'WhatsApp', subtitle: Venue.mobileDisplay, onPress: whatsappVenue },
-    { icon: 'location-outline', title: 'Indicazioni', subtitle: Venue.address, onPress: directionsToVenue },
-    { icon: 'mail-outline', title: 'Email', subtitle: Venue.email, onPress: emailVenue },
-    Venue.instagram && { icon: 'logo-instagram', title: 'Instagram', subtitle: `@${Venue.instagram}`, onPress: instagramVenue },
-    Venue.facebook && { icon: 'logo-facebook', title: 'Facebook', subtitle: undefined, onPress: () => openWebsite(Venue.facebook) },
-    Venue.website && { icon: 'globe-outline', title: 'Sito web', subtitle: Venue.website, onPress: () => openWebsite(Venue.website) },
+    t.phone && { icon: 'call-outline', title: 'Telefono', subtitle: t.phone, onPress: () => callNumber(t.phone) },
+    t.mobile && { icon: 'phone-portrait-outline', title: 'Cellulare', subtitle: t.mobile, onPress: () => callNumber(t.mobile) },
+    t.whatsapp && { icon: 'logo-whatsapp', title: 'WhatsApp', subtitle: t.whatsapp, onPress: () => openWhatsapp(t.whatsapp) },
+    t.address && { icon: 'location-outline', title: 'Indicazioni', subtitle: t.address, onPress: () => directionsTo(t) },
+    t.email && { icon: 'mail-outline', title: 'Email', subtitle: t.email, onPress: () => sendEmail(t.email) },
+    t.instagram && { icon: 'logo-instagram', title: 'Instagram', subtitle: `@${t.instagram.replace(/^@/, '')}`, onPress: () => openInstagram(t.instagram) },
+    t.facebook && { icon: 'logo-facebook', title: 'Facebook', subtitle: undefined, onPress: () => openWebsite(t.facebook) },
+    t.website && { icon: 'globe-outline', title: 'Sito web', subtitle: t.website, onPress: () => openWebsite(t.website) },
   ].filter(Boolean) as { icon: IconName; title: string; subtitle?: string; onPress: () => void }[];
 
   return (
@@ -51,7 +44,7 @@ export default function InfoScreen() {
         <Logo variant="stacked" size={52} />
       </View>
 
-      <Button title={`Chiama ${Venue.phoneDisplay}`} icon="call" onPress={callVenue} />
+      {t.phone ? <Button title={`Chiama ${t.phone}`} icon="call" onPress={() => callNumber(t.phone)} /> : null}
 
       <SectionHeader title="Contatti" />
       <Card style={{ gap: 0, paddingVertical: Spacing.xs }}>
@@ -122,7 +115,7 @@ export default function InfoScreen() {
       <View style={{ alignItems: 'center', gap: 2, marginTop: Spacing.md }}>
         <AppText variant="caption">{Venue.company.name}</AppText>
         <AppText variant="caption">P.IVA {Venue.company.vatNumber}</AppText>
-        <AppText variant="caption" onPress={pecVenue}>
+        <AppText variant="caption" onPress={() => sendEmail(Venue.pec)}>
           PEC {Venue.pec}
         </AppText>
         <AppText variant="caption" style={{ marginTop: Spacing.sm }}>

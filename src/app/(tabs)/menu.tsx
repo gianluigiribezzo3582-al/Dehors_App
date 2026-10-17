@@ -4,7 +4,8 @@ import { ScrollView, SectionList, StyleSheet, TextInput, View } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText, Chip, Divider, type IconName } from '@/components/ui';
-import { AllergenNotice, Allergens, Menu, type MenuItem, type MenuTag } from '@/data/menu';
+import { AllergenNotice, Allergens, type MenuItem, type MenuTag } from '@/data/menu';
+import { useContent } from '@/hooks/use-content';
 import { useTheme } from '@/hooks/use-theme';
 import { Fonts, Radius, Spacing } from '@/theme/colors';
 import { formatEuro } from '@/utils/format';
@@ -48,6 +49,12 @@ export default function MenuScreen() {
   const theme = useTheme();
   const [search, setSearch] = useState('');
   const [active, setActive] = useState<string | null>(null);
+  const { menu } = useContent();
+  // Le voci segnate come non disponibili dallo staff non si vedono.
+  const Menu = useMemo(
+    () => menu.map((c) => ({ ...c, items: c.items.filter((i) => !i.hidden) })).filter((c) => c.items.length > 0),
+    [menu],
+  );
 
   const sections = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -60,7 +67,7 @@ export default function MenuScreen() {
         ? c.items.filter((i) => `${i.name} ${i.description ?? ''}`.toLowerCase().includes(q))
         : c.items,
     })).filter((s) => s.data.length > 0);
-  }, [search, active]);
+  }, [search, active, Menu]);
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>

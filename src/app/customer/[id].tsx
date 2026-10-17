@@ -9,8 +9,9 @@ import { StaffOnly } from '@/components/staff-only';
 import { TransactionRow } from '@/components/transaction-row';
 import { AppText, Button, Card, Chip, Divider, Field, Loading, SectionHeader, Screen } from '@/components/ui';
 import { Loyalty, pointsForAmount, tierFor } from '@/config/loyalty';
-import { Rewards, type Reward } from '@/data/rewards';
+import type { RewardDef } from '@/content/types';
 import { useAuth } from '@/hooks/use-auth';
+import { rewardStatus, useActiveRewards, useContent } from '@/hooks/use-content';
 import { useTheme } from '@/hooks/use-theme';
 import { useTransactions } from '@/hooks/use-transactions';
 import { backend, errorMessage } from '@/services/backend';
@@ -33,6 +34,8 @@ export default function CustomerScreen() {
 
 function CustomerDesk() {
   const theme = useTheme();
+  const { texts } = useContent();
+  const rewards = useActiveRewards();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { profile: staff, isStaff } = useAuth();
   const [customer, setCustomer] = useState<UserProfile | null | undefined>(undefined);
@@ -68,7 +71,7 @@ function CustomerDesk() {
     );
   }
 
-  const earnPoints = pointsForAmount(parseEuro(amount));
+  const earnPoints = pointsForAmount(parseEuro(amount), texts.pointsPerEuro);
   const manualPoints = Math.abs(parseInt(manual, 10) || 0);
   const tier = tierFor(customer.totalEarned).current;
 
@@ -109,14 +112,22 @@ function CustomerDesk() {
     }
   };
 
-  const redeem = async (reward: Reward) => {
+  const redeem = async (reward: RewardDef) => {
     const ok = await dialog.confirm({
       title: `Riscattare «${reward.title}»?`,
-      message: `Verranno scalati ${reward.cost} punti. Saldo dopo: ${customer.points - reward.cost} punti.`,
+      message: `Verranno scalati ${reward.cost} punti. Saldo dopo: ${customer.points - reward.cost} punti.${
+        reward.repeatable ? '' : ' Premio valido una sola volta per cliente.'
+      }`,
       confirmText: 'Riscatta',
     });
     if (ok) {
-      await apply(`r-${reward.id}`, { delta: -reward.cost, kind: 'redeem', rewardId: reward.id }, `Premio «${reward.title}» riscattato`);
+      await apply(`r-${reward.id}`, {
+          delta: -reward.cost,
+          kind: 'redeem',
+          rewardId: reward.id,
+          rewardTitle: reward.title,
+          singleUse: !reward.repeatable,
+        }, `Premio «${reward.title}» riscattato`);
     }
   };
 
@@ -159,7 +170,7 @@ function CustomerDesk() {
         <SectionHeader title="Aggiungi da consumazione" />
         <Card style={{ gap: Spacing.md }}>
           <Field
-            label={`Importo speso (${Loyalty.pointsPerEuro} pt per ogni €)`}
+            label={`Importo speso (${texts.pointsPerEuro} pt per ogni €)`}
             value={amount}
             onChangeText={setAmount}
             keyboardType="decimal-pad"
@@ -177,8 +188,9 @@ function CustomerDesk() {
 
         <SectionHeader title="Riscatta premio" />
         <Card style={{ gap: 0, paddingVertical: Spacing.xs }}>
-          {Rewards.map((r, i) => {
-            const ok = customer.points >= r.cost;
+          {rewards.map((r, i) => {
+            const st = rewardStatus(r, customer);
+            const ok = st.available;
             return (
               <View key={r.id}>
                 {i > 0 && <Divider />}
@@ -189,10 +201,13 @@ function CustomerDesk() {
                   <View style={[styles.rewardDot, { backgroundColor: r.tint }]} />
                   <View style={{ flex: 1 }}>
                     <AppText variant="label">{r.title}</AppText>
-                    <AppText variant="caption">{r.cost} punti</AppText>
+                    <AppText variant="caption">
+                      {r.cost} punti · {r.repeatable ? 'più volte' : 'una volta'}
+                      {st.used > 0 ? ` · usato ${st.used}×` : ''}
+                    </AppText>
                   </View>
                   <AppText variant="label" color={ok ? theme.primary : theme.textSecondary}>
-                    {busy === `r-${r.id}` ? '…' : ok ? 'Riscatta' : `mancano ${r.cost - customer.points}`}
+                    {busy === `r-${r.id}` ? '…' : st.alreadyUsed ? 'già usato' : ok ? 'Riscatta' : `mancano ${st.missing}`}
                   </AppText>
                 </Pressable>
               </View>

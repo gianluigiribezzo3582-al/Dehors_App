@@ -25,7 +25,7 @@
     "web": {
       "output": "single",
       "favicon": "./assets/images/favicon.png",
-      "name": "Dehors Caf\u00e8-Bistrot",
+      "name": "Dehors Cafè-Bistrot",
       "shortName": "Dehors"
     },
     "plugins": [
@@ -45,9 +45,18 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "La fotocamera serve allo staff per leggere il QR delle tessere fedelt\u00e0.",
+          "cameraPermission": "La fotocamera serve allo staff per leggere il QR delle tessere fedeltà.",
           "microphonePermission": false,
           "recordAudioAndroid": false
+        }
+      ],
+      "@react-native-community/datetimepicker",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/android-icon-monochrome.png",
+          "color": "#2A3B31",
+          "defaultChannel": "eventi"
         }
       ]
     ],

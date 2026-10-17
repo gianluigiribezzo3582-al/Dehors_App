@@ -26,6 +26,7 @@ import {
   query,
   runTransaction,
   serverTimestamp,
+  setDoc,
   Timestamp,
   updateDoc,
   where,
@@ -35,12 +36,15 @@ import {
 } from 'firebase/firestore';
 import { Platform } from 'react-native';
 
+import type { ContentKey, ContentMap, EventItem } from '@/content/types';
+
 import { firebaseConfig } from '@/config/firebase';
 import { Loyalty } from '@/config/loyalty';
 import {
   AppError,
   generateCardCode,
   normalizeCardCode,
+  plain,
   type Backend,
   type PointsTransaction,
   type UserProfile,
@@ -62,6 +66,7 @@ function toProfile(id: string, data: DocumentData): UserProfile {
     points: data.points ?? 0,
     totalEarned: data.totalEarned ?? 0,
     cardCode: data.cardCode ?? '',
+    redeemed: (data.redeemed as Record<string, number>) ?? {},
     createdAt: toMillis(data.createdAt),
   };
 }
@@ -73,6 +78,7 @@ function toTransaction(id: string, data: DocumentData): PointsTransaction {
     kind: data.kind ?? 'adjust',
     amountEur: data.amountEur ?? undefined,
     rewardId: data.rewardId ?? undefined,
+    rewardTitle: data.rewardTitle ?? undefined,
     note: data.note ?? undefined,
     staffId: data.staffId ?? undefined,
     staffName: data.staffName ?? undefined,
@@ -124,6 +130,7 @@ export function createFirebaseBackend(): Backend {
         points: Loyalty.welcomeBonus,
         totalEarned: Loyalty.welcomeBonus,
         cardCode: generateCardCode(),
+        redeemed: {},
         createdAt: serverTimestamp(),
       });
       if (Loyalty.welcomeBonus > 0) {
@@ -205,7 +212,7 @@ export function createFirebaseBackend(): Backend {
       return snap.docs.map((d) => toProfile(d.id, d.data()));
     },
 
-    async applyPoints({ userId, delta, kind, amountEur, rewardId, note, staff }) {
+    async applyPoints({ userId, delta, kind, amountEur, rewardId, rewardTitle, singleUse, note, staff }) {
       if (!Number.isInteger(delta) || delta === 0) throw new AppError('Numero di punti non valido.');
       return runTransaction(db, async (tx) => {
         const ref = userRef(userId);
@@ -215,19 +222,96 @@ export function createFirebaseBackend(): Backend {
         const points = current.points + delta;
         if (points < 0) throw new AppError(`Saldo insufficiente: il cliente ha ${current.points} punti.`);
         const totalEarned = current.totalEarned + (delta > 0 ? delta : 0);
-        tx.update(ref, { points, totalEarned });
+        const redeemed = { ...current.redeemed };
+        if (kind === 'redeem' && rewardId) {
+          if (singleUse && (redeemed[rewardId] ?? 0) > 0) {
+            throw new AppError('Questo premio si può riscattare una sola volta e il cliente lo ha già usato.');
+          }
+          redeemed[rewardId] = (redeemed[rewardId] ?? 0) + 1;
+        }
+        tx.update(ref, { points, totalEarned, redeemed });
         tx.set(doc(txCollection(userId)), {
           delta,
           kind,
           amountEur: amountEur ?? null,
           rewardId: rewardId ?? null,
+          rewardTitle: rewardTitle ?? null,
           note: note?.trim() || null,
           staffId: staff.id,
           staffName: staff.name,
           createdAt: serverTimestamp(),
         });
-        return { ...current, points, totalEarned };
+        return { ...current, points, totalEarned, redeemed };
       });
+    },
+
+    subscribeContent<K extends ContentKey>(key: K, cb: (data: ContentMap[K] | null) => void) {
+      return onSnapshot(
+        doc(db, 'content', key),
+        (snap) => {
+          if (!snap.exists()) return cb(null);
+          const { updatedAt: _updatedAt, ...data } = snap.data();
+          cb(data as ContentMap[K]);
+        },
+        () => {},
+      );
+    },
+
+    async saveContent(key, data) {
+      await setDoc(doc(db, 'content', key), { ...plain(data), updatedAt: serverTimestamp() });
+    },
+
+    subscribeEvents(includeDrafts, cb) {
+      const col = collection(db, 'events');
+      const q = includeDrafts ? query(col) : query(col, where('published', '==', true));
+      return onSnapshot(
+        q,
+        (snap) =>
+          cb(
+            snap.docs
+              .map((d) => ({ ...(d.data() as Omit<EventItem, 'id'>), id: d.id }))
+              .sort((a, b) => a.startsAt - b.startsAt),
+          ),
+        () => cb([]),
+      );
+    },
+
+    async saveEvent(input) {
+      const ref = input.id ? doc(db, 'events', input.id) : doc(collection(db, 'events'));
+      const event: EventItem = {
+        id: ref.id,
+        title: input.title.trim(),
+        description: input.description.trim(),
+        details: input.details?.trim() || undefined,
+        startsAt: input.startsAt,
+        published: input.published,
+        createdAt: input.createdAt ?? Date.now(),
+      };
+      const { id: _id, ...data } = event;
+      await setDoc(ref, plain(data));
+      return event;
+    },
+
+    async deleteEvent(id) {
+      await deleteDoc(doc(db, 'events', id));
+    },
+
+    async registerPushToken(token, uid) {
+      await setDoc(doc(db, 'pushTokens', token), {
+        token,
+        uid: uid ?? null,
+        platform: Platform.OS,
+        updatedAt: serverTimestamp(),
+      });
+    },
+
+    async listPushTokens() {
+      const snap = await getDocs(collection(db, 'pushTokens'));
+      return snap.docs.map((d) => d.id);
+    },
+
+    async removePushTokens(tokens) {
+      await Promise.all(tokens.map((t) => deleteDoc(doc(db, 'pushTokens', t)).catch(() => {})));
     },
   };
 }
