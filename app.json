@@ -70,6 +70,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "owner": "gianluigiribezzo",
+    "extra": {
+      "eas": {
+        "projectId": "f41a2eef-feed-4c5b-9de5-08263cf29002"
+      }
     }
   }
 }
