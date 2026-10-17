@@ -112,19 +112,29 @@ export default function InfoScreen() {
         )}
       </Card>
 
+      <SectionHeader title="Informazioni legali" />
+      <Card style={{ gap: 0, paddingVertical: Spacing.xs }}>
+        <ListRow icon="shield-checkmark-outline" title="Informativa sulla privacy" onPress={() => router.push('/legal/privacy')} />
+        <Divider />
+        <ListRow icon="document-text-outline" title="Regolamento e condizioni d'uso" onPress={() => router.push('/legal/terms')} />
+      </Card>
+
       <View style={{ alignItems: 'center', gap: 2, marginTop: Spacing.md }}>
         <AppText variant="caption">{Venue.company.name}</AppText>
         <AppText variant="caption">P.IVA {Venue.company.vatNumber}</AppText>
         <AppText variant="caption" onPress={() => sendEmail(Venue.pec)}>
           PEC {Venue.pec}
         </AppText>
-        {t.privacyUrl ? (
-          <AppText variant="caption" color={theme.primary} onPress={() => openWebsite(t.privacyUrl)} style={{ marginTop: Spacing.sm }}>
-            Informativa privacy
-          </AppText>
-        ) : null}
+
         <AppText variant="caption" style={{ marginTop: Spacing.sm }}>
           {Venue.fullName} · v{Constants.expoConfig?.version ?? '1.0.0'}
+        </AppText>
+        <AppText variant="caption" style={{ textAlign: 'center', marginTop: Spacing.xs }}>
+          Sviluppata da Gianluigi Ribezzo ·{' '}
+          <AppText variant="caption" color={theme.primary} onPress={() => openWebsite('https://gianluigiribezzo.dev')}>
+            gianluigiribezzo.dev
+          </AppText>
+          {'\n'}esclusivamente per G.E.S. Drink&amp;Food srls
         </AppText>
       </View>
     </Screen>

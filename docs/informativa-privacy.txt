@@ -1,89 +1,80 @@
-INFORMATIVA SULLA PRIVACY – APP "DEHORS CAFÈ-BISTROT"
-Ultimo aggiornamento: ottobre 2026
+(Stesso testo mostrato nell'app, generato da src/legal/legal.json. Da pubblicare come pagina web pubblica: l'indirizzo va inserito nel Play Store come «Norme sulla privacy» e per la «Eliminazione dell'account».)
 
-(Testo base da far verificare al titolare o al consulente privacy prima della
-pubblicazione. Da pubblicare come pagina web pubblica: il suo indirizzo va
-inserito nel Play Store sia come "Norme sulla privacy" sia come pagina per la
-"Eliminazione dell'account".)
+INFORMATIVA SULLA PRIVACY
+Ultimo aggiornamento: Ottobre 2026
+
+Questa informativa spiega quali dati personali tratta l'app «Dehors Cafè-Bistrot», perché, per quanto tempo e quali diritti hai, ai sensi del Regolamento UE 2016/679 (GDPR).
 
 
 1. Titolare del trattamento
-G.E.S. Drink&Food srls – P.IVA 08572000720
-Via Giuseppe Re David 197, 70125 Bari (BA)
-Email: ges.drinkfood@gmail.com – PEC: ges.drinkfood@pec.it
+
+G.E.S. Drink&Food srls – P.IVA 08572000720 – Via Giuseppe Re David 197, 70125 Bari (BA) – email ges.drinkfood@gmail.com – PEC ges.drinkfood@pec.it
+
+Il titolare decide finalità e modalità del trattamento ed è il tuo riferimento per ogni richiesta sui dati.
 
 
-2. Quali dati raccogliamo
-Se ti registri all'app:
-- nome e cognome, indirizzo email, numero di telefono (facoltativo);
-- password (conservata in forma cifrata dal servizio di autenticazione,
-  non visibile a noi);
-- codice tessera e QR associati al tuo account;
-- saldo punti, livello, premi riscattati e storico dei movimenti punti
-  (data, importo speso, punti aggiunti o scalati, operatore).
-Per tutti, anche senza registrazione, se acconsenti alle notifiche:
-- un identificativo del dispositivo per l'invio delle notifiche push
-  (token), eventualmente collegato al tuo account.
-La fotocamera è usata solo dal personale del locale per leggere il QR
-delle tessere: le immagini non vengono salvate né inviate.
-Non raccogliamo dati di posizione, contatti, foto né dati di pagamento e
-non usiamo pubblicità o strumenti di profilazione.
+2. Sviluppo e assistenza tecnica
+
+L'app è sviluppata e mantenuta da Gianluigi Ribezzo (gianluigiribezzo.dev) per conto ed esclusivamente per G.E.S. Drink&Food srls. Se per l'assistenza tecnica accede ai dati, lo fa solo su istruzione del titolare, come responsabile del trattamento (art. 28 GDPR), e non li usa per altri scopi.
 
 
-3. Perché li usiamo (finalità e base giuridica)
-- Gestire il tuo account e il programma fedeltà (accumulo e utilizzo dei
-  punti, premi): esecuzione del servizio da te richiesto (art. 6.1.b GDPR).
-- Inviarti notifiche su eventi e novità del locale: tuo consenso, che puoi
-  revocare in ogni momento dalle impostazioni del telefono (art. 6.1.a).
-- Sicurezza e prevenzione di abusi del programma punti: legittimo
-  interesse del titolare (art. 6.1.f).
+3. Quali dati trattiamo
+
+Se ti registri: nome e cognome, email, telefono (facoltativo), password (conservata in forma cifrata dal servizio di autenticazione e non visibile al personale), codice tessera e QR, saldo punti, livello, premi riscattati e storico dei movimenti (data, importo speso, punti aggiunti o scalati, operatore).
+
+Per tutti, se acconsenti alle notifiche: un identificativo del dispositivo per l'invio delle notifiche (token), eventualmente collegato al tuo account.
+
+La fotocamera è usata solo dal personale per leggere il QR delle tessere: le immagini non vengono salvate né inviate.
+
+Non raccogliamo posizione, contatti, foto o dati di pagamento e non usiamo pubblicità né profilazione.
 
 
-4. A chi li affidiamo
-I dati sono trattati, per nostro conto e solo per le finalità indicate, da:
-- Google Ireland Ltd / Google LLC (Firebase Authentication e Cloud
-  Firestore) per l'autenticazione e il database; i dati del database sono
-  conservati in data center nell'Unione Europea;
-- Expo / 650 Industries Inc. (servizio di invio delle notifiche push).
-Alcuni di questi fornitori possono trattare dati negli Stati Uniti: il
-trasferimento avviene sulla base dell'EU-US Data Privacy Framework e/o
-delle Clausole Contrattuali Standard della Commissione Europea.
-I dati non vengono venduti né ceduti a terzi per finalità commerciali.
-Il personale del locale autorizzato vede nome, email, telefono, codice
-tessera, saldo e movimenti solo per gestire i punti.
+4. Perché li trattiamo
+
+Gestione dell'account e del programma fedeltà (accumulo e uso dei punti, premi): esecuzione del servizio che richiedi registrandoti (art. 6.1.b GDPR).
+
+Notifiche su eventi e novità del locale: tuo consenso, revocabile in ogni momento dalle impostazioni del telefono (art. 6.1.a).
+
+Sicurezza e prevenzione degli abusi del programma punti: legittimo interesse del titolare (art. 6.1.f).
+
+Il conferimento di nome ed email è necessario per avere la tessera; il telefono è facoltativo.
 
 
-5. Per quanto tempo li conserviamo
-Finché il tuo account è attivo. Se elimini l'account, i dati vengono
-cancellati subito dai nostri sistemi (eventuali copie di sicurezza dei
-fornitori vengono sovrascritte entro i tempi tecnici dei loro servizi).
-I token delle notifiche non più validi vengono rimossi automaticamente.
+5. Chi tratta i dati per nostro conto
+
+Google Ireland Ltd / Google LLC (Firebase Authentication e Cloud Firestore) per accesso e database; i dati del database sono conservati in data center nell'Unione Europea.
+
+Expo / 650 Industries Inc. per l'invio delle notifiche push.
+
+Alcuni fornitori possono trattare dati negli Stati Uniti: il trasferimento avviene sulla base dell'EU-US Data Privacy Framework e/o delle Clausole Contrattuali Standard della Commissione Europea.
+
+Il personale autorizzato del locale vede nome, email, telefono, codice tessera, saldo e movimenti solo per gestire i punti. I dati non vengono venduti né ceduti a terzi per fini commerciali.
 
 
-6. Come eliminare l'account e i dati
-Dall'app: Info → tocca il tuo nome → "Elimina account" → conferma.
-Vengono cancellati profilo, punti, premi riscattati, storico dei movimenti
-e collegamento alle notifiche. Per sicurezza può esserti chiesto di uscire
-e rientrare prima di confermare.
-Se non hai più accesso all'app, scrivi a ges.drinkfood@gmail.com
-dall'indirizzo email con cui ti sei registrato chiedendo la cancellazione:
-provvederemo entro 30 giorni e te ne daremo conferma.
+6. Per quanto tempo
+
+Finché l'account è attivo. Se elimini l'account i dati vengono cancellati subito (le copie di sicurezza dei fornitori vengono sovrascritte nei tempi tecnici dei loro servizi). I token delle notifiche non più validi vengono rimossi automaticamente.
 
 
-7. I tuoi diritti
-Puoi chiedere in qualsiasi momento accesso, rettifica, cancellazione,
-limitazione, portabilità dei tuoi dati e opporti al trattamento, scrivendo
-a ges.drinkfood@gmail.com o alla PEC ges.drinkfood@pec.it. Nome e telefono
-puoi modificarli direttamente dall'app (Info → il tuo nome).
-Hai inoltre diritto di proporre reclamo al Garante per la protezione dei
-dati personali (www.garanteprivacy.it).
+7. Come eliminare l'account
+
+Dall'app: Info → il tuo nome → «Elimina account» → conferma. Vengono cancellati profilo, punti, premi riscattati, storico dei movimenti e collegamento alle notifiche. Per sicurezza può esserti chiesto di uscire e rientrare prima di confermare.
+
+Se non hai più accesso all'app, scrivi a ges.drinkfood@gmail.com dall'indirizzo con cui ti sei registrato: provvederemo entro 30 giorni e te ne daremo conferma.
 
 
-8. Minori
-L'app non è rivolta ai minori di 14 anni. Il menù contiene bevande
-alcoliche, che non vengono servite ai minori di 18 anni.
+8. I tuoi diritti
+
+Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilità dei dati e opporti al trattamento scrivendo a ges.drinkfood@gmail.com o alla PEC ges.drinkfood@pec.it. Nome e telefono li modifichi direttamente dall'app (Info → il tuo nome). Puoi revocare il consenso alle notifiche in qualsiasi momento.
+
+Hai diritto di proporre reclamo al Garante per la protezione dei dati personali (www.garanteprivacy.it).
 
 
-9. Modifiche
-Eventuali modifiche a questa informativa saranno pubblicate su questa
-pagina con la data di aggiornamento.
+9. Minori
+
+L'app non è rivolta ai minori di 14 anni. Le bevande alcoliche presenti nel menù non vengono servite ai minori di 18 anni.
+
+
+10. Modifiche
+
+Eventuali modifiche a questa informativa saranno pubblicate nell'app e sulla pagina web dell'informativa, con la data di aggiornamento.

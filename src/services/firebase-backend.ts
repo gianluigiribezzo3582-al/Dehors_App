@@ -102,6 +102,8 @@ function createAuth(): Auth {
 
 export function createFirebaseBackend(): Backend {
   const auth = createAuth();
+  // Email di sistema (recupero password) in italiano.
+  auth.languageCode = 'it';
   const db: Firestore = initializeFirestore(getApp(), { experimentalAutoDetectLongPolling: true });
 
   const userRef = (uid: string) => doc(db, 'users', uid);

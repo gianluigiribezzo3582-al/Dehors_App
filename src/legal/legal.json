@@ -1,0 +1,160 @@
+{
+  "privacy": {
+    "title": "Informativa sulla privacy",
+    "updated": "Ottobre 2026",
+    "intro": "Questa informativa spiega quali dati personali tratta l'app «Dehors Cafè-Bistrot», perché, per quanto tempo e quali diritti hai, ai sensi del Regolamento UE 2016/679 (GDPR).",
+    "sections": [
+      {
+        "h": "1. Titolare del trattamento",
+        "p": [
+          "G.E.S. Drink&Food srls – P.IVA 08572000720 – Via Giuseppe Re David 197, 70125 Bari (BA) – email ges.drinkfood@gmail.com – PEC ges.drinkfood@pec.it",
+          "Il titolare decide finalità e modalità del trattamento ed è il tuo riferimento per ogni richiesta sui dati."
+        ]
+      },
+      {
+        "h": "2. Sviluppo e assistenza tecnica",
+        "p": [
+          "L'app è sviluppata e mantenuta da Gianluigi Ribezzo (gianluigiribezzo.dev) per conto ed esclusivamente per G.E.S. Drink&Food srls. Se per l'assistenza tecnica accede ai dati, lo fa solo su istruzione del titolare, come responsabile del trattamento (art. 28 GDPR), e non li usa per altri scopi."
+        ]
+      },
+      {
+        "h": "3. Quali dati trattiamo",
+        "p": [
+          "Se ti registri: nome e cognome, email, telefono (facoltativo), password (conservata in forma cifrata dal servizio di autenticazione e non visibile al personale), codice tessera e QR, saldo punti, livello, premi riscattati e storico dei movimenti (data, importo speso, punti aggiunti o scalati, operatore).",
+          "Per tutti, se acconsenti alle notifiche: un identificativo del dispositivo per l'invio delle notifiche (token), eventualmente collegato al tuo account.",
+          "La fotocamera è usata solo dal personale per leggere il QR delle tessere: le immagini non vengono salvate né inviate.",
+          "Non raccogliamo posizione, contatti, foto o dati di pagamento e non usiamo pubblicità né profilazione."
+        ]
+      },
+      {
+        "h": "4. Perché li trattiamo",
+        "p": [
+          "Gestione dell'account e del programma fedeltà (accumulo e uso dei punti, premi): esecuzione del servizio che richiedi registrandoti (art. 6.1.b GDPR).",
+          "Notifiche su eventi e novità del locale: tuo consenso, revocabile in ogni momento dalle impostazioni del telefono (art. 6.1.a).",
+          "Sicurezza e prevenzione degli abusi del programma punti: legittimo interesse del titolare (art. 6.1.f).",
+          "Il conferimento di nome ed email è necessario per avere la tessera; il telefono è facoltativo."
+        ]
+      },
+      {
+        "h": "5. Chi tratta i dati per nostro conto",
+        "p": [
+          "Google Ireland Ltd / Google LLC (Firebase Authentication e Cloud Firestore) per accesso e database; i dati del database sono conservati in data center nell'Unione Europea.",
+          "Expo / 650 Industries Inc. per l'invio delle notifiche push.",
+          "Alcuni fornitori possono trattare dati negli Stati Uniti: il trasferimento avviene sulla base dell'EU-US Data Privacy Framework e/o delle Clausole Contrattuali Standard della Commissione Europea.",
+          "Il personale autorizzato del locale vede nome, email, telefono, codice tessera, saldo e movimenti solo per gestire i punti. I dati non vengono venduti né ceduti a terzi per fini commerciali."
+        ]
+      },
+      {
+        "h": "6. Per quanto tempo",
+        "p": [
+          "Finché l'account è attivo. Se elimini l'account i dati vengono cancellati subito (le copie di sicurezza dei fornitori vengono sovrascritte nei tempi tecnici dei loro servizi). I token delle notifiche non più validi vengono rimossi automaticamente."
+        ]
+      },
+      {
+        "h": "7. Come eliminare l'account",
+        "p": [
+          "Dall'app: Info → il tuo nome → «Elimina account» → conferma. Vengono cancellati profilo, punti, premi riscattati, storico dei movimenti e collegamento alle notifiche. Per sicurezza può esserti chiesto di uscire e rientrare prima di confermare.",
+          "Se non hai più accesso all'app, scrivi a ges.drinkfood@gmail.com dall'indirizzo con cui ti sei registrato: provvederemo entro 30 giorni e te ne daremo conferma."
+        ]
+      },
+      {
+        "h": "8. I tuoi diritti",
+        "p": [
+          "Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilità dei dati e opporti al trattamento scrivendo a ges.drinkfood@gmail.com o alla PEC ges.drinkfood@pec.it. Nome e telefono li modifichi direttamente dall'app (Info → il tuo nome). Puoi revocare il consenso alle notifiche in qualsiasi momento.",
+          "Hai diritto di proporre reclamo al Garante per la protezione dei dati personali (www.garanteprivacy.it)."
+        ]
+      },
+      {
+        "h": "9. Minori",
+        "p": [
+          "L'app non è rivolta ai minori di 14 anni. Le bevande alcoliche presenti nel menù non vengono servite ai minori di 18 anni."
+        ]
+      },
+      {
+        "h": "10. Modifiche",
+        "p": [
+          "Eventuali modifiche a questa informativa saranno pubblicate nell'app e sulla pagina web dell'informativa, con la data di aggiornamento."
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Regolamento del programma fedeltà e condizioni d'uso",
+    "updated": "Ottobre 2026",
+    "intro": "Registrandoti all'app accetti questo regolamento. Ti chiediamo di leggerlo con attenzione.",
+    "sections": [
+      {
+        "h": "1. Promotore",
+        "p": [
+          "Il programma fedeltà «Dehors» è promosso da G.E.S. Drink&Food srls – P.IVA 08572000720 – Via Giuseppe Re David 197, 70125 Bari (BA) – email ges.drinkfood@gmail.com – PEC ges.drinkfood@pec.it."
+        ]
+      },
+      {
+        "h": "2. Adesione",
+        "p": [
+          "L'adesione è gratuita e riservata a chi ha almeno 14 anni. Ogni persona può avere una sola tessera, personale e non cedibile. Per aderire basta registrarsi nell'app con nome, email e password."
+        ]
+      },
+      {
+        "h": "3. Come si accumulano i punti",
+        "p": [
+          "A ogni pagamento mostra al personale il QR o il codice della tua tessera: il personale assegna i punti in base all'importo speso, secondo il rapporto punti/euro indicato nell'app (arrotondato per difetto).",
+          "I punti si assegnano al momento del pagamento e non sono retroattivi. Alla registrazione ricevi i punti di benvenuto indicati nell'app.",
+          "Saldo e storico sono sempre consultabili nella scheda Tessera."
+        ]
+      },
+      {
+        "h": "4. Premi",
+        "p": [
+          "I premi disponibili, i punti necessari e se un premio è riscattabile una sola volta o più volte sono indicati nella scheda Premi.",
+          "Per riscattare un premio chiedilo al bancone e mostra la tessera: i punti vengono scalati dal saldo.",
+          "I premi non sono convertibili in denaro, non danno resto, sono soggetti a disponibilità e, salvo diversa indicazione, non sono cumulabili con altre promozioni. I premi a base di alcolici sono riservati ai maggiorenni."
+        ]
+      },
+      {
+        "h": "5. Modifiche e fine del programma",
+        "p": [
+          "Il promotore può modificare premi, punti necessari, rapporto punti/euro e regole, dandone comunicazione nell'app; le modifiche non riducono i punti già accumulati.",
+          "In caso di chiusura del programma è dato un preavviso di almeno 30 giorni nell'app, durante i quali i punti possono essere ancora utilizzati."
+        ]
+      },
+      {
+        "h": "6. Uso corretto",
+        "p": [
+          "In caso di uso fraudolento o abusivo (ad esempio cessione della tessera, punti ottenuti senza acquisto, manomissioni) il promotore può annullare i punti interessati e sospendere o chiudere l'account."
+        ]
+      },
+      {
+        "h": "7. Account e sicurezza",
+        "p": [
+          "Sei responsabile della riservatezza della tua password. Se pensi che qualcuno abbia accesso al tuo account, cambia la password con «Password dimenticata» e avvisa il locale. Puoi eliminare l'account in qualsiasi momento: i punti non utilizzati andranno persi."
+        ]
+      },
+      {
+        "h": "8. Funzionamento dell'app",
+        "p": [
+          "Il promotore si impegna a mantenere l'app funzionante ma non garantisce l'assenza di interruzioni o errori. Menù, prezzi, disponibilità, orari ed eventi mostrati nell'app sono indicativi: in caso di differenze valgono quelli esposti nel locale."
+        ]
+      },
+      {
+        "h": "9. Dati personali",
+        "p": [
+          "Il trattamento dei dati è descritto nell'Informativa sulla privacy, consultabile in Info."
+        ]
+      },
+      {
+        "h": "10. Legge applicabile e contatti",
+        "p": [
+          "Il regolamento è regolato dalla legge italiana. Restano salvi i diritti del consumatore, incluso il foro del consumatore. Per qualsiasi domanda: ges.drinkfood@gmail.com, tel. 080 975 3266."
+        ]
+      },
+      {
+        "h": "11. Sviluppo dell'app",
+        "p": [
+          "App sviluppata da Gianluigi Ribezzo (gianluigiribezzo.dev) esclusivamente per G.E.S. Drink&Food srls."
+        ]
+      }
+    ]
+  },
+  "credits": "App sviluppata da Gianluigi Ribezzo (gianluigiribezzo.dev) esclusivamente per G.E.S. Drink&Food srls."
+}

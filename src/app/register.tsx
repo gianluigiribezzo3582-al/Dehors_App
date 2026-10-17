@@ -24,7 +24,7 @@ export default function RegisterScreen() {
     if (name.trim().length < 2) return setError('Inserisci il tuo nome.');
     if (!/^\S+@\S+\.\S+$/.test(email.trim())) return setError('Inserisci un indirizzo email valido.');
     if (password.length < 6) return setError('La password deve avere almeno 6 caratteri.');
-    if (!privacy) return setError('Per continuare accetta il trattamento dei dati.');
+    if (!privacy) return setError('Per continuare conferma di aver letto l\'informativa e accetta il regolamento.');
     setLoading(true);
     try {
       await backend.signUp({ name, email, password, phone });
@@ -78,7 +78,15 @@ export default function RegisterScreen() {
           <Ionicons name={privacy ? 'checkbox' : 'square-outline'} size={22} color={theme.primary} />
           <View style={{ flex: 1 }}>
             <AppText variant="caption">
-              Acconsento al trattamento dei miei dati per la gestione della tessera fedeltà.
+              Ho letto l&apos;
+              <AppText variant="caption" color={theme.primary} style={{ textDecorationLine: 'underline' }} onPress={() => router.push('/legal/privacy')}>
+                informativa sulla privacy
+              </AppText>{' '}
+              e accetto il{' '}
+              <AppText variant="caption" color={theme.primary} style={{ textDecorationLine: 'underline' }} onPress={() => router.push('/legal/terms')}>
+                regolamento del programma fedeltà
+              </AppText>
+              .
             </AppText>
           </View>
         </Pressable>

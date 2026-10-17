@@ -1,0 +1,71 @@
+(Stesso testo mostrato nell'app, generato da src/legal/legal.json.)
+
+REGOLAMENTO DEL PROGRAMMA FEDELTÀ E CONDIZIONI D'USO
+Ultimo aggiornamento: Ottobre 2026
+
+Registrandoti all'app accetti questo regolamento. Ti chiediamo di leggerlo con attenzione.
+
+
+1. Promotore
+
+Il programma fedeltà «Dehors» è promosso da G.E.S. Drink&Food srls – P.IVA 08572000720 – Via Giuseppe Re David 197, 70125 Bari (BA) – email ges.drinkfood@gmail.com – PEC ges.drinkfood@pec.it.
+
+
+2. Adesione
+
+L'adesione è gratuita e riservata a chi ha almeno 14 anni. Ogni persona può avere una sola tessera, personale e non cedibile. Per aderire basta registrarsi nell'app con nome, email e password.
+
+
+3. Come si accumulano i punti
+
+A ogni pagamento mostra al personale il QR o il codice della tua tessera: il personale assegna i punti in base all'importo speso, secondo il rapporto punti/euro indicato nell'app (arrotondato per difetto).
+
+I punti si assegnano al momento del pagamento e non sono retroattivi. Alla registrazione ricevi i punti di benvenuto indicati nell'app.
+
+Saldo e storico sono sempre consultabili nella scheda Tessera.
+
+
+4. Premi
+
+I premi disponibili, i punti necessari e se un premio è riscattabile una sola volta o più volte sono indicati nella scheda Premi.
+
+Per riscattare un premio chiedilo al bancone e mostra la tessera: i punti vengono scalati dal saldo.
+
+I premi non sono convertibili in denaro, non danno resto, sono soggetti a disponibilità e, salvo diversa indicazione, non sono cumulabili con altre promozioni. I premi a base di alcolici sono riservati ai maggiorenni.
+
+
+5. Modifiche e fine del programma
+
+Il promotore può modificare premi, punti necessari, rapporto punti/euro e regole, dandone comunicazione nell'app; le modifiche non riducono i punti già accumulati.
+
+In caso di chiusura del programma è dato un preavviso di almeno 30 giorni nell'app, durante i quali i punti possono essere ancora utilizzati.
+
+
+6. Uso corretto
+
+In caso di uso fraudolento o abusivo (ad esempio cessione della tessera, punti ottenuti senza acquisto, manomissioni) il promotore può annullare i punti interessati e sospendere o chiudere l'account.
+
+
+7. Account e sicurezza
+
+Sei responsabile della riservatezza della tua password. Se pensi che qualcuno abbia accesso al tuo account, cambia la password con «Password dimenticata» e avvisa il locale. Puoi eliminare l'account in qualsiasi momento: i punti non utilizzati andranno persi.
+
+
+8. Funzionamento dell'app
+
+Il promotore si impegna a mantenere l'app funzionante ma non garantisce l'assenza di interruzioni o errori. Menù, prezzi, disponibilità, orari ed eventi mostrati nell'app sono indicativi: in caso di differenze valgono quelli esposti nel locale.
+
+
+9. Dati personali
+
+Il trattamento dei dati è descritto nell'Informativa sulla privacy, consultabile in Info.
+
+
+10. Legge applicabile e contatti
+
+Il regolamento è regolato dalla legge italiana. Restano salvi i diritti del consumatore, incluso il foro del consumatore. Per qualsiasi domanda: ges.drinkfood@gmail.com, tel. 080 975 3266.
+
+
+11. Sviluppo dell'app
+
+App sviluppata da Gianluigi Ribezzo (gianluigiribezzo.dev) esclusivamente per G.E.S. Drink&Food srls.

@@ -53,8 +53,6 @@ export type SiteTexts = {
   appleMapsUrl: string;
   hours: WeeklyHours;
   pointsPerEuro: number;
-  /** Indirizzo pubblico dell'informativa privacy (vuoto = voce nascosta). */
-  privacyUrl: string;
 };
 
 /** Piatto del pranzo del giorno (senza quantità). */

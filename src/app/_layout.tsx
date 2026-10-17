@@ -69,6 +69,7 @@ function RootStack() {
       <Stack.Screen name="history" options={{ title: 'Movimenti punti' }} />
       <Stack.Screen name="reward/[id]" options={{ title: 'Premio', presentation: 'modal' }} />
       <Stack.Screen name="event/[id]" options={{ title: 'Evento' }} />
+      <Stack.Screen name="legal/[doc]" options={{ title: 'Informazioni legali' }} />
       {/* Area staff: rotte inesistenti per chi non ha ruolo staff/admin. */}
       <Stack.Protected guard={isStaff}>
         <Stack.Screen name="scan" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
